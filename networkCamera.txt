@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/21041370/opencv-how-to-capture-rtsp-video-stream
+http://answers.opencv.org/question/133/how-do-i-access-an-ip-camera/
+http://stackoverflow.com/questions/712998/opencv-with-network-cameras
