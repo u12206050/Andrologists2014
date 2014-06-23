@@ -14,10 +14,14 @@ class Pipeline
     public:
         virtual ~Pipeline();
         virtual void process() = 0;
-        void addFilter(Filter* filter);
+        int getNumberOfFilters();
+        void attachFilterter(Filter* filter);
+        void attachFilters(vector<Filter*> filters);
         void attachCapturer(Capturer* capturer);
         void attachPersister(Persister* persister);
-        void addFilters(vector<Filter*> filters);
+        Capturer* detachCapturer();
+        Persister* detachPersister();
+        Filter* detachLastFilter();
 
     protected:
         vector<Filter*> filters;

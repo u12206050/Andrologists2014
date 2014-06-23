@@ -29,7 +29,11 @@ SOURCES += main.cpp \
     Filter.cpp \
     FaceDetectFilter.cpp \
     ConfigReader.cpp \
-    Capturer.cpp
+    Capturer.cpp \
+    Fakes/FakeFilter.cpp \
+    Fakes/FakeCapturer.cpp \
+    Fakes/FakePersister.cpp \
+    Tests/SequentialPipelineTest.cpp
 
 OTHER_FILES +=
 
@@ -47,4 +51,8 @@ HEADERS += \
     Filter.h \
     FaceDetectFilter.h \
     ConfigReader.h \
-    Capturer.h
+    Capturer.h \
+    Fakes/FakeFilter.h \
+    Fakes/FakeCapturer.h \
+    Fakes/FakePersister.h \
+    Tests/SequentialPipelineTest.h

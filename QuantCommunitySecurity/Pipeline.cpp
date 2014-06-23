@@ -2,15 +2,25 @@
 
 Pipeline::~Pipeline()
 {
-    delete capturer;
-    delete persister;
-    for (int i = 0; i < filters.size(); i++)
+    if (capturer != NULL)
     {
-        delete filters[i];
+        delete detachCapturer();
+    }
+    if (persister != null)
+    {
+        delete detachPersister();
+    }
+    while (getNumberOfFilters() > 0)
+    {
+        Filter* temp = detachLastFilter();
+        if (temp != NULL)
+        {
+            delete temp;
+        }
     }
 }
 
-void Pipeline::addFilter(Filter* filter)
+void Pipeline::attachFilter(Filter* filter)
 {
     filters.push_back(filter);
 }
@@ -25,11 +35,34 @@ void Pipeline::attachPersister(Persister* persister)
     this->persister = persister;
 }
 
-void Pipeline::addFilters(vector<Filter*> filters)
+void Pipeline::attachFilters(vector<Filter*> filters)
 {
     for (int i = 0; i < filters.size(); i++)
     {
-        addFilter(filters[i]);
+        attachFilter(filters[i]);
     }
 }
 
+int Pipeline::getNumberOfFilters()
+{
+    return filters.size();
+}
+
+Capturer* Pipeline::detachCapturer()
+{
+    Capturer* temp = capturer;
+    capturer = NULL;
+    return temp;
+}
+
+Persister* Pipeline::detachPersister()
+{
+    Persister* temp = persister;
+    persister = NULL;
+    return temp;
+}
+
+Filter* Pipeline::detachLastFilter()
+{
+    return filters.pop_back();
+}
