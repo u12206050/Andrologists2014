@@ -6,8 +6,8 @@
 class SequentialPipeline : public Pipeline
 {
 public:
-	void process();
 	~SequentialPipeline();
+	void process();
 	void process();
 };
 

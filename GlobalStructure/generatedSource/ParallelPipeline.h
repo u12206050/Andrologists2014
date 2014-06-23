@@ -6,8 +6,8 @@
 class ParallelPipeline : public Pipeline
 {
 public:
-	void process();
 	~ParallelPipeline();
+	void process();
 	void process();
 };
 
