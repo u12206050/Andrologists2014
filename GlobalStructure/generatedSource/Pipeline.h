@@ -6,7 +6,7 @@ class Pipeline
 {
 public:
 	~Pipeline();
-	void process();
+	virtual void process() = 0;
 	void addFilter(Filter* filter);
 	void attachCapturer(Capturer* capturer);
 	void attachPersister(Persister* persister);

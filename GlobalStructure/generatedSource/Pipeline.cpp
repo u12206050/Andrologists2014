@@ -5,11 +5,6 @@ Pipeline::~Pipeline()
 
 }
 
-void Pipeline::process()
-{
-
-}
-
 void Pipeline::addFilter(Filter* filter)
 {
 
