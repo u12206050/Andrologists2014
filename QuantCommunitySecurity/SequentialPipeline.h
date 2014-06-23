@@ -5,10 +5,9 @@
 
 class SequentialPipeline : public Pipeline
 {
-public:
-	void process();
-	~SequentialPipeline();
-	void process();
+    public:
+        ~SequentialPipeline();
+        void process();
 };
 
 #endif  //_SEQUENTIALPIPELINE_H
