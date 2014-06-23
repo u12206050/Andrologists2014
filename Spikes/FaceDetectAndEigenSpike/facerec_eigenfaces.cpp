@@ -104,14 +104,20 @@ int main(int argc, const char *argv[]) {
     // done, so that the training data (which we learn the
     // cv::FaceRecognizer on) and the test data we test
     // the model with, do not overlap.
-    Mat barrack = imread("newbarrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
-     Mat testSample;
- cvtColor( barrack, testSample, CV_BGR2GRAY );
-    int testLabel = 40000;
-    /*Mat testSample = images[images.size() - 1];
-    int testLabel = labels[labels.size() - 1];
-    images.pop_back();
-    labels.pop_back();*/
+    Mat barrack = imread("newbarrack2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	cvtColor( barrack, barrack, CV_BGR2GRAY );
+	Mat barrack2 = imread("newjacob.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	cvtColor( barrack2, barrack2, CV_BGR2GRAY );
+    //Mat testSample = images[images.size() - 1];
+    //int testLabel = labels[labels.size() - 1];
+    //Mat testSample2 = images[images.size() - 2];
+    //int testLabel2 = labels[labels.size() - 2];
+    //images.pop_back();
+    //labels.pop_back();
+    //images.pop_back();
+    //labels.pop_back();
+    imshow("test1", barrack);
+    imshow("test2", barrack2);
     // The following lines create an Eigenfaces model for
     // face recognition and train it with the images and
     // labels read from the given CSV file.
@@ -135,14 +141,18 @@ int main(int argc, const char *argv[]) {
     model->train(images, labels);
     // The following line predicts the label of a given
     // test image:
-    int predictedLabel = model->predict(testSample);
-    for (int k = 0; k < labels.size(); k++)
+    //int predictedLabel = model->predict(testSample);
+    /*int predictedLabel = 38;
+    double confidence = 0.0;
+   model->predict(testSample, predictedLabel, confidence);
+    cout << predictedLabel << " | " << confidence << endl;*/
+    /*for (int k = 0; k < labels.size(); k++)
     {
 		if (labels[k] == predictedLabel)
 		{
 			cout << k << endl;
 		}
-	}
+	}*/
     //
     // To get the confidence of a prediction call the model with:
     //
@@ -150,8 +160,8 @@ int main(int argc, const char *argv[]) {
     //      double confidence = 0.0;
     //      model->predict(testSample, predictedLabel, confidence);
     //
-    string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
-    cout << result_message << endl;
+    /*string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
+    cout << result_message << endl;*/
     // Here is how to get the eigenvalues of this Eigenfaces model:
     Mat eigenvalues = model->getMat("eigenvalues");
     // And we can do the same to display the Eigenvectors (read Eigenfaces):
@@ -164,6 +174,7 @@ int main(int argc, const char *argv[]) {
     } else {
         imwrite(format("%s/mean.png", output_folder.c_str()), norm_0_255(mean.reshape(1, images[0].rows)));
     }
+
     // Display or save the Eigenfaces:
     for (int i = 0; i < min(10, W.cols); i++) {
         string msg = format("Eigenvalue #%d = %.5f", i, eigenvalues.at<double>(i));
@@ -177,7 +188,7 @@ int main(int argc, const char *argv[]) {
         applyColorMap(grayscale, cgrayscale, COLORMAP_JET);
         // Display or save:
         if(argc == 2) {
-            imshow(format("eigenface_%d", i), cgrayscale);
+            //imshow(format("eigenface_%d", i), cgrayscale);
         } else {
             imwrite(format("%s/eigenface_%d.png", output_folder.c_str(), i), norm_0_255(cgrayscale));
         }
@@ -193,12 +204,41 @@ int main(int argc, const char *argv[]) {
         reconstruction = norm_0_255(reconstruction.reshape(1, images[0].rows));
         // Display or save:
         if(argc == 2) {
-            imshow(format("eigenface_reconstruction_%d", num_components), reconstruction);
+            //imshow(format("eigenface_reconstruction_%d", num_components), reconstruction);
         } else {
             imwrite(format("%s/eigenface_reconstruction_%d.png", output_folder.c_str(), num_components), reconstruction);
         }
     }
     // Display if we are not writing to an output folder:
+    Mat proj = subspaceProject(W, mean, barrack.reshape(1,1));
+	Mat proj2 = subspaceProject(W, mean, barrack2.reshape(1,1));
+    imshow("proj", proj);
+    imshow("proj2", proj2);
+    
+    double dist = 0;
+    for (int i = 0; i < proj.rows; i++)
+    {
+		double disti = proj.at<double>(i) - proj2.at<double>(i);
+		dist += disti * disti;
+	}
+	double confidence = 1/ sqrt(dist);
+    cout << confidence << endl;
+    
+    if (confidence >= 0.005)
+    {
+		cout << "same person" << endl;
+	}
+	else
+	{
+		cout << "not same person" << endl;
+	}
+    //cout << proj.at<double>(398) << endl;
+
+        //Vec3b bgrPixel = proj.at<Vec3b>(0, 1);
+        
+        //cout << bgrPixel << endl;
+
+    
     if(argc == 2) {
         waitKey(0);
     }
