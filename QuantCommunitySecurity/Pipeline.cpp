@@ -29,7 +29,7 @@ void Pipeline::addFilters(vector<Filter*> filters)
 {
     for (int i = 0; i < filters.size(); i++)
     {
-        this->filters.push_back(filters[i]);
+        addFilter(filters[i]);
     }
 }
 
