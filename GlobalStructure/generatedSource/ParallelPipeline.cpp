@@ -1,11 +1,11 @@
 #include "ParallelPipeline.h"
 
-void ParallelPipeline::process()
+ParallelPipeline::~ParallelPipeline()
 {
 
 }
 
-ParallelPipeline::~ParallelPipeline()
+void ParallelPipeline::process()
 {
 
 }
