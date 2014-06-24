@@ -7,6 +7,6 @@ SamplingFilter::~SamplingFilter()
 
 ImageData* SamplingFilter::filter(ImageData* image)
 {
-
+    return NULL;
 }
 

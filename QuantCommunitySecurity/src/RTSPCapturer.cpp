@@ -7,5 +7,5 @@ RTSPCapturer::~RTSPCapturer()
 
 ImageData* RTSPCapturer::getNextImage()
 {
-
+    return NULL;
 }

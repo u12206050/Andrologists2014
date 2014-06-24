@@ -1,2 +1,3 @@
 http://stackoverflow.com/questions/12154980/how-to-structure-project-while-unit-testing-qt-app-by-qtestlib
 http://dragly.org/2013/04/19/setting-up-unittest-with-qt-creator/
+https://github.com/FSund/qtcreator-project-structure

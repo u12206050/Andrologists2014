@@ -16,7 +16,7 @@ void SequentialPipeline::process(int iterations)
     {
         bool proceed = true;
         ImageData* imageData = capturer->getNextImage();
-        for (int i = 0; i < filters.size() && proceed; i++)
+        for (unsigned int i = 0; i < filters.size() && proceed; i++)
         {
             if (imageData == NULL)
             {

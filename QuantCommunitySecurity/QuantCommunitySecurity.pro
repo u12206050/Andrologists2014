@@ -4,58 +4,61 @@
 #
 #-------------------------------------------------
 
-QT       += core
+TEMPLATE = subdirs
+CONFIG+=ordered
+SUBDIRS = \
+            src \
+            app \
+            tests
+app.depends = src
+tests.depends = src
 
-QT       -= gui
 
-QT       += testlib
+#QT += core
 
-TARGET = QuantCommunitySecurity
-CONFIG   += console
-CONFIG   -= app_bundle
+#QT -= gui
 
-TEMPLATE = app
+#TARGET = QuantCommunitySecurity
+#CONFIG += console
+#CONFIG -= app_bundle
 
-LIBS += `pkg-config opencv --cflags --libs`
+#TEMPLATE = app
 
-SOURCES += \
-    SequentialPipeline.cpp \
-    Pipeline.cpp \
-    SamplingFilter.cpp \
-    RTSPCapturer.cpp \
-    PreProcessingFilter.cpp \
-    Persister.cpp \
-    ParallelPipeline.cpp \
-    NetworkPersister.cpp \
-    LocalPersister.cpp \
-    Filter.cpp \
-    FaceDetectFilter.cpp \
-    ConfigReader.cpp \
-    Capturer.cpp \
-    Fakes/FakeFilter.cpp \
-    Fakes/FakeCapturer.cpp \
-    Fakes/FakePersister.cpp \
-    Tests/SequentialPipelineTest.cpp \
-    Main.cpp
+#include(src/QuantCommunitySecurity.pri)
 
-OTHER_FILES +=
+#LIBS += `pkg-config opencv --cflags --libs`
 
-HEADERS += \
-    SequentialPipeline.h \
-    Pipeline.h \
-    SamplingFilter.h \
-    RTSPCapturer.h \
-    PreProcessingFilter.h \
-    Persister.h \
-    ParallelPipeline.h \
-    NetworkPersister.h \
-    LocalPersister.h \
-    ImageData.h \
-    Filter.h \
-    FaceDetectFilter.h \
-    ConfigReader.h \
-    Capturer.h \
-    Fakes/FakeFilter.h \
-    Fakes/FakeCapturer.h \
-    Fakes/FakePersister.h \
-    Tests/SequentialPipelineTest.h
+#SOURCES += \
+#    src/SequentialPipeline.cpp \
+#    src/SamplingFilter.cpp \
+#    src/RTSPCapturer.cpp \
+#    src/PreProcessingFilter.cpp \
+#    src/Pipeline.cpp \
+#    src/Persister.cpp \
+#    src/ParallelPipeline.cpp \
+#    src/NetworkPersister.cpp \
+#    src/main.cpp
+#    src/LocalPersister.cpp \
+#    src/Filter.cpp \
+#    src/FaceDetectFilter.cpp \
+#    src/ConfigReader.cpp \
+#    src/Capturer.cpp
+
+#OTHER_FILES += \
+ #   QuantCommunitySecurity.pri
+
+#HEADERS += \
+#    src/SequentialPipeline.h \
+#    src/SamplingFilter.h \
+#    src/RTSPCapturer.h \
+#    src/PreProcessingFilter.h \
+#    src/Pipeline.h \
+#    src/Persister.h \
+#    src/ParallelPipeline.h \
+#    src/NetworkPersister.h \
+#    src/LocalPersister.h \
+#    src/ImageData.h \
+#    src/Filter.h \
+#    src/FaceDetectFilter.h \
+#    src/ConfigReader.h \
+#    src/Capturer.h

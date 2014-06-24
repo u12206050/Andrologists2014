@@ -37,7 +37,7 @@ void Pipeline::attachPersister(Persister* persister)
 
 void Pipeline::attachFilters(vector<Filter*> filters)
 {
-    for (int i = 0; i < filters.size(); i++)
+    for (unsigned int i = 0; i < filters.size(); i++)
     {
         attachFilter(filters[i]);
     }

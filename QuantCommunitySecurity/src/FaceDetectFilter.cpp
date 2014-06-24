@@ -7,5 +7,5 @@ FaceDetectFilter::~FaceDetectFilter()
 
 ImageData* FaceDetectFilter::filter(ImageData* image)
 {
-
+    return NULL;
 }
