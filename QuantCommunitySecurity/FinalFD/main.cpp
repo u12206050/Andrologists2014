@@ -15,9 +15,6 @@ char key;
 
 int main()
 {
-   // Load Face cascade (.xml file)
-        CascadeClassifier face_cascade;
-        face_cascade.load( "C:/opencv/sources/data/haarcascades/haarcascade_frontalface_alt2.xml" );
 
     FaceDetectFilter detect;
 
@@ -30,11 +27,11 @@ int main()
         //convert IplImage contour.jpg to Mat
         Mat matCon(frame);
 
-        ImageData* data;
+        ImageData* data = new ImageData;
 
         data->image = matCon;
 
-        detect.filter(data);
+        data = detect.filter(data);
 
         cvShowImage("Camera_Output", frame);   //Show image frames on created window
         key = cvWaitKey(10);     //Capture Keyboard stroke
