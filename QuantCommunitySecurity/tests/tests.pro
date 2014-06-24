@@ -1,22 +1,27 @@
 include(../Defaults.pri)
-TEMPLATE = app
 
-QT       += testlib
+QT += core
+QT -= gui
+QT += testlib
+
+TEMPLATE = app
 
 CONFIG   += console
 CONFIG   -= app_bundle
-CONFIG   -= qt
+#CONFIG   -= qt
+
+LIBS += -L../src -lapplib
+LIBS += `pkg-config opencv --cflags --libs`
 
 SOURCES += \
     SequentialPipelineTest.cpp \
-    fakes/FakeCapturer.cpp \
-    fakes/FakeFilter.cpp \
-    fakes/FakePersister.cpp
-
-LIBS += -L../src -lmyapp
+#    main.cpp \
+    FakeCapturer.cpp \
+    FakeFilter.cpp \
+    FakePersister.cpp
 
 HEADERS += \
     SequentialPipelineTest.h \
-    fakes/FakeCapturer.h \
-    fakes/FakeFilter.h \
-    fakes/FakePersister.h
+    FakeCapturer.h \
+    FakeFilter.h \
+    FakePersister.h

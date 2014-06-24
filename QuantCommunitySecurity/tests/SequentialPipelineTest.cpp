@@ -86,6 +86,5 @@ void SequentialPipelineTest::processTest()
 //QTEST_APPLESS_MAIN(SequentialPipelineTest)
 
 //#include "tst_SequentialPipelineTest.moc"
-
 QTEST_MAIN(SequentialPipelineTest)
 #include "moc_SequentialPipelineTest.cpp"

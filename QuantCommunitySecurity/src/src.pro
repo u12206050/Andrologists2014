@@ -1,9 +1,12 @@
 include(../Defaults.pri)
-CONFIG -= qt
+
+QT += core
+
+#CONFIG -= qt
 
 LIBS += `pkg-config opencv --cflags --libs`
 
-TARGET = myapp
+TARGET = applib
 TEMPLATE = lib
 
 SOURCES += \

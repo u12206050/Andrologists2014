@@ -3,9 +3,9 @@
 
 #include <QtTest/QtTest>
 #include "SequentialPipeline.h"
-#include "Fakes/FakeCapturer.h"
-#include "Fakes/FakeFilter.h"
-#include "Fakes/FakePersister.h"
+#include "FakeCapturer.h"
+#include "FakeFilter.h"
+#include "FakePersister.h"
 
 class SequentialPipelineTest : public QObject
 {
