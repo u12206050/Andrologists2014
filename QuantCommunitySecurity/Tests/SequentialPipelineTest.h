@@ -17,4 +17,6 @@ private slots:
     void processTest();
 };
 
+QTEST_MAIN(SequentialPipelineTest)
+
 #endif // PIPELINETEST_H

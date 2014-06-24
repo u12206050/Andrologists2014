@@ -16,7 +16,7 @@ void SequentialPipelineTest::attachAndDetachCapturerTest()
 
 void SequentialPipelineTest::attachAndDetachPersisterTest()
 {
-    Persister* expected = new FakePersister(NULL);
+    Persister* expected = new FakePersister();
     Pipeline* pipeline = new SequentialPipeline();
     pipeline->attachPersister(expected);
     Persister* actual = pipeline->detachPersister();
