@@ -15,7 +15,7 @@ class Pipeline
         virtual ~Pipeline();
         virtual void process() = 0;
         int getNumberOfFilters();
-        void attachFilterter(Filter* filter);
+        void attachFilter(Filter* filter);
         void attachFilters(vector<Filter*> filters);
         void attachCapturer(Capturer* capturer);
         void attachPersister(Persister* persister);

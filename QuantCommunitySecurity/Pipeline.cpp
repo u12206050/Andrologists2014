@@ -64,5 +64,9 @@ Persister* Pipeline::detachPersister()
 
 Filter* Pipeline::detachLastFilter()
 {
+    if (getNumberOfFilters() == 0)
+    {
+        return NULL;
+    }
     return filters.pop_back();
 }

@@ -9,8 +9,11 @@ class FakeCapturer : public Capturer
         FakeCapturer(ImageData* image);
         ~FakeCapturer();
         ImageData* getNextImage();
+        bool getCalledFlag();
+
     private:
         ImageData* image;
+        bool calledFlag = false;
 };
 
 #endif // FAKECAPTURER_H

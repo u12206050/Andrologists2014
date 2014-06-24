@@ -12,5 +12,11 @@ FakeCapturer::~FakeCapturer()
 
 ImageData* FakeCapturer::getNextImage()
 {
+    calledFlag = true;
     return image;
+}
+
+bool FakeCapturer::getCalledFlag()
+{
+    return calledFlag;
 }

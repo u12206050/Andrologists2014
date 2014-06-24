@@ -13,7 +13,7 @@ class SequentialPipelineTest : public QObject
 private slots:
     void attachAndDetachCapturerTest();
     void attachAndDetachPersisterTest();
-    void attachAndDetachFiltersTest();
+    void attachAndDetachFilterTests();
     void processTest();
 };
 

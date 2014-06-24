@@ -11,7 +11,7 @@ class FakeFilter : public Filter
         bool getCalledFlag();
 
     private:
-        bool calledFlag= false;
+        bool calledFlag = false;
 };
 
 #endif // FAKEFILTER_H
