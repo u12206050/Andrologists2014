@@ -9,9 +9,3 @@ void LocalPersister::persistImageData(ImageData* image)
 {
 
 }
-
-void LocalPersister::persistImageData(ImageData* image)
-{
-
-}
-

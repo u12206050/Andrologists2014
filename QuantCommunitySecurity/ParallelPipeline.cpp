@@ -9,9 +9,3 @@ ParallelPipeline::~ParallelPipeline()
 {
 
 }
-
-void ParallelPipeline::process()
-{
-
-}
-

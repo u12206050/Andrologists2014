@@ -6,7 +6,7 @@ Pipeline::~Pipeline()
     {
         delete detachCapturer();
     }
-    if (persister != null)
+    if (persister != NULL)
     {
         delete detachPersister();
     }
@@ -68,5 +68,7 @@ Filter* Pipeline::detachLastFilter()
     {
         return NULL;
     }
-    return filters.pop_back();
+    Filter* temp = filters.back();
+    filters.pop_back();
+    return temp;
 }

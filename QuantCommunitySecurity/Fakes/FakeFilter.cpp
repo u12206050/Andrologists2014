@@ -1,5 +1,10 @@
 #include "FakeFilter.h"
 
+FakeFilter::FakeFilter()
+{
+    calledFlag = false;
+}
+
 FakeFilter::~FakeFilter()
 {
 }

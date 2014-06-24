@@ -8,7 +8,6 @@ class PreProcessingFilter : public Filter
 public:
 	~PreProcessingFilter();
 	ImageData* filter(ImageData* image);
-	ImageData* filter(ImageData* image);
 };
 
 #endif  //_PREPROCESSINGFILTER_H

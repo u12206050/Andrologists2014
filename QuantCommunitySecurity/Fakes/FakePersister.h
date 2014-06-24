@@ -6,12 +6,13 @@
 class FakePersister : public Persister
 {
     public:
+        FakePersister();
         ~FakePersister();
-        persistImageData(ImageData* image);
+        void persistImageData(ImageData* image);
         bool getCalledFlag();
 
     private:
-        bool calledFlag = false;
+        bool calledFlag;
 };
 
 #endif // FAKEPERSISTER_H

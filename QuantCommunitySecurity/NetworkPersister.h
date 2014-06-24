@@ -8,7 +8,6 @@ class NetworkPersister : public Persister
 public:
 	~NetworkPersister();
 	void persistImageData(ImageData* image);
-	void persistImageData(ImageData* image);
 };
 
 #endif  //_NETWORKPERSISTER_H

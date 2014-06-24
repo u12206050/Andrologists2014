@@ -28,7 +28,7 @@ void SequentialPipelineTest::attachAndDetachPersisterTest()
     QCOMPARE(actual,expected);
 }
 
-void SequentialPipelineTest::attachAndDetachFiltersTest()
+void SequentialPipelineTest::attachAndDetachFilterTest()
 {
     Pipeline* pipeline = new SequentialPipeline();
     Filter* expectedFilter = new FakeFilter();
@@ -36,7 +36,7 @@ void SequentialPipelineTest::attachAndDetachFiltersTest()
     QCOMPARE(pipeline->getNumberOfFilters(), 1);
     Filter* actualFilter = pipeline->detachLastFilter();
     QCOMPARE(actualFilter,expectedFilter);
-    QCOMPARE(pipeline->detachLastFilter(), NULL);
+    QVERIFY(pipeline->detachLastFilter() == NULL);
     QCOMPARE(pipeline->getNumberOfFilters(), 0);
 
     vector<Filter*> fakeFilters;
@@ -61,7 +61,7 @@ void SequentialPipelineTest::processTest()
 {
     FakeCapturer* fakeCapturer = new FakeCapturer(new ImageData());
     FakePersister* fakePersister = new FakePersister();
-    vector<FakeFilter*> fakeFilters;
+    vector<Filter*> fakeFilters;
     for (int i = 0; i < 5; i++)
     {
         fakeFilters.push_back(new FakeFilter());
@@ -78,6 +78,9 @@ void SequentialPipelineTest::processTest()
     QVERIFY(fakePersister->getCalledFlag());
     for (int i = 0; i < 5; i++)
     {
-        QVERIFY(fakeFilters[i]->getCalledFlag());
+        FakeFilter* fakeFilter = dynamic_cast<FakeFilter*>(fakeFilters[i]);
+        QVERIFY(fakeFilter->getCalledFlag());
     }
 }
+
+QTEST_MAIN(SequentialPipelineTest)

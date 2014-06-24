@@ -9,9 +9,3 @@ ImageData* RTSPCapturer::getNextImage()
 {
 
 }
-
-ImageData* RTSPCapturer::getNextImage()
-{
-
-}
-

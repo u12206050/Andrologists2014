@@ -2,10 +2,12 @@
 #define SEQUENTIALPIPELINETEST_H
 
 #include <QtTest/QtTest>
-#include "Pipeline.h"
+#include "SequentialPipeline.h"
 #include "Fakes/FakeCapturer.h"
 #include "Fakes/FakeFilter.h"
 #include "Fakes/FakePersister.h"
+
+using namespace std;
 
 class SequentialPipelineTest : public QObject
 {
@@ -13,10 +15,8 @@ class SequentialPipelineTest : public QObject
 private slots:
     void attachAndDetachCapturerTest();
     void attachAndDetachPersisterTest();
-    void attachAndDetachFilterTests();
+    void attachAndDetachFilterTest();
     void processTest();
 };
-
-QTEST_MAIN(SequentialPipelineTest)
 
 #endif // PIPELINETEST_H

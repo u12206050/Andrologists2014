@@ -8,7 +8,6 @@ class RTSPCapturer : public Capturer
 public:
 	~RTSPCapturer();
 	ImageData* getNextImage();
-	ImageData* getNextImage();
 };
 
 #endif  //_RTSPCAPTURER_H

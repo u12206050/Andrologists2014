@@ -8,7 +8,6 @@ class FaceDetectFilter : public Filter
 public:
 	~FaceDetectFilter();
 	virtual ImageData* filter(ImageData* image);
-	ImageData* filter(ImageData* image);
 };
 
 #endif  //_FACEDETECTFILTER_H

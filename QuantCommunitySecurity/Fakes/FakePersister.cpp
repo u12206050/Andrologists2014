@@ -1,5 +1,10 @@
 #include "FakePersister.h"
 
+FakePersister::FakePersister()
+{
+    calledFlag = false;
+}
+
 FakePersister::~FakePersister()
 {
 }

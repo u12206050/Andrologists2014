@@ -8,7 +8,6 @@ class ParallelPipeline : public Pipeline
 public:
 	void process();
 	~ParallelPipeline();
-	void process();
 };
 
 #endif  //_PARALLELPIPELINE_H

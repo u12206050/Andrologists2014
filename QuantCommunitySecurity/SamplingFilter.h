@@ -8,7 +8,6 @@ class SamplingFilter : public Filter
 public:
 	~SamplingFilter();
 	virtual ImageData* filter(ImageData* image) = 0;
-	ImageData* filter(ImageData* image);
 };
 
 #endif  //_SAMPLINGFILTER_H

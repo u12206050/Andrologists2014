@@ -9,9 +9,3 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
 {
 
 }
-
-ImageData* FaceDetectFilter::filter(ImageData* image)
-{
-
-}
-

@@ -6,12 +6,13 @@
 class FakeFilter : public Filter
 {
     public:
+        FakeFilter();
         ~FakeFilter();
         ImageData* filter(ImageData* image);
         bool getCalledFlag();
 
     private:
-        bool calledFlag = false;
+        bool calledFlag;
 };
 
 #endif // FAKEFILTER_H

@@ -13,7 +13,7 @@ class FakeCapturer : public Capturer
 
     private:
         ImageData* image;
-        bool calledFlag = false;
+        bool calledFlag;
 };
 
 #endif // FAKECAPTURER_H

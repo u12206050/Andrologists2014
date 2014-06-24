@@ -8,6 +8,8 @@ QT       += core
 
 QT       -= gui
 
+QT       += testlib
+
 TARGET = QuantCommunitySecurity
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -16,7 +18,7 @@ TEMPLATE = app
 
 LIBS += `pkg-config opencv --cflags --libs`
 
-SOURCES += main.cpp \
+SOURCES += \
     SequentialPipeline.cpp \
     Pipeline.cpp \
     SamplingFilter.cpp \
@@ -33,7 +35,8 @@ SOURCES += main.cpp \
     Fakes/FakeFilter.cpp \
     Fakes/FakeCapturer.cpp \
     Fakes/FakePersister.cpp \
-    Tests/SequentialPipelineTest.cpp
+    Tests/SequentialPipelineTest.cpp \
+    Main.cpp
 
 OTHER_FILES +=
 

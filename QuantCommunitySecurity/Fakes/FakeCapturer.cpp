@@ -1,8 +1,9 @@
 #include "FakeCapturer.h"
 
-FakeCapturer::FakeCapturer(ImageData image)
+FakeCapturer::FakeCapturer(ImageData* image)
 {
     this->image = image;
+    calledFlag = false;
 }
 
 FakeCapturer::~FakeCapturer()
