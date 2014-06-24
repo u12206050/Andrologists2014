@@ -5,8 +5,15 @@ SequentialPipeline::~SequentialPipeline()
 
 }
 
-void SequentialPipeline::process()
+void SequentialPipeline::process(int iterations)
 {
+    bool infinite = false;
+    if (iterations == -1)
+    {
+        infinite = true;
+    }
+    for (int i = 0; i < iterations || infinite; i++)
+    {
         bool proceed = true;
         ImageData* imageData = capturer->getNextImage();
         for (int i = 0; i < filters.size() && proceed; i++)
@@ -24,4 +31,5 @@ void SequentialPipeline::process()
         {
             persister->persistImageData(imageData);
         }
+    }
 }

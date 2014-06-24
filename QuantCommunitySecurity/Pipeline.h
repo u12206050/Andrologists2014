@@ -13,7 +13,7 @@ class Pipeline
 {
     public:
         virtual ~Pipeline();
-        virtual void process() = 0;
+        virtual void process(int iterations) = 0;
         int getNumberOfFilters();
         void attachFilter(Filter* filter);
         void attachFilters(vector<Filter*> filters);

@@ -72,7 +72,7 @@ void SequentialPipelineTest::processTest()
     pipeline->attachPersister(fakePersister);
     pipeline->attachFilters(fakeFilters);
 
-    pipeline->process();
+    pipeline->process(1);
 
     QVERIFY(fakeCapturer->getCalledFlag());
     QVERIFY(fakePersister->getCalledFlag());

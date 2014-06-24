@@ -7,7 +7,7 @@ class SequentialPipeline : public Pipeline
 {
     public:
         ~SequentialPipeline();
-        void process();
+        void process(int iterations);
 };
 
 #endif  //_SEQUENTIALPIPELINE_H
