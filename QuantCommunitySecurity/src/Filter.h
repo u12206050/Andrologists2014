@@ -1,8 +1,7 @@
-#if !defined(_FILTER_H)
-#define _FILTER_H
+#ifndef FILTER_H
+#define FILTER_H
 
 #include "ImageData.h"
-
 
 class Filter
 {
@@ -11,4 +10,5 @@ class Filter
         virtual ImageData* filter(ImageData* image) = 0;
 };
 
-#endif  //_FILTER_H
+
+#endif // FILTER_H

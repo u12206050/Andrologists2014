@@ -2,7 +2,7 @@
 
 ConfigReader::ConfigReader(String filename)
 {
-
+    this->filename = filename;
 }
 
 Capturer* ConfigReader::createCapturer()
