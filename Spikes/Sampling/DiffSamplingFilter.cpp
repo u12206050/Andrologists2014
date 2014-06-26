@@ -10,6 +10,11 @@ DiffSamplingFilter::~DiffSamplingFilter()
 
 }
 
+double DiffSamplingFilter::getScore()
+{
+	return totscore;
+}
+
 ImageData* DiffSamplingFilter::filter(ImageData* image)
 {
 	//if more than percentage differs, return the image
@@ -47,7 +52,7 @@ ImageData* DiffSamplingFilter::filter(ImageData* image)
 
 				//calculate the histogram difference
 				double score = compareHist( HSV_histogram, HSV_histogram2, CV_COMP_BHATTACHARYYA ); //low score = good match, high score = bad match
-
+				totscore = score;
 
 				prevImage = image; //save the image
 

@@ -14,10 +14,13 @@ class DiffSamplingFilter : public SamplingFilter
 {
 private:
 	float percentage; 
-	ImageData* prevImage = null;
+	ImageData* prevImage;
+	double totscore;
 public:
+	DiffSamplingFilter(float per);
 	~DiffSamplingFilter();
 	virtual ImageData* filter(ImageData* image);
+	double getScore();
 };
 
 #endif  //_DIFFSAMPLINGFILTER_H

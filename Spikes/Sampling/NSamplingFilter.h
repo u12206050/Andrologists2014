@@ -13,9 +13,10 @@ class NSamplingFilter : public SamplingFilter
 {
 private:
 	int n;
-	int counter = 0;
+	int counter;
 	
 public:
+	NSamplingFilter(int num);
 	~NSamplingFilter();
 	virtual ImageData* filter(ImageData* image);
 };

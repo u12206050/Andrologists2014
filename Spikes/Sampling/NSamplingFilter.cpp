@@ -2,6 +2,7 @@
 
 NSamplingFilter::NSamplingFilter(int number)
 {
+	counter = 0;
 	n = number;
 }
 
