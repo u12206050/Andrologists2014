@@ -72,19 +72,32 @@ void SequentialPipelineTest::processTest()
     pipeline->attachPersister(fakePersister);
     pipeline->attachFilters(fakeFilters);
 
-    pipeline->process(1);
+    int iterations = 5;
+    pipeline->process(iterations);
 
-    QVERIFY(fakeCapturer->getCalledFlag());
-    QVERIFY(fakePersister->getCalledFlag());
+    QCOMPARE(fakeCapturer->getNumCalled(), iterations);
+    QCOMPARE(fakePersister->getNumCalled(), iterations);
     for (int i = 0; i < 5; i++)
     {
         FakeFilter* fakeFilter = dynamic_cast<FakeFilter*>(fakeFilters[i]);
-        QVERIFY(fakeFilter->getCalledFlag());
+        QCOMPARE(fakeFilter->getNumCalled(), iterations);
+    }
+
+    iterations = 0;
+    fakeCapturer->reset();
+    fakePersister->reset();
+    for (int i = 0; i < 5; i++)
+    {
+        FakeFilter* fakeFilter = dynamic_cast<FakeFilter*>(fakeFilters[i]);
+        fakeFilter->reset();
+    }
+    pipeline->process(iterations);
+
+    QCOMPARE(fakeCapturer->getNumCalled(), iterations);
+    QCOMPARE(fakePersister->getNumCalled(), iterations);
+    for (int i = 0; i < 5; i++)
+    {
+        FakeFilter* fakeFilter = dynamic_cast<FakeFilter*>(fakeFilters[i]);
+        QCOMPARE(fakeFilter->getNumCalled(), iterations);
     }
 }
-
-//QTEST_APPLESS_MAIN(SequentialPipelineTest)
-
-//#include "tst_SequentialPipelineTest.moc"
-//QTEST_MAIN(SequentialPipelineTest)
-//#include "moc_SequentialPipelineTest.cpp"

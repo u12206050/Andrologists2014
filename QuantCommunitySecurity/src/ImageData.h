@@ -7,10 +7,13 @@ using namespace cv;
 
 class ImageData
 {
-public:
-    Mat image;
-    vector<Mat> faces;
-    QDateTime timestamp;
+    public:
+        ImageData();
+        ImageData(Mat image, QDateTime timestamp);
+        void addFace(Mat face);
+        Mat image;
+        vector<Mat> faces;
+        QDateTime timestamp;
 };
 
 #endif // IMAGEDATA_H

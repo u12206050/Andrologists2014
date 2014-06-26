@@ -1,8 +1,8 @@
 #include "FakePersister.h"
 
-FakePersister::FakePersister()
+FakePersister::FakePersister() : Fake()
 {
-    calledFlag = false;
+
 }
 
 FakePersister::~FakePersister()
@@ -11,14 +11,9 @@ FakePersister::~FakePersister()
 
 void FakePersister::persistImageData(ImageData* image)
 {
-    calledFlag = true;
+    numCalled++;
     if (image == NULL)
     {
         throw "Invalid Image";
     }
-}
-
-bool FakePersister::getCalledFlag()
-{
-    return calledFlag;
 }

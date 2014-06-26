@@ -22,7 +22,8 @@ SOURCES += \
     Filter.cpp \
     FaceDetectFilter.cpp \
     ConfigReader.cpp \
-    Capturer.cpp
+    Capturer.cpp \
+    ImageData.cpp
 
 HEADERS += \
     SequentialPipeline.h \

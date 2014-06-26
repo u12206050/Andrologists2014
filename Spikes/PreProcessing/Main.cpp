@@ -12,21 +12,6 @@
 using namespace cv;
 using namespace std;
 
-/*****************************************************************************
-*   Face Recognition using Eigenfaces or Fisherfaces
-******************************************************************************
-*   by Shervin Emami, 5th Dec 2012
-*   http://www.shervinemami.info/openCV.html
-******************************************************************************
-*   Ch8 of the book "Mastering OpenCV with Practical Computer Vision Projects"
-*   Copyright Packt Publishing 2012.
-*   http://www.packtpub.com/cool-projects-with-opencv/book
-*****************************************************************************/
-
-//////////////////////////////////////////////////////////////////////////////////////
-// preprocessFace.cpp, by Shervin Emami (www.shervinemami.info) on 30th May 2012.
-// Easily preprocess face images, for face recognition.
-//////////////////////////////////////////////////////////////////////////////////////
 
 const double DESIRED_LEFT_EYE_X = 0.16;     // Controls how much of the face is visible after preprocessing.
 const double DESIRED_LEFT_EYE_Y = 0.14;
@@ -34,18 +19,8 @@ const double FACE_ELLIPSE_CY = 0.40;
 const double FACE_ELLIPSE_W = 0.50;         // Should be atleast 0.5
 const double FACE_ELLIPSE_H = 0.80;         // Controls how tall the face mask is.
 
-
-//#include "detectObject.h"       // Easily detect faces or eyes (using LBP or Haar Cascades).
-//#include "preprocessFace.h"     // Easily preprocess face images, for face recognition.
-
-//#include "ImageUtils.h"      // Shervin's handy OpenCV utility functions.
-
-// Search for objects such as faces in the image using the given parameters, storing the multiple cv::Rects into 'objects'.
-// Can use Haar cascades or LBP cascades for Face Detection, or even eye, mouth, or car detection.
-// Input is temporarily shrunk to 'scaledWidth' for much faster detection, since 200 is enough to find faces.
 void detectObjectsCustom(const Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth, int flags, Size minFeatureSize, float searchScaleFactor, int minNeighbors)
 {
-    // If the input image is not grayscale, then convert the BGR or BGRA color image to grayscale.
     Mat gray;
     if (img.channels() == 3) {
         cvtColor(img, gray, CV_BGR2GRAY);
@@ -133,26 +108,6 @@ void detectLargestObject(const Mat &img, CascadeClassifier &cascade, Rect &large
     }
 }
 
-// Search for many objects in the image, such as all the faces, storing the results into 'objects'.
-// Can use Haar cascades or LBP cascades for Face Detection, or even eye, mouth, or car detection.
-// Input is temporarily shrunk to 'scaledWidth' for much faster detection, since 200 is enough to find faces.
-// Note: detectLargestObject() should be faster than detectManyObjects().
-void detectManyObjects(const Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth)
-{
-    // Search for many objects in the one image.
-    int flags = CASCADE_SCALE_IMAGE;
-
-    // Smallest object size.
-    Size minFeatureSize = Size(20, 20);
-    // How detailed should the search be. Must be larger than 1.0.
-    float searchScaleFactor = 1.1f;
-    // How much the detections should be filtered out. This should depend on how bad false detections are to your system.
-    // minNeighbors=2 means lots of good+bad detections, and minNeighbors=6 means only good detections are given but some are missed.
-    int minNeighbors = 4;
-
-    // Perform Object or Face Detection, looking for many objects in the one image.
-    detectObjectsCustom(img, cascade, objects, scaledWidth, flags, minFeatureSize, searchScaleFactor, minNeighbors);
-}
 
 /*
 // Remove the outer border of the face, so it doesn't include the background & hair.
@@ -173,31 +128,10 @@ Rect scaleRectFromCenter(const Rect wholeFaceRect, float scale)
 }
 */
 
-// Search for both eyes within the given face image. Returns the eye centers in 'leftEye' and 'rightEye',
-// or sets them to (-1,-1) if each eye was not found. Note that you can pass a 2nd eyeCascade if you
-// want to search eyes using 2 different cascades. For example, you could use a regular eye detector
-// as well as an eyeglasses detector, or a left eye detector as well as a right eye detector.
-// Or if you don't want a 2nd eye detection, just pass an uninitialized CascadeClassifier.
-// Can also store the searched left & right eye regions if desired.
+
 void detectBothEyes(const Mat &face, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, Point &leftEye, Point &rightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
 {
-    // Skip the borders of the face, since it is usually just hair and ears, that we don't care about.
-/*
-    // For "2splits.xml": Finds both eyes in roughly 60% of detected faces, also detects closed eyes.
-    const float EYE_SX = 0.12f;
-    const float EYE_SY = 0.17f;
-    const float EYE_SW = 0.37f;
-    const float EYE_SH = 0.36f;
-*/
-/*
-    // For mcs.xml: Finds both eyes in roughly 80% of detected faces, also detects closed eyes.
-    const float EYE_SX = 0.10f;
-    const float EYE_SY = 0.19f;
-    const float EYE_SW = 0.40f;
-    const float EYE_SH = 0.36f;
-*/
 
-    // For default eye.xml or eyeglasses.xml: Finds both eyes in roughly 40% of detected faces, but does not detect closed eyes.
     const float EYE_SX = 0.16f;
     const float EYE_SY = 0.26f;
     const float EYE_SW = 0.30f;
@@ -264,15 +198,10 @@ void detectBothEyes(const Mat &face, CascadeClassifier &eyeCascade1, CascadeClas
     }
 }
 
-// Histogram Equalize seperately for the left and right sides of the face.
+
 void equalizeLeftAndRightHalves(Mat &faceImg)
 {
-    // It is common that there is stronger light from one half of the face than the other. In that case,
-    // if you simply did histogram equalization on the whole face then it would make one half dark and
-    // one half bright. So we will do histogram equalization separately on each face half, so they will
-    // both look similar on average. But this would cause a sharp edge in the middle of the face, because
-    // the left half and right half would be suddenly different. So we also histogram equalize the whole
-    // image, and in the middle part we blend the 3 images together for a smooth brightness transition.
+
 
     int w = faceImg.cols;
     int h = faceImg.rows;
@@ -318,18 +247,6 @@ void equalizeLeftAndRightHalves(Mat &faceImg)
 }
 
 
-// Create a grayscale face image that has a standard size and contrast & brightness.
-// "srcImg" should be a copy of the whole color camera frame, so that it can draw the eye positions onto.
-// If 'doLeftAndRightSeparately' is true, it will process left & right sides seperately,
-// so that if there is a strong light on one side but not the other, it will still look OK.
-// Performs Face Preprocessing as a combination of:
-//  - geometrical scaling, rotation and translation using Eye Detection,
-//  - smoothing away image noise using a Bilateral Filter,
-//  - standardize the brightness on both left and right sides of the face independently using separated Histogram Equalization,
-//  - removal of background and hair using an Elliptical Mask.
-// Returns either a preprocessed face square image or NULL (ie: couldn't detect the face and 2 eyes).
-// If a face is found, it can store the rect coordinates into 'storeFaceRect' and 'storeLeftEye' & 'storeRightEye' if given,
-// and eye search regions into 'searchedLeftEye' & 'searchedRightEye' if given.
 Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
 {
     // Use square faces.
@@ -430,15 +347,7 @@ Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &ey
 
             // Use the mask, to remove outside pixels.
             Mat dstImg = Mat(warped.size(), CV_8U, Scalar(128)); // Clear the output image to a default gray.
-            /*
-            namedWindow("filtered");
-            imshow("filtered", filtered);
-            namedWindow("dstImg");
-            imshow("dstImg", dstImg);
-            namedWindow("mask");
-            imshow("mask", mask);
-            */
-            // Apply the elliptical mask on the face.
+
             filtered.copyTo(dstImg, mask);  // Copies non-masked pixels from filtered to dstImg.
             //imshow("dstImg", dstImg);
 

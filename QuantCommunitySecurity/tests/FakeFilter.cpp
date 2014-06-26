@@ -1,8 +1,8 @@
 #include "FakeFilter.h"
 
-FakeFilter::FakeFilter()
+FakeFilter::FakeFilter() : Fake()
 {
-    calledFlag = false;
+
 }
 
 FakeFilter::~FakeFilter()
@@ -11,11 +11,6 @@ FakeFilter::~FakeFilter()
 
 ImageData* FakeFilter::filter(ImageData* image)
 {
-    calledFlag = true;
+    numCalled++;
     return image;
-}
-
-bool FakeFilter::getCalledFlag()
-{
-    return calledFlag;
 }

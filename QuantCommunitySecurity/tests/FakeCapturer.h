@@ -2,18 +2,17 @@
 #define FAKECAPTURER_H
 
 #include "Capturer.h"
+#include "Fake.h"
 
-class FakeCapturer : public Capturer
+class FakeCapturer : public Capturer, public Fake
 {
     public:
         FakeCapturer(ImageData* image);
         ~FakeCapturer();
         ImageData* getNextImage();
-        bool getCalledFlag();
 
     private:
         ImageData* image;
-        bool calledFlag;
 };
 
 #endif // FAKECAPTURER_H

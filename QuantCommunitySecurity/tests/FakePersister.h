@@ -2,17 +2,14 @@
 #define FAKEPERSISTER_H
 
 #include "Persister.h"
+#include "Fake.h"
 
-class FakePersister : public Persister
+class FakePersister : public Persister, public Fake
 {
     public:
         FakePersister();
         ~FakePersister();
         void persistImageData(ImageData* image);
-        bool getCalledFlag();
-
-    private:
-        bool calledFlag;
 };
 
 #endif // FAKEPERSISTER_H

@@ -8,14 +8,15 @@ TEMPLATE = app
 
 CONFIG   += console
 CONFIG   -= app_bundle
-#CONFIG   -= qt
 
 SOURCES += \
     SequentialPipelineTest.cpp \
     main.cpp \
     FakeCapturer.cpp \
     FakeFilter.cpp \
-    FakePersister.cpp
+    FakePersister.cpp \
+    PreProcessingFilterTest.cpp \
+    Fake.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -24,4 +25,11 @@ HEADERS += \
     SequentialPipelineTest.h \
     FakeCapturer.h \
     FakeFilter.h \
-    FakePersister.h
+    FakePersister.h \
+    PreProcessingFilterTest.h \
+    Fake.h
+
+OTHER_FILES += \
+    haarcascade_eye.xml \
+    haarcascade_eye_tree_eyeglasses.xml \
+    testFace.jpg

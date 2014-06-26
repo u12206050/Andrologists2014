@@ -2,17 +2,14 @@
 #define FAKEFILTER_H
 
 #include "Filter.h"
+#include "Fake.h"
 
-class FakeFilter : public Filter
+class FakeFilter : public Filter, public Fake
 {
     public:
         FakeFilter();
         ~FakeFilter();
         ImageData* filter(ImageData* image);
-        bool getCalledFlag();
-
-    private:
-        bool calledFlag;
 };
 
 #endif // FAKEFILTER_H
