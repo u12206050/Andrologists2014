@@ -1,0 +1,7 @@
+The idea was to develope a meta-language that describes the settings.
+And then write a parser that parses the settings files and returns the correct Pipeline, Capturer, Filters and Persister.
+
+Check out the example.txt of what I had in mind. Just ideas.
+
+The different filters have different settings, you'll get the idea by looking at our code/uml already.
+

@@ -1,0 +1,31 @@
+# Use '#' as a comment
+
+[Pipeline]
+
+#maybe someting like type = s; for sequentialPipeline and type = p; for a parallelPipeline
+type = someValidPipelineType;
+
+[Capturer]
+
+#location of where to get stream from eg. rstp://192.168.0.65 something
+
+type = someValidCapturerType;
+location = "someValidLocation";
+
+[Filters]
+
+# Different filters have different settings eg. filename of cascade to do detection
+# mabye something like type = fd; for a FaceDetectFilter
+
+type = fd;
+faceDetectCascade = "someValidXmlFileName";
+
+# mabye something like type = pp; for a PreProcessingFilter
+
+type = pp;
+targetSize = 400;
+
+[Persister]
+
+type = someValidPersisterType;
+location = "ftp://someplace.somewhere";
