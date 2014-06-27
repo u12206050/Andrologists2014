@@ -12,13 +12,14 @@
 #include <stdio.h>
 
 using namespace std;
+using namespace cv;
 
 class FaceDetectFilter : public Filter
 {
 private:
     CascadeClassifier face_cascade;
 public:
-    FaceDetectFilter();
+    FaceDetectFilter(String xmlLoc);
     ~FaceDetectFilter();
     virtual ImageData* filter(ImageData* image);
 };
