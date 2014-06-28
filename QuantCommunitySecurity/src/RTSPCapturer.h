@@ -5,7 +5,11 @@
 
 class RTSPCapturer : public Capturer
 {
+private:
+    CvCapture* capture;
+    ImageData* data;
 public:
+    RTSPCapturer(char* url);
 	~RTSPCapturer();
 	ImageData* getNextImage();
 };
