@@ -1,8 +1,11 @@
 #include "DiffSamplingFilter.h"
-
+using namespace std;
 DiffSamplingFilter::DiffSamplingFilter(float per)
 {
 	percentage = per;
+    //
+ prevImage = new ImageData();
+ prevImage = NULL;
 }
 
 DiffSamplingFilter::~DiffSamplingFilter()
@@ -17,13 +20,18 @@ double DiffSamplingFilter::getScore()
 
 ImageData* DiffSamplingFilter::filter(ImageData* image)
 {
+
 	//if more than percentage differs, return the image
-	if(prevImage == null)
+    if(prevImage == NULL)
 	{
-		prevImage = image;
+        prevImage = image;
+
 	}
+    else
+    {
 				//previous image. Calculate histogram.
-				Mat src_mat = imread(prevImage->image); 
+
+                Mat src_mat = prevImage->image;
 				Mat hsv_mat;
 				cvtColor( src_mat, hsv_mat, CV_BGR2HSV );
 				MatND HSV_histogram;
@@ -35,9 +43,8 @@ ImageData* DiffSamplingFilter::filter(ImageData* image)
 				calcHist( &hsv_mat, 1, channels, Mat(), HSV_histogram, 2, histSize, ranges, true, false );
 				normalize( HSV_histogram, HSV_histogram, 0, 1, NORM_MINMAX, -1, Mat() );
 
-
 				//new image. Calculate histogram
-				Mat src_mat2 = imread(image->image);
+                Mat src_mat2 = image->image;
 				Mat hsv_mat2;
 				cvtColor( src_mat2, hsv_mat2, CV_BGR2HSV );
 				MatND HSV_histogram2;
@@ -62,10 +69,11 @@ ImageData* DiffSamplingFilter::filter(ImageData* image)
 				}
 				else
 				{
-					return null;
+                    return NULL;
 				}
 
-
+    }
+    return NULL;
 
 	
 }
