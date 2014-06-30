@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/4316442/stdofstream-check-if-file-exists-before-writing
