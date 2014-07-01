@@ -12,3 +12,4 @@ CONFIG -= app_bundle
 SOURCES += main.cpp
 
 LIBS += -L../src -lapplib
+LIBS += `pkg-config opencv --cflags --libs`

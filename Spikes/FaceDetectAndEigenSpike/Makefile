@@ -1,2 +1,2 @@
 Main:
-	g++ -o Main Main.cpp `pkg-config opencv --cflags --libs`
+	g++ -o Main fisher.cpp `pkg-config opencv --cflags --libs`

@@ -23,7 +23,8 @@ SOURCES += \
     FaceDetectFilter.cpp \
     ConfigReader.cpp \
     Capturer.cpp \
-    ImageData.cpp
+    ImageData.cpp \
+    FacialFeatureRecognizer.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -39,4 +40,8 @@ HEADERS += \
     Filter.h \
     FaceDetectFilter.h \
     ConfigReader.h \
-    Capturer.h
+    Capturer.h \
+    FacialFeatureRecognizer.h \
+    GetSimilarFacesRequest.h \
+    GetSimilarFacesResponse.h \
+    SimilarFace.h
