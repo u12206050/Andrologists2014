@@ -18,7 +18,7 @@ private:
 public:
 	NSamplingFilter(int num);
 	~NSamplingFilter();
-	virtual ImageData* filter(ImageData* image);
+     ImageData* filter(ImageData* image);
 };
 
 #endif  //_NSAMPLINGFILTER_H
