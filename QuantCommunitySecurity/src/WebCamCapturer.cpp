@@ -27,6 +27,11 @@ ImageData* WebCamCapturer::getNextImage()
     Mat imgMat(frame);
     data->image = imgMat;
 
+    QDate cd = QDate::currentDate();
+    QTime ct = QTime::currentTime();
+
+    data->timestamp.setDate(cd);
+    data->timestamp.setTime(ct);
     //Convert Mat to IplImage
     //IplImage copy = data->image;
     //IplImage* new_image = &copy;

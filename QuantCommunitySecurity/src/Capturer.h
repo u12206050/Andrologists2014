@@ -3,6 +3,10 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <QTime>
+#include <QDate>
+#include <string.h>
+
 #include "ImageData.h"
 
 class Capturer
