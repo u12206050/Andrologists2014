@@ -1,7 +1,8 @@
 #if !defined(_DIFFSAMPLINGFILTER_H)
 #define _DIFFSAMPLINGFILTER_H
 
-
+#include "SamplingFilter.h"
+#include "ImageData.h"
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -9,16 +10,16 @@
 #include <iostream>
 #include <stdio.h>
 
-class DiffSamplingFilter
+class DiffSamplingFilter : public SamplingFilter
 {
 private:
 	float percentage; 
-	IplImage* prevImage;
+	ImageData* prevImage;
 	double totscore;
 public:
 	DiffSamplingFilter(float per);
 	~DiffSamplingFilter();
-	IplImage* filter(IplImage* image);
+	virtual ImageData* filter(ImageData* image);
 	double getScore();
 };
 

@@ -1,8 +1,8 @@
 #include "NSamplingFilter.h"
-using namespace std;
+
 NSamplingFilter::NSamplingFilter(int number)
 {
-	counter = 0;
+    counter = 1;
 	n = number;
 }
 
@@ -11,19 +11,17 @@ NSamplingFilter::~NSamplingFilter()
 
 }
 
-IplImage* NSamplingFilter::filter(IplImage* image)
+ImageData* NSamplingFilter::filter(ImageData* image)
 {
 	//return every nth image
-	if(counter == n)
+    if(counter%n == 0)
 	{
-		counter = 0;
-		cout << "reached counter " << n << endl;
-		getchar();
+        counter++;
 		return image;		
 	}
 	else
 	{
 		counter++;
-		return NULL;
+        return NULL;
 	}
 }

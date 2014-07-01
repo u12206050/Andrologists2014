@@ -1,21 +1,11 @@
 #include "DiffSamplingFilter.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
- #include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-#include <sstream>
-#include "opencv2/features2d/features2d.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
-
 using namespace std;
-using namespace cv;
-
 DiffSamplingFilter::DiffSamplingFilter(float per)
 {
 	percentage = per;
-	prevImage = NULL;
+    //
+ prevImage = new ImageData();
+ prevImage = NULL;
 }
 
 DiffSamplingFilter::~DiffSamplingFilter()
@@ -28,15 +18,20 @@ double DiffSamplingFilter::getScore()
 	return totscore;
 }
 
-IplImage* DiffSamplingFilter::filter(IplImage* image)
+ImageData* DiffSamplingFilter::filter(ImageData* image)
 {
+
 	//if more than percentage differs, return the image
-	if(prevImage == NULL)
+    if(prevImage == NULL)
 	{
-		prevImage = image;
+        prevImage = image;
+
 	}
+    else
+    {
 				//previous image. Calculate histogram.
-				Mat src_mat = imread("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg"); 
+
+                Mat src_mat = prevImage->image;
 				Mat hsv_mat;
 				cvtColor( src_mat, hsv_mat, CV_BGR2HSV );
 				MatND HSV_histogram;
@@ -48,9 +43,8 @@ IplImage* DiffSamplingFilter::filter(IplImage* image)
 				calcHist( &hsv_mat, 1, channels, Mat(), HSV_histogram, 2, histSize, ranges, true, false );
 				normalize( HSV_histogram, HSV_histogram, 0, 1, NORM_MINMAX, -1, Mat() );
 
-
 				//new image. Calculate histogram
-				Mat src_mat2 = imread("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala2.jpg");
+                Mat src_mat2 = image->image;
 				Mat hsv_mat2;
 				cvtColor( src_mat2, hsv_mat2, CV_BGR2HSV );
 				MatND HSV_histogram2;
@@ -66,7 +60,6 @@ IplImage* DiffSamplingFilter::filter(IplImage* image)
 				//calculate the histogram difference
 				double score = compareHist( HSV_histogram, HSV_histogram2, CV_COMP_BHATTACHARYYA ); //low score = good match, high score = bad match
 				totscore = score;
-			
 
 				prevImage = image; //save the image
 
@@ -76,10 +69,11 @@ IplImage* DiffSamplingFilter::filter(IplImage* image)
 				}
 				else
 				{
-					return NULL;
+                    return NULL;
 				}
 
-
+    }
+    return NULL;
 
 	
 }
