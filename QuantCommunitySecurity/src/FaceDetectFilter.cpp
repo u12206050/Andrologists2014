@@ -40,7 +40,7 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
         resize(face, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
 */
         //identify faces in frame green rectangle
-        rectangle(frame, face_i, CV_RGB(0, 255,0), 1);
+        //rectangle(frame, face_i, CV_RGB(0, 255,0), 1);
         image->addFace(face);
     }
 
