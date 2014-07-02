@@ -1,13 +1,20 @@
 #if !defined(_CAPTURER_H)
 #define _CAPTURER_H
 
+#include "ImageData.h"
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <QTime>
 #include <QDate>
+#include <sys/types.h>  // For stat().
+#include <sys/stat.h>   // For stat().
 #include <string.h>
 
-#include "ImageData.h"
+#include "dirent.h"
+
+#include <iostream>
+using namespace std;
 
 class Capturer
 {

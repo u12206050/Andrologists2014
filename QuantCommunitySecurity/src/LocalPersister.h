@@ -5,7 +5,10 @@
 
 class LocalPersister : public Persister
 {
+private:
+    char* directory;
 public:
+    LocalPersister(String dir);
 	~LocalPersister();
 	void persistImageData(ImageData* image);
 };
