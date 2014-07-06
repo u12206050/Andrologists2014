@@ -2,30 +2,31 @@
 
 RTSPCapturer::RTSPCapturer(char* Url)
 {
-    capture = cvCreateFileCapture(Url);  //Capture rtsp camera
-
-    if(capture == NULL)
-    {
-        throw Exception();
-    }
+    if(!vcap.open(Url)) {
+            cout << "Error opening video stream or file" << endl;
+            throw Exception();
+        }
 
     data = new ImageData();
 }
 
 RTSPCapturer::~RTSPCapturer()
 {
-    cvReleaseCapture(&capture);
+    vcap.~VideoCapture();
     delete data;
 }
 
 ImageData* RTSPCapturer::getNextImage()
 {
-    IplImage* frame = cvQueryFrame(capture);
-    if (frame == NULL)
-        return NULL;
+    Mat image;
 
-    Mat imgMat(frame);
-    data->image = imgMat;
+    if(!vcap.read(image))
+    {
+        cout << "No frame" << endl;
+        return NULL;
+    }
+
+    data->image = image;
 
     QDate cd = QDate::currentDate();
     QTime ct = QTime::currentTime();

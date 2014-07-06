@@ -13,9 +13,6 @@
 
 #include "dirent.h"
 
-#include <iostream>
-using namespace std;
-
 class Capturer
 {
 private:

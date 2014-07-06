@@ -6,11 +6,13 @@
 class ImageCapturer : public Capturer
 {
 private:
+    DIR*     dir;
+    dirent*  pdir;
     CvCapture* capture;
     char* directory;
     ImageData* data;
 public:
-    ImageCapturer(String dir);
+    ImageCapturer(String loc);
     ~ImageCapturer();
     ImageData* getNextImage();
 };
