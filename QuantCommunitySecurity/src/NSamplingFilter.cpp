@@ -1,9 +1,9 @@
 #include "NSamplingFilter.h"
 
-NSamplingFilter::NSamplingFilter(int number)
+NSamplingFilter::NSamplingFilter(int n)
 {
     counter = 1;
-	n = number;
+    this->n = n;
 }
 
 NSamplingFilter::~NSamplingFilter()
@@ -14,7 +14,7 @@ NSamplingFilter::~NSamplingFilter()
 ImageData* NSamplingFilter::filter(ImageData* image)
 {
 	//return every nth image
-    if(counter%n == 0)
+    if(counter % n == 0)
 	{
         counter++;
 		return image;		

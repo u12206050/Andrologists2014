@@ -16,12 +16,13 @@ using namespace cv;
 
 class FaceDetectFilter : public Filter
 {
-private:
-    CascadeClassifier face_cascade;
-public:
-    FaceDetectFilter(String xmlLoc);
-    ~FaceDetectFilter();
-    virtual ImageData* filter(ImageData* image);
+    public:
+        FaceDetectFilter(CascadeClassifier& faceCascade);
+        ~FaceDetectFilter();
+        virtual ImageData* filter(ImageData* image);
+
+    private:
+        CascadeClassifier faceCascade;
 };
 
 #endif // FACEDETECTFILTER_H

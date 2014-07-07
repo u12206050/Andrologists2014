@@ -364,15 +364,19 @@ Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &ey
 
 int main()
 {
-	Mat image = imread("imageWithFace.jpg", CV_LOAD_IMAGE_COLOR);
+	Mat image = imread("imageWithFace.jpg.jpg", CV_LOAD_IMAGE_COLOR);
 	imshow("Orig image", image);
+	waitKey(0);
 	
 	Filter* faceDetect = new FaceDetectFilter();
 	ImageData* data = new ImageData();
 	data->image = image;
 	data = faceDetect->filter(data);
+	cout << data->faces.size() << endl;
 	Mat face = data->faces[0];
+	waitKey(0);
 	imshow("Face image", face); 
+	waitKey(0);
 	
 	Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
     Point leftEye, rightEye;    // Position of the detected eyes.
@@ -381,6 +385,7 @@ int main()
     CascadeClassifier eyeCascade2;
     eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
 	Mat prePrc = getPreprocessedFace(face, 400, eyeCascade1, eyeCascade2, true, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
+	waitKey(0);
 	imshow("PreProc image", prePrc);
 	
 	waitKey(0);   

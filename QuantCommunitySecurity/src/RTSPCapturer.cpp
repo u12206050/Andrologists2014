@@ -1,38 +1,32 @@
 #include "RTSPCapturer.h"
 
-RTSPCapturer::RTSPCapturer(char* Url)
+RTSPCapturer::RTSPCapturer(QString& videoLocation)
 {
-    if(!vcap.open(Url)) {
-            cout << "Error opening video stream or file" << endl;
-            throw Exception();
-        }
-
-    data = new ImageData();
+    if(!capturer.open(videoLocation.toStdString()))
+    {
+        throw Exception();
+    }
 }
 
 RTSPCapturer::~RTSPCapturer()
 {
-    vcap.~VideoCapture();
-    delete data;
 }
 
 ImageData* RTSPCapturer::getNextImage()
 {
-    Mat image;
+    ImageData* newImage = new ImageData;
 
-    if(!vcap.read(image))
+    if(!capturer.read(newImage->image))
     {
-        cout << "No frame" << endl;
         return NULL;
     }
-
-    data->image = image;
+    waitKey(1);
 
     QDate cd = QDate::currentDate();
     QTime ct = QTime::currentTime();
 
-    data->timestamp.setDate(cd);
-    data->timestamp.setTime(ct);
+    newImage->timestamp.setDate(cd);
+    newImage->timestamp.setTime(ct);
 
-    return data;
+    return newImage;
 }

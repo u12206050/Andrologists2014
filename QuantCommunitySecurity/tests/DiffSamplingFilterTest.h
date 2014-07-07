@@ -1,5 +1,6 @@
 #ifndef DIFFSAMPLINGFILTERTEST_H
 #define DIFFSAMPLINGFILTERTEST_H
+
 #include <QtTest/QtTest>
 #include "DiffSamplingFilter.h"
 

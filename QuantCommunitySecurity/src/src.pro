@@ -25,7 +25,9 @@ SOURCES += \
     Capturer.cpp \
     ImageData.cpp \
     FacialFeatureRecognizer.cpp \
-    WebCamCapturer.cpp
+    WebCamCapturer.cpp \
+    NSamplingFilter.cpp \
+    DiffSamplingFilter.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -46,4 +48,6 @@ HEADERS += \
     GetSimilarFacesRequest.h \
     GetSimilarFacesResponse.h \
     SimilarFace.h \
-    WebCamCapturer.h
+    WebCamCapturer.h \
+    NSamplingFilter.h \
+    DiffSamplingFilter.h

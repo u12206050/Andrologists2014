@@ -1,36 +1,41 @@
 #include "LocalPersister.h"
 
-LocalPersister::LocalPersister(String dir)
+LocalPersister::LocalPersister(QString& directoryPath, int id)
 {
-    directory = new char[100];
-    strcpy(directory, dir.c_str());
-    if(access(directory, 0) == -1)
+    this->directoryPath = directoryPath;
+    this->id = id;
+    /*if(access(directory, 0) == -1)
     {
         mkdir(directory);
-    }
+    }*/
 }
 
 LocalPersister::~LocalPersister()
 {
-    delete directory;
+
 }
 
 void LocalPersister::persistImageData(ImageData* image)
 {
-    char file_name[50];
-
-    QDate cd = image->timestamp.date();
-    QTime ct = image->timestamp.time();
-
-    sprintf(file_name, "/%02d%02d%04d-%02d%02d%02d(%d).jpg", cd.day(), cd.month(), cd.year(), ct.hour(), ct.minute(), ct.second(), ct.msec());
-
-    char tmp[100];
-    strcpy(tmp, directory);
-    strcat(tmp, file_name);
-
     if(!image->faces.empty())
     {
-        //cout << tmp << endl;
-        imwrite( tmp, image->image );
+        QString baseFileName(directoryPath);
+
+        QDateTime dateTime;
+        int seconds = dateTime.currentMSecsSinceEpoch();
+
+        QTextStream(&baseFileName) << "i_" << id << "_name_" << seconds;
+
+        QString filename(baseFileName);
+        QTextStream(&filename) << ".jpg";
+        imwrite(filename.toStdString(), image->image);
+
+        for (int i = 0; i < image->faces.size(); i++)
+        {
+            QString face(baseFileName);
+            QTextStream(&face) << "_face_" << i << ".jpg";
+            imwrite(face.toStdString(), image->faces[i]);
+        }
     }
+
 }

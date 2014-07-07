@@ -5,14 +5,12 @@
 
 class RTSPCapturer : public Capturer
 {
-private:
-    VideoCapture vcap;
-    CvCapture* capture;
-    ImageData* data;
-public:
-    RTSPCapturer(char* url);
-	~RTSPCapturer();
-	ImageData* getNextImage();
+    public:
+        RTSPCapturer(QString& videoLocation);
+        ~RTSPCapturer();
+        ImageData* getNextImage();
+    private:
+        VideoCapture capturer;
 };
 
 #endif  //_RTSPCAPTURER_H

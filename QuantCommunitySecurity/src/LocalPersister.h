@@ -2,15 +2,18 @@
 #define _LOCALPERSISTER_H
 
 #include "Persister.h"
+#include <QTextStream>
 
 class LocalPersister : public Persister
 {
-private:
-    char* directory;
-public:
-    LocalPersister(String dir);
-	~LocalPersister();
-	void persistImageData(ImageData* image);
+    public:
+        LocalPersister(QString& directoryPath, int id);
+        ~LocalPersister();
+        void persistImageData(ImageData* image);
+
+    private:
+        QString directoryPath;
+        int id;
 };
 
 #endif  //_LOCALPERSISTER_H

@@ -1,15 +1,8 @@
 #include "FaceDetectFilter.h"
 
-FaceDetectFilter::FaceDetectFilter(String xmlLoc)
+FaceDetectFilter::FaceDetectFilter(CascadeClassifier& faceCascade)
 {
-    // Load Face cascade (.xml file)
-    //we use haarcascade_frontalface_alt_tree.xml, cause it gets the full face
-    //others tend to only get the inner face eyes, to mouth
-    face_cascade.load(xmlLoc);
-    if(face_cascade.empty())
-    {
-        throw Exception();
-    }
+    this->faceCascade = faceCascade;
 }
 
 FaceDetectFilter::~FaceDetectFilter()
@@ -25,9 +18,10 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
 
     // Detect faces
     vector<Rect> faces;
-    //Mat gray_image;
-    //cvtColor( frame, gray_image, CV_BGR2GRAY );
-    face_cascade.detectMultiScale( frame, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
+    Mat grayImage;
+    cvtColor(frame, grayImage, CV_BGR2GRAY);
+    equalizeHist(grayImage, grayImage);
+    faceCascade.detectMultiScale(frame, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
 
     for(unsigned int i = 0; i < faces.size(); i++) {
         Rect face_i = faces[i];

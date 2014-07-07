@@ -12,8 +12,8 @@ int main()
 	VideoCapture vcap;
     Mat image;
 
-    const string videoStreamAddress = "/home/zane/Desktop/Megamind.avi";
-    ifstream fin("/home/zane/Desktop/Chuck.S02E16.HDTV.XviD-XOR.avi");
+    const string videoStreamAddress = "/home/zane/mjpg_cap/video4.mjpg";
+    ifstream fin("/home/zane/mjpg_cap/video4.mjpg");
     if (!fin)  // check to see if file exists
     {
 		cout << "No such file" << endl;
@@ -26,7 +26,7 @@ int main()
         cout << "Error opening video stream or file" << std::endl;
         return -1;
     }
-
+	int cnt = 0;
 	while (true)
      {
         if(!vcap.read(image)) 
@@ -36,7 +36,10 @@ int main()
         }
         cv::imshow("Output Window", image);
         if(cv::waitKey(1) >= 0) break;
+        cnt++;
     } 
+	
+	cout << cnt << endl;
 	
 	return 0;
 }
