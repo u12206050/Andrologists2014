@@ -4287,7 +4287,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="my394BSr/0qAaloLgM/3ugAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="F5KzixzBzUCROvzGrH2I1QAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">FaceRecognizerWrapper</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">FacialFeatureRecognizer</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="AmXj/16cy0qvIb80CQfHKwAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -8807,14 +8807,14 @@
 <XPD:ATTR name="IsAbstract" type="boolean">True</XPD:ATTR>
 <XPD:REF name="Namespace">opq1jVOniE6glGB7VeBPowAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">12</XPD:ATTR>
-<XPD:REF name="Views[0]">FyGKOM3M40uiS9vBvmLwRwAA</XPD:REF>
-<XPD:REF name="Views[1]">QN9Z+1KyVkCgBfxUB+lOkgAA</XPD:REF>
-<XPD:REF name="Views[2]">FJJSQJ54Ek+CABxK/a3IxgAA</XPD:REF>
-<XPD:REF name="Views[3]">FMyGLAsPWE2prJUp/wNmlgAA</XPD:REF>
-<XPD:REF name="Views[4]">SIt+WfRhvk6pYoIfXM6CUwAA</XPD:REF>
-<XPD:REF name="Views[5]">KVMI+RFeNkKSRXEs/PfWAgAA</XPD:REF>
-<XPD:REF name="Views[6]">ZvRC2mr17USY0f2idx4gSQAA</XPD:REF>
-<XPD:REF name="Views[7]">CD4loANgY0azZgG44oqjTgAA</XPD:REF>
+<XPD:REF name="Views[0]">SIt+WfRhvk6pYoIfXM6CUwAA</XPD:REF>
+<XPD:REF name="Views[1]">KVMI+RFeNkKSRXEs/PfWAgAA</XPD:REF>
+<XPD:REF name="Views[2]">ZvRC2mr17USY0f2idx4gSQAA</XPD:REF>
+<XPD:REF name="Views[3]">CD4loANgY0azZgG44oqjTgAA</XPD:REF>
+<XPD:REF name="Views[4]">FyGKOM3M40uiS9vBvmLwRwAA</XPD:REF>
+<XPD:REF name="Views[5]">QN9Z+1KyVkCgBfxUB+lOkgAA</XPD:REF>
+<XPD:REF name="Views[6]">FJJSQJ54Ek+CABxK/a3IxgAA</XPD:REF>
+<XPD:REF name="Views[7]">FMyGLAsPWE2prJUp/wNmlgAA</XPD:REF>
 <XPD:REF name="Views[8]">Ko9YRa9QZ0+hHsCM1HLJAAAA</XPD:REF>
 <XPD:REF name="Views[9]">UCc2wuanl0C+8UTABFQIZQAA</XPD:REF>
 <XPD:REF name="Views[10]">lrS3IPwqeEeerIHC/kJmSgAA</XPD:REF>
@@ -8887,18 +8887,18 @@
 <XPD:ATTR name="Name" type="string">LocalPersister</XPD:ATTR>
 <XPD:REF name="Namespace">opq1jVOniE6glGB7VeBPowAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">12</XPD:ATTR>
-<XPD:REF name="Views[0]">usVaeEfPi0KfRzdLGt0+FgAA</XPD:REF>
-<XPD:REF name="Views[1]">N0nhasLrfkSSiQL996OH2gAA</XPD:REF>
-<XPD:REF name="Views[2]">HxoSo16gm0e11SCmWHQ7AwAA</XPD:REF>
-<XPD:REF name="Views[3]">USBIa4CUJkibNX/wFTkf6AAA</XPD:REF>
-<XPD:REF name="Views[4]">ojO9ji/KbEy4FsgEkMh3LwAA</XPD:REF>
-<XPD:REF name="Views[5]">vP9zFlwQMUqKORY6R9B/7gAA</XPD:REF>
-<XPD:REF name="Views[6]">zMxY9BWDxUqmPXnGmw/2BQAA</XPD:REF>
-<XPD:REF name="Views[7]">b5eclpBoYUWecuzu4rhX4wAA</XPD:REF>
-<XPD:REF name="Views[8]">FoADztOSXUGTflOyDRWnowAA</XPD:REF>
-<XPD:REF name="Views[9]">pLzUplA9KUutJzCxqyxE8AAA</XPD:REF>
-<XPD:REF name="Views[10]">2UYJoU3WY0+5BEWQUVkHlgAA</XPD:REF>
-<XPD:REF name="Views[11]">Ln8nTKEt90q0CA5bcnQFbQAA</XPD:REF>
+<XPD:REF name="Views[0]">FoADztOSXUGTflOyDRWnowAA</XPD:REF>
+<XPD:REF name="Views[1]">pLzUplA9KUutJzCxqyxE8AAA</XPD:REF>
+<XPD:REF name="Views[2]">2UYJoU3WY0+5BEWQUVkHlgAA</XPD:REF>
+<XPD:REF name="Views[3]">Ln8nTKEt90q0CA5bcnQFbQAA</XPD:REF>
+<XPD:REF name="Views[4]">usVaeEfPi0KfRzdLGt0+FgAA</XPD:REF>
+<XPD:REF name="Views[5]">N0nhasLrfkSSiQL996OH2gAA</XPD:REF>
+<XPD:REF name="Views[6]">HxoSo16gm0e11SCmWHQ7AwAA</XPD:REF>
+<XPD:REF name="Views[7]">USBIa4CUJkibNX/wFTkf6AAA</XPD:REF>
+<XPD:REF name="Views[8]">ojO9ji/KbEy4FsgEkMh3LwAA</XPD:REF>
+<XPD:REF name="Views[9]">vP9zFlwQMUqKORY6R9B/7gAA</XPD:REF>
+<XPD:REF name="Views[10]">zMxY9BWDxUqmPXnGmw/2BQAA</XPD:REF>
+<XPD:REF name="Views[11]">b5eclpBoYUWecuzu4rhX4wAA</XPD:REF>
 <XPD:ATTR name="#SupplierDependencies" type="integer">1</XPD:ATTR>
 <XPD:REF name="SupplierDependencies[0]">yHNpEs85ZUiBxqbYtp38oQAA</XPD:REF>
 <XPD:ATTR name="#Generalizations" type="integer">1</XPD:ATTR>
@@ -9600,7 +9600,7 @@
 <XPD:REF name="Views[3]">L6EZfXz+6UG7j/r9RPY3egAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[42]" type="UMLClass" guid="+PI/8oqtRE2PiU0B+qZPuwAA">
-<XPD:ATTR name="Name" type="string">FaceRecognizerWrapper</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">FacialFeatureRecognizer</XPD:ATTR>
 <XPD:REF name="Namespace">opq1jVOniE6glGB7VeBPowAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">jlHExenasUSUM1d3Dkv6WgAA</XPD:REF>
@@ -9612,16 +9612,16 @@
 <XPD:REF name="ClientDependencies[1]">6m8t5jiQdkWuB5ZtY6blXgAA</XPD:REF>
 <XPD:ATTR name="#Operations" type="integer">6</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="NoYecZZTjkevA4ONmvtU2AAA">
-<XPD:ATTR name="Name" type="string">FaceRecognizerWrapper</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">FacialFeatureRecognizer</XPD:ATTR>
 <XPD:ATTR name="StereotypeName" type="string">create</XPD:ATTR>
 <XPD:REF name="Owner">+PI/8oqtRE2PiU0B+qZPuwAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="e4ktr3Xps0yd6dv/4VPB4wAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="Hnc6t+BTNUqYGigQP28YJAAA">
 <XPD:ATTR name="Name" type="string">recognizer</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">Ptr&lt;FaceRecognizer&gt;</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">NoYecZZTjkevA4ONmvtU2AAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="Ul2BxC+VOUy1xV4Nz7cqhwAA">
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="1r5A2PNm9E6Aa09YmScMCgAA">
 <XPD:ATTR name="Name" type="string">threshold</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">double</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">NoYecZZTjkevA4ONmvtU2AAA</XPD:REF>
@@ -9864,8 +9864,8 @@
 <XPD:REF name="Participant">mKAvQNAXrUSQMoyxGCC7iAAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">4lAOWPpWakKsNug02egY6gAA</XPD:REF>
-<XPD:REF name="Views[1]">TnIN2vfgU0K9oGuIiuWpHwAA</XPD:REF>
-<XPD:REF name="Views[2]">YswR3i6L/0exxCNuxPxcawAA</XPD:REF>
+<XPD:REF name="Views[1]">YswR3i6L/0exxCNuxPxcawAA</XPD:REF>
+<XPD:REF name="Views[2]">TnIN2vfgU0K9oGuIiuWpHwAA</XPD:REF>
 <XPD:REF name="Views[3]">yhXw2W7mYEuQKm4N3HMN1QAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Connections[1]" type="UMLAssociationEnd" guid="5jiZQQtVhE+L9aT/LzPUSwAA">
@@ -9874,8 +9874,8 @@
 <XPD:REF name="Participant">/jD0D0GLukaIPdFNnutCRwAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">I6Bg5cvstUeNoMwD3LR6agAA</XPD:REF>
-<XPD:REF name="Views[1]">pr4Zwbj+mkSR7cmLIhkuLgAA</XPD:REF>
-<XPD:REF name="Views[2]">/l423FPXPUqWTiAEOGg28wAA</XPD:REF>
+<XPD:REF name="Views[1]">/l423FPXPUqWTiAEOGg28wAA</XPD:REF>
+<XPD:REF name="Views[2]">pr4Zwbj+mkSR7cmLIhkuLgAA</XPD:REF>
 <XPD:REF name="Views[3]">k5R3gXz+vU6buQtZl61mjAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>

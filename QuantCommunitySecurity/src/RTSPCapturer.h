@@ -6,6 +6,7 @@
 class RTSPCapturer : public Capturer
 {
 private:
+    VideoCapture vcap;
     CvCapture* capture;
     ImageData* data;
 public:

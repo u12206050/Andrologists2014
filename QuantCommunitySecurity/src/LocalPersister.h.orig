@@ -5,12 +5,22 @@
 
 class LocalPersister : public Persister
 {
+<<<<<<< HEAD
+    public:
+        LocalPersister(char* directory);
+        ~LocalPersister();
+        void persistImageData(ImageData* image);
+
+    private:
+        char* directory;
+=======
 private:
     char* directory;
 public:
     LocalPersister(String dir);
 	~LocalPersister();
 	void persistImageData(ImageData* image);
+>>>>>>> 9063a703fcafb7a518b0a598dbcf7af4d9c758e7
 };
 
 #endif  //_LOCALPERSISTER_H

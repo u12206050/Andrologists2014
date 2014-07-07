@@ -13,10 +13,15 @@
 #include <sys/stat.h>   // For stat().
 
 #include <sstream>
+<<<<<<< HEAD
+#include <stdio.h>
+#include "ImageData.h"
+=======
 #include <iostream>
 #include <stdio.h>
 
 using namespace std;
+>>>>>>> 9063a703fcafb7a518b0a598dbcf7af4d9c758e7
 
 class Persister
 {
