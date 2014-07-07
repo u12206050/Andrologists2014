@@ -5,9 +5,13 @@
 
 class LocalPersister : public Persister
 {
-public:
-	~LocalPersister();
-	void persistImageData(ImageData* image);
+    public:
+        LocalPersister(char* directory);
+        ~LocalPersister();
+        void persistImageData(ImageData* image);
+
+    private:
+        char* directory;
 };
 
 #endif  //_LOCALPERSISTER_H

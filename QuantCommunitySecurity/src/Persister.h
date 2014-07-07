@@ -8,7 +8,8 @@
 #include <QTime>
 #include <QDate>
 
-#include<sstream>
+#include <sstream>
+#include <stdio.h>
 #include "ImageData.h"
 
 class Persister

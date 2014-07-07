@@ -24,7 +24,8 @@ SOURCES += \
     ConfigReader.cpp \
     Capturer.cpp \
     ImageData.cpp \
-    FacialFeatureRecognizer.cpp
+    FacialFeatureRecognizer.cpp \
+    WebCamCapturer.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -44,4 +45,5 @@ HEADERS += \
     FacialFeatureRecognizer.h \
     GetSimilarFacesRequest.h \
     GetSimilarFacesResponse.h \
-    SimilarFace.h
+    SimilarFace.h \
+    WebCamCapturer.h

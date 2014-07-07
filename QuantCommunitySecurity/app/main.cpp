@@ -14,15 +14,18 @@ using namespace cv;
 
 int main(int argc, char *argv[])
 {
-    cout << "hello" << endl;
-    Capturer* capturer = new RTSPCapturer("someUrl");
-    Filter* faceDetect = new FaceDetectFilter("someLoc");
+
+    //rtsp://192.168.129.251/live.sdp
+    //http://192.168.134.252/video4.mjpg
+    //http://192.168.129.251/?action=stream?dummy=param.mjpg
+    Capturer* capturer = new RTSPCapturer("/home/zane/mjpg_cap/video4.mjpg/");
+  /*  Filter* faceDetect = new FaceDetectFilter("haarcascade_frontalface_alt_tree.xml");
     CascadeClassifier eyeCascade1;
     eyeCascade1.load("haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
     eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
     Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);
-    Persister* persister = new LocalPersister();
+    Persister* persister = new LocalPersister("/home/zane/Documents/COS301/MainProject/test/");
     Pipeline* pipeline = new SequentialPipeline();
     pipeline->attachCapturer(capturer);
     pipeline->attachFilter(faceDetect);
@@ -33,7 +36,7 @@ int main(int argc, char *argv[])
     {
         pipeline->process(1);
         cout << "Processed Frame" << endl;
-    }
+   }*/
     //QCoreApplication a(argc, argv);
 
 
