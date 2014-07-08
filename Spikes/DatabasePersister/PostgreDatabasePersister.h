@@ -8,7 +8,7 @@ public:
     PostgreDatabasePersister();
     ~PostgreDatabasePersister();
     void persistImageFileData(DatabasePersistRequest request);
-    void connectToDatabase();
+    void viewDatabase();
     void insertIntoDatabase(string filename, QDateTime timestamp);
 };
 #endif // POSTGREDATABASEPERSISTER_H
