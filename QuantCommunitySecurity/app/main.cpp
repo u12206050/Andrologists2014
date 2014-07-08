@@ -21,17 +21,19 @@ int main(/*int argc, char *argv[]*/)
     QString windowName("Video Stream");
     Filter* imageShower = new ShowImageFilter(windowName);
 
-    Filter* sampling = new DiffSamplingFilter(0.175);
+    Filter* sampling = new DiffSamplingFilter(0.16);
 
     CascadeClassifier faceCascade;
-    faceCascade.load("haarcascade_frontalface_alt_tree.xml");
-    Filter* faceDetect = new FaceDetectFilter(faceCascade);
+    faceCascade.load("/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt.xml");
+    CascadeClassifier secondOpinion;
+    secondOpinion.load("/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt_tree.xml");
+    Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
 
-    CascadeClassifier eyeCascade1;
+    /*CascadeClassifier eyeCascade1;
     eyeCascade1.load("haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
     eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
-    //Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);
+    Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);*/
 
     QString dir("../images/");
     Persister* persister = new LocalPersister(dir, 0);

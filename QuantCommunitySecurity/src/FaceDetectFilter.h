@@ -14,12 +14,13 @@ using namespace cv;
 class FaceDetectFilter : public Filter
 {
     public:
-        FaceDetectFilter(CascadeClassifier& faceCascade);
+        FaceDetectFilter(CascadeClassifier& faceCascade, CascadeClassifier& faceCascadeSecondOpinion);
         ~FaceDetectFilter();
         virtual ImageData* filter(ImageData* image);
 
     private:
         CascadeClassifier faceCascade;
+        CascadeClassifier secondOpinion;
 };
 
 #endif // FACEDETECTFILTER_H

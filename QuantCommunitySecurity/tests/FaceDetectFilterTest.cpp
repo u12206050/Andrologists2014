@@ -2,9 +2,10 @@
 
 void FaceDetectFilterTest::filterTest()
 {
-    CascadeClassifier classifier("../../testFiles/haarcascade_frontalface_alt_tree.xml");
+    CascadeClassifier classifier("../../testFiles/haarcascade_frontalface_alt.xml");
+    CascadeClassifier secondOpinion("../../testFiles/haarcascade_frontalface_alt_tree.xml");
 
-    FaceDetectFilter* filter = new FaceDetectFilter(classifier);
+    FaceDetectFilter* filter = new FaceDetectFilter(classifier, secondOpinion);
 
     ImageData* data = new ImageData();
 
@@ -21,6 +22,11 @@ void FaceDetectFilterTest::filterTest()
     data->image = imread("../../testFiles/nm1.png", CV_LOAD_IMAGE_UNCHANGED);
     data = filter->filter(data);
     expectedNumFaces = 1;
+    QVERIFY(data->faces.size() == expectedNumFaces);
+
+    data->image = imread("../../testFiles/zeroFaces.jpg", CV_LOAD_IMAGE_UNCHANGED);
+    data = filter->filter(data);
+    expectedNumFaces = 0;
     QVERIFY(data->faces.size() == expectedNumFaces);
 }
 

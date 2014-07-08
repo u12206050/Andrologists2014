@@ -27,9 +27,14 @@
    if( !eyes_cascade.load( eyes_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
 
 
-	Mat india = imread("india.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat india = imread("/home/zane/Documents/COS301/MainProject/Spikes/FaceDetectAndEigenSpike/i_0_name_304802220.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	Mat barrack = imread("barrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	Mat many = imread("many.jpg", CV_LOAD_IMAGE_UNCHANGED); 
+	
+	cvtColor( india, india, CV_BGR2GRAY );
+	cvtColor( barrack, barrack, CV_BGR2GRAY );
+	cvtColor( many, many, CV_BGR2GRAY );
+	
  
 
 
@@ -39,7 +44,7 @@
        else
        { printf(" --(!) No captured frame -- Break!"); }
        
-              if( !barrack.empty() )
+             if( !barrack.empty() )
        { detectAndDisplay( barrack,"1" ); }
        else
        { printf(" --(!) No captured frame -- Break!"); }
@@ -58,9 +63,9 @@
 void detectAndDisplay( Mat frame,string s )
 {
   std::vector<Rect> faces;
-  Mat frame_gray;
+  Mat frame_gray = frame;
 
-  cvtColor( frame, frame_gray, CV_BGR2GRAY );
+  //cvtColor( frame, frame_gray, CV_BGR2GRAY );
   equalizeHist( frame_gray, frame_gray );
 
   //-- Detect faces
