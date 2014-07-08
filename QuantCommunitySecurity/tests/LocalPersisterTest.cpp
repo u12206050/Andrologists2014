@@ -6,9 +6,9 @@ void LocalPersisterTest::filterTest()
     Persister* persister = new LocalPersister(testPath, 0);
 
     ImageData* data = new ImageData;
-    data->image = imread("same1.jpg", CV_LOAD_IMAGE_UNCHANGED);
-    data->faces.push_back(imread("same2.jpg", CV_LOAD_IMAGE_UNCHANGED));
-    data->faces.push_back(imread("same2.jpg", CV_LOAD_IMAGE_UNCHANGED));
+    data->image = imread("../../testFiles/same1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+    data->faces.push_back(imread("../../testFiles/same2.jpg", CV_LOAD_IMAGE_UNCHANGED));
+    data->faces.push_back(imread("../../testFiles/same2.jpg", CV_LOAD_IMAGE_UNCHANGED));
     data->timestamp.setMSecsSinceEpoch(10);
 
     persister->persistImageData(data);

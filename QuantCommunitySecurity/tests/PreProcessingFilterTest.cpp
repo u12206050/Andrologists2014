@@ -3,13 +3,13 @@
 void PreProcessingFilterTest::targetSizeTest()
 {
     QDateTime dateTime;
-    Mat face = imread("testFace.jpg", CV_LOAD_IMAGE_COLOR);
+    Mat face = imread("../../testFiles/testFace.jpg", CV_LOAD_IMAGE_COLOR);
     ImageData* testData = new ImageData(face, dateTime);
     testData->addFace(face);
     CascadeClassifier eyeCascade1;
-    eyeCascade1.load("haarcascade_eye.xml");
+    eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
-    eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
+    eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
     int targetSize = 400;
     Filter* preProcFilter = new PreProcessingFilter(targetSize, eyeCascade1, eyeCascade2);
     testData = preProcFilter->filter(testData);
@@ -21,13 +21,13 @@ void PreProcessingFilterTest::targetSizeTest()
 void PreProcessingFilterTest::greyScaleTest()
 {
     QDateTime dateTime;
-    Mat face = imread("testFace.jpg", CV_LOAD_IMAGE_COLOR);
+    Mat face = imread("../../testFiles/testFace.jpg", CV_LOAD_IMAGE_COLOR);
     ImageData* testData = new ImageData(face, dateTime);
     testData->addFace(face);
     CascadeClassifier eyeCascade1;
-    eyeCascade1.load("haarcascade_eye.xml");
+    eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
-    eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
+    eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
     int targetSize = 400;
     Filter* preProcFilter = new PreProcessingFilter(targetSize, eyeCascade1, eyeCascade2);
     testData = preProcFilter->filter(testData);
