@@ -12,13 +12,13 @@ int main()
 	VideoCapture vcap;
     Mat image;
 
-    const string videoStreamAddress = "/home/zane/mjpg_cap/video4.mjpg";
-    ifstream fin("/home/zane/mjpg_cap/video4.mjpg");
+    const string videoStreamAddress = "rtsp://rtsp-v3-spbtv.msk.spbtv.com/spbtv_v3_1/30_110.sdp";
+    /*ifstream fin("/home/zane/mjpg_cap/video4.mjpg");
     if (!fin)  // check to see if file exists
     {
 		cout << "No such file" << endl;
 		return 1;
-	}
+	}*/
 
     //open the video stream and make sure it's opened
     if(!vcap.open(videoStreamAddress)) 
@@ -26,6 +26,7 @@ int main()
         cout << "Error opening video stream or file" << std::endl;
         return -1;
     }
+    cout << "here" << endl;
 	int cnt = 0;
 	while (true)
      {

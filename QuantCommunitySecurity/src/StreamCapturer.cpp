@@ -1,6 +1,6 @@
-#include "RTSPCapturer.h"
+#include "StreamCapturer.h"
 
-RTSPCapturer::RTSPCapturer(QString& videoLocation)
+StreamCapturer::StreamCapturer(QString& videoLocation)
 {
     if(!capturer.open(videoLocation.toStdString()))
     {
@@ -8,11 +8,19 @@ RTSPCapturer::RTSPCapturer(QString& videoLocation)
     }
 }
 
-RTSPCapturer::~RTSPCapturer()
+StreamCapturer::StreamCapturer(int deviceId)
+{
+    if(!capturer.open(deviceId))
+    {
+        throw Exception();
+    }
+}
+
+StreamCapturer::~StreamCapturer()
 {
 }
 
-ImageData* RTSPCapturer::getNextImage()
+ImageData* StreamCapturer::getNextImage()
 {
     ImageData* newImage = new ImageData;
 

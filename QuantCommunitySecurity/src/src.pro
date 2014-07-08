@@ -12,7 +12,6 @@ TEMPLATE = lib
 SOURCES += \
     SequentialPipeline.cpp \
     SamplingFilter.cpp \
-    RTSPCapturer.cpp \
     PreProcessingFilter.cpp \
     Pipeline.cpp \
     Persister.cpp \
@@ -25,14 +24,14 @@ SOURCES += \
     Capturer.cpp \
     ImageData.cpp \
     FacialFeatureRecognizer.cpp \
-    WebCamCapturer.cpp \
     NSamplingFilter.cpp \
-    DiffSamplingFilter.cpp
+    DiffSamplingFilter.cpp \
+    StreamCapturer.cpp \
+    ShowImageFilter.cpp
 
 HEADERS += \
     SequentialPipeline.h \
     SamplingFilter.h \
-    RTSPCapturer.h \
     PreProcessingFilter.h \
     Pipeline.h \
     Persister.h \
@@ -48,6 +47,7 @@ HEADERS += \
     GetSimilarFacesRequest.h \
     GetSimilarFacesResponse.h \
     SimilarFace.h \
-    WebCamCapturer.h \
     NSamplingFilter.h \
-    DiffSamplingFilter.h
+    DiffSamplingFilter.h \
+    StreamCapturer.h \
+    ShowImageFilter.h

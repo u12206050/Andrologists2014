@@ -1,5 +1,6 @@
 #ifndef NSAMPLINGFILTERTEST_H
 #define NSAMPLINGFILTERTEST_H
+
 #include <QtTest/QtTest>
 #include "NSamplingFilter.h"
 

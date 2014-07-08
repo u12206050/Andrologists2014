@@ -2,7 +2,7 @@
 
 NSamplingFilter::NSamplingFilter(int n)
 {
-    counter = 1;
+    counter = 0;
     this->n = n;
 }
 
@@ -13,15 +13,13 @@ NSamplingFilter::~NSamplingFilter()
 
 ImageData* NSamplingFilter::filter(ImageData* image)
 {
-	//return every nth image
+    counter++;
     if(counter % n == 0)
 	{
-        counter++;
 		return image;		
 	}
 	else
 	{
-		counter++;
         return NULL;
 	}
 }

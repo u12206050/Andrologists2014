@@ -17,7 +17,9 @@ SOURCES += \
     FakePersister.cpp \
     PreProcessingFilterTest.cpp \
     Fake.cpp \
-    DiffSamplingFilterTest.cpp
+    DiffSamplingFilterTest.cpp \
+    FaceDetectFilterTest.cpp \
+    NSamplingFilterTest.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -29,9 +31,8 @@ HEADERS += \
     FakePersister.h \
     PreProcessingFilterTest.h \
     Fake.h \
-    DiffSamplingFilterTest.h
+    DiffSamplingFilterTest.h \
+    FaceDetectFilterTest.h \
+    NSamplingFilterTest.h
 
-OTHER_FILES += \
-    haarcascade_eye.xml \
-    haarcascade_eye_tree_eyeglasses.xml \
-    testFace.jpg
+OTHER_FILES +=

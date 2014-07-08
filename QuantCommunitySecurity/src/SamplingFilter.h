@@ -5,9 +5,9 @@
 
 class SamplingFilter : public Filter
 {
-public:
-	~SamplingFilter();
-    virtual ImageData* filter(ImageData* image);
+    public:
+        ~SamplingFilter();
+        virtual ImageData* filter(ImageData* image);
 };
 
 #endif  //_SAMPLINGFILTER_H

@@ -3,6 +3,9 @@
 
 #include <QtTest/QtTest>
 #include "FaceDetectFilter.h"
+#include "opencv2/opencv.hpp"
+
+using namespace cv;
 
 class FaceDetectFilterTest : public QObject
 {
