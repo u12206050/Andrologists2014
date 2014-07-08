@@ -1,11 +1,16 @@
 #include "DatabasePersister.h"
 
+DatabasePersister::DatabasePersister()
+{
+
+}
+
 DatabasePersister::~DatabasePersister()
 {
 
 }
 
-void DatabasePersister::persistImageFileData(DatabasePersistRequest request)
+bool DatabasePersister::persistImageFileData(DatabasePersistRequest request)
 {
 
 }

@@ -21,7 +21,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     DatabasePersister.cpp \
     DatabasePersistRequest.cpp \
-    PostgreDatabasePersister.cpp
+    PostgreDatabasePersister.cpp \
+    DatabasePersisterTest.cpp
 
 INCLUDEPATH += C:\opencv-2.4.9\\install\\include
 INCLUDEPATH += C:\Program Files (x86)\PostgreSQL\9.3\include
@@ -49,4 +50,5 @@ LIBS += -LC:\opencv-2.4.9\lib \
 HEADERS += \
     DatabasePersister.h \
     DatabasePersistRequest.h \
-    PostgreDatabasePersister.h
+    PostgreDatabasePersister.h \
+    DatabasePersisterTest.h

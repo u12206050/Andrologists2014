@@ -4,7 +4,8 @@
 class DatabasePersister
 {
 public:
+    DatabasePersister();
     ~DatabasePersister();
-    virtual void persistImageFileData(DatabasePersistRequest request);
+    virtual bool persistImageFileData(DatabasePersistRequest request);
 };
 #endif // DATABASEPERSISTER_H

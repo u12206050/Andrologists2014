@@ -7,8 +7,10 @@ class PostgreDatabasePersister : public DatabasePersister
 public:
     PostgreDatabasePersister();
     ~PostgreDatabasePersister();
-    void persistImageFileData(DatabasePersistRequest request);
+    bool persistImageFileData(DatabasePersistRequest request);
     void viewDatabase();
-    void insertIntoDatabase(string filename, QDateTime timestamp);
+    bool insertIntoDatabase(string filename, QDateTime timestamp);
+    string viewLastFilenameInserted();
+
 };
 #endif // POSTGREDATABASEPERSISTER_H

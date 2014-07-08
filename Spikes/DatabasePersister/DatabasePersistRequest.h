@@ -8,6 +8,7 @@ class DatabasePersistRequest
 {
 public:
     DatabasePersistRequest();
+    DatabasePersistRequest(string filename, QDateTime timestamp);
     string originalImageFilename;
     QDateTime timeStamp;
     vector<string> facesFilenames;

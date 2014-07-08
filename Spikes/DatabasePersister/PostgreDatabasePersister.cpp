@@ -28,12 +28,15 @@ PostgreDatabasePersister::~PostgreDatabasePersister()
 
 }
 
-void PostgreDatabasePersister::persistImageFileData(DatabasePersistRequest request)
+bool PostgreDatabasePersister::persistImageFileData(DatabasePersistRequest request)
 {
     string filename = request.originalImageFilename;
     QDateTime timestamp = request.timeStamp;
 
-    insertIntoDatabase(filename, timestamp);
+    if(insertIntoDatabase(filename, timestamp))
+        return true;
+    else
+        return false;
 
 }
 
@@ -101,7 +104,7 @@ void PostgreDatabasePersister::viewDatabase()
 
 }
 
-void PostgreDatabasePersister::insertIntoDatabase(string filename, QDateTime timestamp)
+bool PostgreDatabasePersister::insertIntoDatabase(string filename, QDateTime timestamp)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("localhost");
@@ -121,10 +124,16 @@ void PostgreDatabasePersister::insertIntoDatabase(string filename, QDateTime tim
           "VALUES (:filename, :time)");
           query.bindValue(":filename", file);
           query.bindValue(":time", timestamp);
-          query.exec();
+          if(query.exec())
+              return true;
+          if(!query.exec())
+            return false;
 
     }
+    else
+        return false;
 
 
 
 }
+
