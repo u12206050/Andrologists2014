@@ -4,10 +4,11 @@ LocalPersister::LocalPersister(QString& directoryPath, int id)
 {
     this->directoryPath = directoryPath;
     this->id = id;
-    /*if(access(directory, 0) == -1)
-    {
-        mkdir(directory);
-    }*/
+    #if defined(_WIN32)
+       // _mkdir(directoryPath.toStdString()); for windows
+    #else
+        mkdir(directoryPath.toStdString().c_str(), 0777);
+    #endif
 }
 
 LocalPersister::~LocalPersister()
@@ -21,8 +22,7 @@ void LocalPersister::persistImageData(ImageData* image)
     {
         QString baseFileName(directoryPath);
 
-        QDateTime dateTime;
-        int seconds = dateTime.currentMSecsSinceEpoch();
+        int seconds = image->timestamp.time().msec();
 
         QTextStream(&baseFileName) << "i_" << id << "_name_" << seconds;
 
@@ -30,7 +30,7 @@ void LocalPersister::persistImageData(ImageData* image)
         QTextStream(&filename) << ".jpg";
         imwrite(filename.toStdString(), image->image);
 
-        for (int i = 0; i < image->faces.size(); i++)
+        for (unsigned int i = 0; i < image->faces.size(); i++)
         {
             QString face(baseFileName);
             QTextStream(&face) << "_face_" << i << ".jpg";

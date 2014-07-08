@@ -3,6 +3,7 @@
 #include "DiffSamplingFilterTest.h"
 #include "NSamplingFilterTest.h"
 #include "FaceDetectFilterTest.h"
+#include "LocalPersisterTest.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +21,9 @@ int main(int argc, char *argv[])
 
     FaceDetectFilterTest faceDetectFilterTest;
     QTest::qExec(&faceDetectFilterTest, argc, argv);
+
+    LocalPersisterTest localPersisterTest;
+    QTest::qExec(&localPersisterTest, argc, argv);
 
     return 0;
 }

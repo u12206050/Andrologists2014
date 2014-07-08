@@ -13,7 +13,7 @@
 using namespace std;
 using namespace cv;
 
-int main(int argc, char *argv[])
+int main(/*int argc, char *argv[]*/)
 {
     QString videoLocation("/home/zane/mjpg_cap/video4.mjpg");
     Capturer* capturer = new StreamCapturer(videoLocation);
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     eyeCascade1.load("haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
     eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
-    Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);
+    //Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);
 
     QString dir("../images/");
     Persister* persister = new LocalPersister(dir, 0);

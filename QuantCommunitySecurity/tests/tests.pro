@@ -19,7 +19,8 @@ SOURCES += \
     Fake.cpp \
     DiffSamplingFilterTest.cpp \
     FaceDetectFilterTest.cpp \
-    NSamplingFilterTest.cpp
+    NSamplingFilterTest.cpp \
+    LocalPersisterTest.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -33,6 +34,7 @@ HEADERS += \
     Fake.h \
     DiffSamplingFilterTest.h \
     FaceDetectFilterTest.h \
-    NSamplingFilterTest.h
+    NSamplingFilterTest.h \
+    LocalPersisterTest.h
 
 OTHER_FILES +=
