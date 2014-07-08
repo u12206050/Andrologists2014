@@ -239,6 +239,7 @@ int main(int argc, const char *argv[])
 	cvtColor( barrack2, barrack2, CV_BGR2GRAY );
 	Mat jacob = imread("newjacob.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	cvtColor( jacob, jacob, CV_BGR2GRAY );
+	
 	if(!isSameFace(barrack, jacob, W, mean))
 	{
 		cout << "Barrack Jacob Passed" << endl;
@@ -255,6 +256,22 @@ int main(int argc, const char *argv[])
 	else
 	{
 		cout << "Barrack Failed" << endl;
+	}
+	
+	Mat kobus1 = imread("kobus1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat kobus2 = imread("kobus2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	imshow("k1", kobus1);
+	imshow("k2", kobus2);
+	
+	waitKey(0);
+	
+	if (isSameFace(kobus1, kobus2, W, mean))
+	{
+		cout << "Kobus pass" << endl;
+	}
+	else
+	{
+		cout << "Kobus fail" << endl;
 	}
 
 	/*imshow("o0", generalisationImages[0]);
