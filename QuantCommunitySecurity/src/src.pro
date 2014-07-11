@@ -23,12 +23,12 @@ SOURCES += \
     ConfigReader.cpp \
     Capturer.cpp \
     ImageData.cpp \
-    FacialFeatureRecognizer.cpp \
     NSamplingFilter.cpp \
     DiffSamplingFilter.cpp \
     StreamCapturer.cpp \
     ShowImageFilter.cpp \
-    DatabasePersister.cpp
+    DatabasePersister.cpp \
+    Exception.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -44,13 +44,11 @@ HEADERS += \
     FaceDetectFilter.h \
     ConfigReader.h \
     Capturer.h \
-    FacialFeatureRecognizer.h \
-    GetSimilarFacesRequest.h \
-    GetSimilarFacesResponse.h \
     SimilarFace.h \
     NSamplingFilter.h \
     DiffSamplingFilter.h \
     StreamCapturer.h \
     ShowImageFilter.h \
     DatabasePersister.h \
-    DatabasePersistRequest.h
+    DatabasePersistRequest.h \
+    Exception.h

@@ -2,6 +2,7 @@
 #define DATABASEPERSISTER_H
 
 #include "DatabasePersistRequest.h"
+#include "Exception.h"
 
 #include <QtSql>
 

@@ -3,7 +3,6 @@
 
 #include "Persister.h"
 #include <QTextStream>
-#include <sys/stat.h>
 
 class LocalPersister : public Persister
 {

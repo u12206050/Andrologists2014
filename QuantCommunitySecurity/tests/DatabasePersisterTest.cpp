@@ -5,7 +5,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
     QString dbType("QPSQL");
     QString hostname("127.0.0.1");
     QString dbName("quant");
-    QString username("zane");
+    QString username("postgres");
     QString password("root");
     int port = 5432;
 
@@ -17,5 +17,28 @@ void DatabasePersisterTest::persistImageFileDataTest()
     request->facesFilenames.push_back(QString("testFace3"));
 
     DatabasePersister dbPersister = DatabasePersister(dbType, hostname, dbName, username, password, port);
-    dbPersister.persistImageFileData(request);//surround with try catch
+    try
+    {
+        dbPersister.persistImageFileData(request);
+    }
+    catch (Exception e)
+    {
+        switch(e.getErrorCode())
+        {
+            case 0:
+                QVERIFY(false);
+                break;
+            case 1:
+                QVERIFY(false);
+                break;
+            case 2:
+                QVERIFY(false);
+                break;
+            case 3:
+                QVERIFY(false);
+                break;
+            default:
+                QVERIFY(false);
+        }
+    }
 }

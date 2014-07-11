@@ -1,4 +1,4 @@
-#include "DatabasePersister.h"
+﻿#include "DatabasePersister.h"
 
 DatabasePersister::DatabasePersister(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port)
 {
@@ -20,20 +20,22 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
     if (database.open())
     {
         QSqlQuery query;
-        query.prepare("INSERT INTO Images (filename, timestamp) VALUES (:filename, :timestamp)");
+        query.prepare("INSERT INTO test.Images (filename, timestamp) VALUES (:filename, :timestamp)");
         query.bindValue(":filename", request->originalImageFilename);
-        query.bindValue(":time", request->timeStamp);
+        query.bindValue(":timestamp", request->timeStamp);
         if(!query.exec())
         {
-            //throw some exception cound not insert image
+            QString error(query.lastError().text());
+            throw Exception(error, 0);
         }
 
         query.clear();
-        query.prepare("SELECT id FROM Images WHERE filename = :filename");
+        query.prepare("SELECT id FROM test.Images WHERE filename = :filename");
         query.bindValue(":filename", request->originalImageFilename);
         if(!query.exec())
         {
-            //throw some exception could not insert images
+            QString error("inserting image data.");
+            throw Exception(error, 1);
         }
 
         query.first();
@@ -42,16 +44,18 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
         for (unsigned int i = 0; i < request->facesFilenames.size(); i++)
         {
             query.clear();
-            query.prepare("INSERT INTO FaceImages (filename, imageId) VALUES (:filename, :imageId)");
+            query.prepare("INSERT INTO test.FaceImages (filename, imageId) VALUES (:filename, :imageId)");
             query.bindValue(":filename", request->facesFilenames[i]);
             query.bindValue(":imageId", imageId);
             if(!query.exec())
             {
-                //throw some exception could not insert face i
+                QString error("inserting face data.");
+                throw Exception(error, 2);
             }
         }
         database.close();
     }
 
-    //throw some exception closed database
+    QString error("database closed.");
+    throw Exception(error, 3);
 }
