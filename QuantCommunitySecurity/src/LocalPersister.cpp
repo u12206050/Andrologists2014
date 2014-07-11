@@ -22,9 +22,7 @@ void LocalPersister::persistImageData(ImageData* image)
     {
         QString baseFileName(directoryPath);
 
-        int seconds = image->timestamp.time().msec();
-
-        QTextStream(&baseFileName) << "i_" << id << "_name_" << seconds;
+        QTextStream(&baseFileName) << "i_" << id << "_name_" << image->timestamp;
 
         QString filename(baseFileName);
         QTextStream(&filename) << ".jpg";

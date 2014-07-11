@@ -1,27 +1,21 @@
 #include "DatabasePersisterTest.h"
-#include <QtDebug>
-#include "DatabasePersistRequest.h"
-#include "DatabasePersister.h"
-#include "PostgreDatabasePersister.h"
-#include <QDateTime>
-using namespace std;
-void DatabasePersisterTest::Test()
+
+void DatabasePersisterTest::persistImageFileDataTest()
 {
+    QString dbType("QPSQL");
+    QString hostname("127.0.0.1");
+    QString dbName("quant");
+    QString username("zane");
+    QString password("root");
+    int port = 5432;
 
-                string s = "Zane";
-                QDateTime q = QDateTime::fromString("M1d1y9800:05:02",
-                                                    "'M'M'd'd'y'yyhh:mm:ss");
-                DatabasePersistRequest dpr = DatabasePersistRequest(s, q);
+    DatabasePersistRequest* request =  new DatabasePersistRequest;
+    request->originalImageFilename.fromStdString("testFile");
+    request->timeStamp = 10;
+    request->facesFilenames.push_back(QString("testFace1"));
+    request->facesFilenames.push_back(QString("testFace2"));
+    request->facesFilenames.push_back(QString("testFace3"));
 
-                DatabasePersister d = PostgreDatabasePersister();
-                bool suc = d.persistImageFileData(dpr);
-                QVERIFY(suc == true);
-
-
-
-
-
-
-
-
+    DatabasePersister dbPersister = DatabasePersister(dbType, hostname, dbName, username, password, port);
+    dbPersister.persistImageFileData(request);//surround with try catch
 }

@@ -1,8 +1,8 @@
 #ifndef IMAGEDATA_H
 #define IMAGEDATA_H
 
+#include <QtGlobal>
 #include "opencv2/core/core.hpp"
-#include <QDateTime>
 
 using namespace cv;
 
@@ -10,11 +10,11 @@ class ImageData
 {
     public:
         ImageData();
-        ImageData(Mat image, QDateTime timestamp);
+        ImageData(Mat image, qint64 timestamp);
         void addFace(Mat face);
         Mat image;
         vector<Mat> faces;
-        QDateTime timestamp;
+        qint64 timestamp;
 };
 
 #endif // IMAGEDATA_H

@@ -2,9 +2,8 @@
 
 void PreProcessingFilterTest::targetSizeTest()
 {
-    QDateTime dateTime;
     Mat face = imread("../../testFiles/testFace.jpg", CV_LOAD_IMAGE_COLOR);
-    ImageData* testData = new ImageData(face, dateTime);
+    ImageData* testData = new ImageData(face, 0);
     testData->addFace(face);
     CascadeClassifier eyeCascade1;
     eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
@@ -20,9 +19,8 @@ void PreProcessingFilterTest::targetSizeTest()
 
 void PreProcessingFilterTest::greyScaleTest()
 {
-    QDateTime dateTime;
     Mat face = imread("../../testFiles/testFace.jpg", CV_LOAD_IMAGE_COLOR);
-    ImageData* testData = new ImageData(face, dateTime);
+    ImageData* testData = new ImageData(face, 0);
     testData->addFace(face);
     CascadeClassifier eyeCascade1;
     eyeCascade1.load("../../testFiles/haarcascade_eye.xml");

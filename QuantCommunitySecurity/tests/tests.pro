@@ -3,6 +3,7 @@ include(../Defaults.pri)
 QT += core
 QT -= gui
 QT += testlib
+QT += sql
 
 TEMPLATE = app
 
@@ -20,7 +21,8 @@ SOURCES += \
     DiffSamplingFilterTest.cpp \
     FaceDetectFilterTest.cpp \
     NSamplingFilterTest.cpp \
-    LocalPersisterTest.cpp
+    LocalPersisterTest.cpp \
+    DatabasePersisterTest.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -35,6 +37,7 @@ HEADERS += \
     DiffSamplingFilterTest.h \
     FaceDetectFilterTest.h \
     NSamplingFilterTest.h \
-    LocalPersisterTest.h
+    LocalPersisterTest.h \
+    DatabasePersisterTest.h
 
 OTHER_FILES +=

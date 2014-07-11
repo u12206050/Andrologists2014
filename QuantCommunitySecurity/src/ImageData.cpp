@@ -5,7 +5,7 @@ ImageData::ImageData()
 
 }
 
-ImageData::ImageData(Mat image, QDateTime timestamp)
+ImageData::ImageData(Mat image, qint64 timestamp)
 {
     this->image = image;
     this->timestamp = timestamp;

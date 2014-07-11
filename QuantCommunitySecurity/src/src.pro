@@ -2,7 +2,7 @@ include(../Defaults.pri)
 
 QT += core
 
-#CONFIG -= qt
+QT += sql
 
 LIBS += `pkg-config opencv --cflags --libs`
 
@@ -27,7 +27,8 @@ SOURCES += \
     NSamplingFilter.cpp \
     DiffSamplingFilter.cpp \
     StreamCapturer.cpp \
-    ShowImageFilter.cpp
+    ShowImageFilter.cpp \
+    DatabasePersister.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -50,4 +51,6 @@ HEADERS += \
     NSamplingFilter.h \
     DiffSamplingFilter.h \
     StreamCapturer.h \
-    ShowImageFilter.h
+    ShowImageFilter.h \
+    DatabasePersister.h \
+    DatabasePersistRequest.h

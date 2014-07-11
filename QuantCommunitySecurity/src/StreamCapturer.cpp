@@ -30,11 +30,9 @@ ImageData* StreamCapturer::getNextImage()
     }
     waitKey(1);
 
-    QDate cd = QDate::currentDate();
-    QTime ct = QTime::currentTime();
+    QDateTime currentTime;
 
-    newImage->timestamp.setDate(cd);
-    newImage->timestamp.setTime(ct);
+    newImage->timestamp = currentTime.currentMSecsSinceEpoch();
 
     return newImage;
 }

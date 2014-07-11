@@ -18,9 +18,14 @@
 #include <QVariant>
 using namespace std;
 
-PostgreDatabasePersister::PostgreDatabasePersister()
+PostgreDatabasePersister::PostgreDatabasePersister(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port)
 {
-
+    database = QSqlDatabase::addDatabase(databaseType);
+    database.setHostName(hostname);
+    database.setDatabaseName(databaseName);
+    database.setUserName(username);
+    database.setPassword(password);
+    database.setPort(port);
 }
 
 PostgreDatabasePersister::~PostgreDatabasePersister()
@@ -30,25 +35,11 @@ PostgreDatabasePersister::~PostgreDatabasePersister()
 
 bool PostgreDatabasePersister::persistImageFileData(DatabasePersistRequest request)
 {
-    string filename = request.originalImageFilename;
-    QDateTime timestamp = request.timeStamp;
-
-    if(insertIntoDatabase(filename, timestamp))
-        return true;
-    else
-        return false;
-
+    return insertIntoDatabase(request.originalImageFilename, request.timeStamp);
 }
 
 void PostgreDatabasePersister::viewDatabase()
 {
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("postgres");
-    db.setUserName("postgres");
-    db.setPassword("verush08");
-    db.setPort(5432);
 
     QSqlQuery query;
 
@@ -104,33 +95,23 @@ void PostgreDatabasePersister::viewDatabase()
 
 }
 
-bool PostgreDatabasePersister::insertIntoDatabase(string filename, QDateTime timestamp)
+bool PostgreDatabasePersister::insertIntoDatabase(QString& filename, QDateTime timestamp)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("dbPhotos");
-    db.setUserName("postgres");
-    db.setPassword("verush08");
-    db.setPort(5432);
-
-    if (db.open())
+    if (database.open())
     {
        // cout << "******* Working *********" << endl;
 
         QSqlQuery query;
-        QString file = QString::fromStdString(filename);
 
           query.prepare("INSERT INTO photos (photo_filename, photo_timestamp) "
           "VALUES (:filename, :time)");
-          query.bindValue(":filename", file);
+          query.bindValue(":filename", filename);
           query.bindValue(":time", timestamp);
           if(query.exec())
               return true;
-          if(!query.exec())
-            return false;
 
     }
-    else
+
         return false;
 
 

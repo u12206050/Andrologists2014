@@ -4,6 +4,7 @@
 #include "NSamplingFilterTest.h"
 #include "FaceDetectFilterTest.h"
 #include "LocalPersisterTest.h"
+#include "DatabasePersisterTest.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,9 @@ int main(int argc, char *argv[])
 
     LocalPersisterTest localPersisterTest;
     QTest::qExec(&localPersisterTest, argc, argv);
+
+    DatabasePersisterTest databasePersisterTest;
+    QTest::qExec(&databasePersisterTest, argc, argv);
 
     return 0;
 }

@@ -4,6 +4,7 @@
 #include "Filter.h"
 
 #include <opencv2/highgui/highgui.hpp>
+#include <QString>
 
 using namespace cv;
 
