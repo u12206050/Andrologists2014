@@ -26,7 +26,7 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
         if(!query.exec())
         {
             QString error(query.lastError().text());
-            throw Exception(error, 0);
+            throw ErrorException(error, 0);
         }
 
         query.clear();
@@ -35,7 +35,7 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
         if(!query.exec())
         {
             QString error("inserting image data.");
-            throw Exception(error, 1);
+            throw ErrorException(error, 1);
         }
 
         query.first();
@@ -50,12 +50,12 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
             if(!query.exec())
             {
                 QString error("inserting face data.");
-                throw Exception(error, 2);
+                throw ErrorException(error, 2);
             }
         }
         database.close();
     }
 
     QString error("database closed.");
-    throw Exception(error, 3);
+    throw ErrorException(error, 3);
 }

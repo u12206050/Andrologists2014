@@ -11,11 +11,13 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 SOURCES += \ 
-    main.cpp
+    main.cpp \
+    FacialFeatureRecognizerTest.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
 
-HEADERS += 
+HEADERS += \ 
+    FacialFeatureRecognizerTest.h
 
 OTHER_FILES +=

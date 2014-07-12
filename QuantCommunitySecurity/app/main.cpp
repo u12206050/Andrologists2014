@@ -36,7 +36,7 @@ int main(/*int argc, char *argv[]*/)
     {
         dbPersister.persistImageFileData(request);
     }
-    catch (Exception e)
+    catch (ErrorException e)
     {
         cout << e.toString().toStdString() << endl;
     }

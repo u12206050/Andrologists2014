@@ -21,7 +21,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
     {
         dbPersister.persistImageFileData(request);
     }
-    catch (Exception e)
+    catch (ErrorException e)
     {
         switch(e.getErrorCode())
         {

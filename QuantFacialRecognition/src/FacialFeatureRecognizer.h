@@ -12,9 +12,7 @@ class FacialFeatureRecognizer
     public:
         FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer, double threshold);
         GetSimilarFacesResponse* getSimilarFaces(GetSimilarFacesRequest* request);
-        void loadTrainingFromXML(String filename);
-        void saveTrainingToXML(String filename);
-        void train();
+        void loadTrainingFromXML(QString& filename);
 
     private:
         double threshold;

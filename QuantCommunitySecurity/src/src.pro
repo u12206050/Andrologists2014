@@ -28,7 +28,7 @@ SOURCES += \
     StreamCapturer.cpp \
     ShowImageFilter.cpp \
     DatabasePersister.cpp \
-    Exception.cpp
+    ErrorException.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -44,11 +44,10 @@ HEADERS += \
     FaceDetectFilter.h \
     ConfigReader.h \
     Capturer.h \
-    SimilarFace.h \
     NSamplingFilter.h \
     DiffSamplingFilter.h \
     StreamCapturer.h \
     ShowImageFilter.h \
     DatabasePersister.h \
     DatabasePersistRequest.h \
-    Exception.h
+    ErrorException.h

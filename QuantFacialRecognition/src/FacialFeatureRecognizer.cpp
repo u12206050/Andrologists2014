@@ -8,7 +8,7 @@ FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer,
 
 GetSimilarFacesResponse* FacialFeatureRecognizer::getSimilarFaces(GetSimilarFacesRequest* request)
 {
-    GetSimilarFacesResponse* response = new GetSimilarFacesResponse();
+    GetSimilarFacesResponse* response = new GetSimilarFacesResponse;
     for (unsigned int i = 0; i < request->facesToCompareWith.size(); i++)
     {
         Mat faceToCompare = imread(request->facesToCompareWith[i], CV_LOAD_IMAGE_UNCHANGED);
@@ -18,25 +18,15 @@ GetSimilarFacesResponse* FacialFeatureRecognizer::getSimilarFaces(GetSimilarFace
             SimilarFace* similarFace = new SimilarFace();
             similarFace->distance = distance;
             similarFace->timestamp = request->timestamps[i];
-            //similarFace->frame =
+            similarFace->frame = faceToCompare;
         }
     }
     return response;
 }
 
-void FacialFeatureRecognizer::loadTrainingFromXML(String filename)
+void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
 {
-    recognizer->load(filename);
-}
-
-void FacialFeatureRecognizer::saveTrainingToXML(String filename)
-{
-    recognizer->save(filename);
-}
-
-void FacialFeatureRecognizer::train()
-{
-
+    recognizer->load(filename.toStdString());
 }
 
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)

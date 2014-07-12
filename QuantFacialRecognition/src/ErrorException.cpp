@@ -1,22 +1,22 @@
-#include "Exception.h"
+#include "ErrorException.h"
 
-Exception::Exception(QString& cause, int errorCode)
+ErrorException::ErrorException(QString& cause, int errorCode)
 {
     this->cause = cause;
     this->errorCode = errorCode;
 }
 
-QString Exception::getCause()
+QString ErrorException::getCause()
 {
     return cause;
 }
 
-int Exception::getErrorCode()
+int ErrorException::getErrorCode()
 {
     return errorCode;
 }
 
-QString Exception::toString()
+QString ErrorException::toString()
 {
     QString returnString;
     QTextStream(&returnString) << 'E' << errorCode << ": " << cause;

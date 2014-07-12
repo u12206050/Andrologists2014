@@ -11,10 +11,14 @@ TEMPLATE = lib
 
 SOURCES += \
     FacialFeatureRecognizer.cpp \
-    Exception.cpp
+    ErrorException.cpp \
+    DatabaseReader.cpp
 
 HEADERS += \
     FacialFeatureRecognizer.h \
     GetSimilarFacesRequest.h \
     GetSimilarFacesResponse.h \
-    Exception.h
+    SimilarFace.h \
+    ErrorException.h \
+    DatabaseReader.h \
+    GetAllFacesInRangeResponse.h

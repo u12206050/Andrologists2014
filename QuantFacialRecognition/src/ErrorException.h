@@ -1,13 +1,13 @@
-#ifndef EXCEPTION_H
-#define EXCEPTION_H
+#ifndef ERROR_EXCEPTION_H
+#define ERROR_EXCEPTION_H
 
 #include <QString>
 #include <QTextStream>
 
-class Exception
+class ErrorException
 {
     public:
-        Exception(QString& cause, int errorCode);
+        ErrorException(QString& cause, int errorCode);
         QString getCause();
         int getErrorCode();
         QString toString();
