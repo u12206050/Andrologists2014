@@ -2,6 +2,7 @@
 #define _STREAMCAPTURER_H
 
 #include "Capturer.h"
+#include "ErrorException.h"
 
 class StreamCapturer : public Capturer
 {

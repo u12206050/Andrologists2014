@@ -5,6 +5,7 @@
 #include "FaceDetectFilterTest.h"
 #include "LocalPersisterTest.h"
 #include "DatabasePersisterTest.h"
+#include "StreamCapturerTest.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,9 @@ int main(int argc, char *argv[])
 
     DatabasePersisterTest databasePersisterTest;
     QTest::qExec(&databasePersisterTest, argc, argv);
+
+	StreamCapturerTest streamCapturerTest;
+	QTest::qExec(&streamCapturerTest, argc, argv);
 
     return 0;
 }

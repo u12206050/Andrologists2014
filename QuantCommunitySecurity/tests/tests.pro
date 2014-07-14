@@ -22,7 +22,8 @@ SOURCES += \
     FaceDetectFilterTest.cpp \
     NSamplingFilterTest.cpp \
     LocalPersisterTest.cpp \
-    DatabasePersisterTest.cpp
+    DatabasePersisterTest.cpp \
+    StreamCapturerTest.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -38,6 +39,7 @@ HEADERS += \
     FaceDetectFilterTest.h \
     NSamplingFilterTest.h \
     LocalPersisterTest.h \
-    DatabasePersisterTest.h
+    DatabasePersisterTest.h \
+    StreamCapturerTest.h
 
 OTHER_FILES +=

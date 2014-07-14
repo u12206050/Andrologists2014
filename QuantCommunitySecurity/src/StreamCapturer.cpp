@@ -4,7 +4,8 @@ StreamCapturer::StreamCapturer(QString& videoLocation)
 {
     if(!capturer.open(videoLocation.toStdString()))
     {
-        throw Exception();
+		QString cause("cannot open stream.");
+		throw ErrorException(cause, 0);
     }
 }
 
@@ -12,7 +13,8 @@ StreamCapturer::StreamCapturer(int deviceId)
 {
     if(!capturer.open(deviceId))
     {
-        throw Exception();
+		QString cause("cannot open device.");
+		throw ErrorException(cause, 1);
     }
 }
 
@@ -26,7 +28,8 @@ ImageData* StreamCapturer::getNextImage()
 
     if(!capturer.read(newImage->image))
     {
-        return NULL;
+		QString cause("no frame to read.");
+		throw ErrorException(cause, 2);
     }
     waitKey(1);
 

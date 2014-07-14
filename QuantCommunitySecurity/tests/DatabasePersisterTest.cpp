@@ -10,7 +10,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
     int port = 5432;
 
     DatabasePersistRequest* request =  new DatabasePersistRequest;
-    request->originalImageFilename.fromStdString("testFile");
+	request->originalImageFilename = "testFile";
     request->timeStamp = 10;
     request->facesFilenames.push_back(QString("testFace1"));
     request->facesFilenames.push_back(QString("testFace2"));
@@ -36,7 +36,6 @@ void DatabasePersisterTest::persistImageFileDataTest()
                 break;
             case 3:
                 QVERIFY(false);
-                break;
             default:
                 QVERIFY(false);
         }
