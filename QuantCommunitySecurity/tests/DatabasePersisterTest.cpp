@@ -4,7 +4,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
 {
     QString dbType("QPSQL");
     QString hostname("127.0.0.1");
-    QString dbName("quant");
+    QString dbName("postgres");
     QString username("postgres");
     QString password("root");
     int port = 5432;

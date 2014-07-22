@@ -16,7 +16,7 @@ using namespace cv;
 int main(/*int argc, char *argv[]*/)
 {
 	QString videoLocation("/home/zane/mjpg_cap/video4.mjpg");
-    Capturer* capturer = new StreamCapturer(videoLocation);
+    Capturer* capturer = new StreamCapturer(0);
 
     QString windowName("Video Stream");
     Filter* imageShower = new ShowImageFilter(windowName);
