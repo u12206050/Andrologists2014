@@ -29,11 +29,11 @@ int main(/*int argc, char *argv[]*/)
     secondOpinion.load("/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt_tree.xml");
     Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
 
-    /*CascadeClassifier eyeCascade1;
-    eyeCascade1.load("haarcascade_eye.xml");
-    CascadeClassifier eyeCascade2;
-    eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
-    Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);*/
+//    CascadeClassifier eyeCascade1;
+//    eyeCascade1.load("haarcascade_eye.xml");
+//    CascadeClassifier eyeCascade2;
+//    eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
+//    Filter* preProc = new PreProcessingFilter(400, eyeCascade1, eyeCascade2);
 
 	QString dir("../images/");
     Persister* persister = new LocalPersister(dir, 0);
@@ -41,7 +41,7 @@ int main(/*int argc, char *argv[]*/)
     Pipeline* pipeline = new SequentialPipeline();
     pipeline->attachCapturer(capturer);
     pipeline->attachFilter(imageShower);
-    pipeline->attachFilter(sampling);
+    //pipeline->attachFilter(sampling);
     pipeline->attachFilter(faceDetect);
     //pipeline->attachFilter(preProc);
     pipeline->attachPersister(persister);
