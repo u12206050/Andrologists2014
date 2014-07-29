@@ -16,9 +16,6 @@ SOURCES += \
 
 HEADERS += \
     FacialFeatureRecognizer.h \
-    GetSimilarFacesRequest.h \
-    GetSimilarFacesResponse.h \
-    SimilarFace.h \
     ErrorException.h \
     DatabaseReader.h \
     GetAllFacesInRangeResponse.h

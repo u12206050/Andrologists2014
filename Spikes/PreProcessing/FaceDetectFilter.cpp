@@ -5,7 +5,7 @@ FaceDetectFilter::FaceDetectFilter()
     // Load Face cascade (.xml file)
     //we use haarcascade_frontalface_alt_tree.xml, cause it gets the full face
     //others tend to only get the inner face eyes, to mouth
-    face_cascade.load("haarcascade_frontalface_alt_tree.xml");
+    face_cascade.load("../../testFiles/haarcascade_frontalface_alt_tree.xml");
     if(face_cascade.empty())
     {
         cout << "Error Loading HaarCascade";
@@ -24,7 +24,7 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
 
     // Detect faces
     vector<Rect> faces;
-    face_cascade.detectMultiScale( frame, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
+    face_cascade.detectMultiScale( frame, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(100, 100) );
 
 
     for(int i = 0; i < faces.size(); i++) {

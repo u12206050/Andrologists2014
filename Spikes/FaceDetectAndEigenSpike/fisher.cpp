@@ -75,7 +75,7 @@ static bool isSameFace(Mat face1, Mat face2, Mat W, Mat mean)
 	double confidence = 1/ sqrt(dist);*/
     cout << "dist: " << dist << ";  ";
     
-    if (dist <= 3710)//fisher = 920
+    if (dist <= 3710)//fisher = 920 eigen = 3710
     {
 		return true;
 	}
@@ -155,6 +155,9 @@ int main(int argc, const char *argv[])
 
     Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
     model->train(images, labels);
+    //model->save("training.xml");
+    
+    //model->load("training.xml");
 
     Mat W = model->getMat("eigenvectors");
     Mat eValues = model->getMat("eigenvalues");
@@ -233,7 +236,19 @@ int main(int argc, const char *argv[])
 	cout << "Pass: " << dpass << " Fail: " << dfail << endl;
 	cout << "Pass: " << pass << " Fail: " << fail << endl;
 	
-	Mat barrack = imread("newbarrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat barrack = imread("../../testFiles/FaceRec/barack_normal2_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat barrack2 = imread("../../testFiles/FaceRec/barack_smile_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	
+	if(isSameFace(barrack, barrack2, W, mean))
+	{
+		cout << "Barack Barack Passed" << endl;
+	}
+	else
+	{
+		cout << "Barack Barack Failed" << endl;
+	}
+	
+	/*Mat barrack = imread("newbarrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	cvtColor( barrack, barrack, CV_BGR2GRAY );
 	Mat barrack2 = imread("newbarrack2.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	cvtColor( barrack2, barrack2, CV_BGR2GRAY );

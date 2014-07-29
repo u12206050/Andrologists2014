@@ -247,10 +247,8 @@ void equalizeLeftAndRightHalves(Mat &faceImg)
 }
 
 
-Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
+Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, int desiredFaceHeight, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
 {
-    // Use square faces.
-    int desiredFaceHeight = desiredFaceWidth;
 
     // Mark the detected face region and eye search regions as invalid, in case they aren't detected.
     if (storeLeftEye)
@@ -362,9 +360,11 @@ Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &ey
     return Mat();
 }
 
-int main()
+int main(int argc, const char *argv[])
 {
-	Mat image = imread("imageWithFace.jpg.jpg", CV_LOAD_IMAGE_COLOR);
+	String s = argv[1];
+	cout << s << endl;
+	Mat image = imread("../../testFiles/FaceRec/" + s + ".jpg", CV_LOAD_IMAGE_COLOR);
 	imshow("Orig image", image);
 	waitKey(0);
 	
@@ -381,12 +381,13 @@ int main()
 	Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
     Point leftEye, rightEye;    // Position of the detected eyes.
     CascadeClassifier eyeCascade1;
-    eyeCascade1.load("haarcascade_eye.xml");
+    eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
     CascadeClassifier eyeCascade2;
-    eyeCascade2.load("haarcascade_eye_tree_eyeglasses.xml");
-	Mat prePrc = getPreprocessedFace(face, 400, eyeCascade1, eyeCascade2, true, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
+    eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
+	Mat prePrc = getPreprocessedFace(face, 92, 112, eyeCascade1, eyeCascade2, true, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
 	waitKey(0);
 	imshow("PreProc image", prePrc);
+	imwrite("../../testFiles/FaceRec/" + s + "_p.jpg", prePrc);
 	
 	waitKey(0);   
 	return 0;

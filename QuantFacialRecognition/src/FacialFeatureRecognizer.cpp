@@ -1,27 +1,8 @@
 #include "FacialFeatureRecognizer.h"
 
-FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer, double threshold)
+FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer)
 {
     this->recognizer = recognizer;
-    this->threshold = threshold;
-}
-
-GetSimilarFacesResponse* FacialFeatureRecognizer::getSimilarFaces(GetSimilarFacesRequest* request)
-{
-    GetSimilarFacesResponse* response = new GetSimilarFacesResponse;
-    for (unsigned int i = 0; i < request->facesToCompareWith.size(); i++)
-    {
-        Mat faceToCompare = imread(request->facesToCompareWith[i], CV_LOAD_IMAGE_UNCHANGED);
-        double distance = compareFaces(request->face, faceToCompare);
-        if (distance <= threshold)
-        {
-            SimilarFace* similarFace = new SimilarFace();
-            similarFace->distance = distance;
-            similarFace->timestamp = request->timestamps[i];
-            similarFace->frame = faceToCompare;
-        }
-    }
-    return response;
 }
 
 void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
@@ -32,10 +13,12 @@ void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)
 {
 
-    Mat proj = subspaceProject(recognizer->getMat("eigenvectors"), recognizer->getMat("mean"), face1.reshape(1,1));
-    Mat proj2 = subspaceProject(recognizer->getMat("eigenvectors"), recognizer->getMat("mean"), face2.reshape(1,1));
+	Mat eigenVectors = recognizer->getMat("eigenvectors");
+	Mat mean = recognizer->getMat("mean");
 
-    double distance = norm(proj, proj2, NORM_L2);
-    return distance;
+	Mat proj = subspaceProject(eigenVectors, mean, face1.reshape(1,1));
+	Mat proj2 = subspaceProject(eigenVectors, mean, face2.reshape(1,1));
+
+	return norm(proj, proj2, NORM_L2);
 }
 
