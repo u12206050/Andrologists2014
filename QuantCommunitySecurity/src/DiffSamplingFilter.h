@@ -1,7 +1,7 @@
 #ifndef DIFF_SAMPLING_FILTER_H
 #define DIFF_SAMPLING_FILTER_H
 
-#include "SamplingFilter.h"
+#include "Filter.h"
 #include "ImageData.h"
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"

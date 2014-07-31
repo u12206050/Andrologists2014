@@ -3,6 +3,10 @@
 
 #include "Persister.h"
 #include <QTextStream>
+#include <sys/stat.h>
+#include <opencv2/highgui/highgui.hpp>
+
+using namespace cv;
 
 class LocalPersister : public Persister
 {

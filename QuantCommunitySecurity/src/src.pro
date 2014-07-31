@@ -11,7 +11,6 @@ TEMPLATE = lib
 
 SOURCES += \
     SequentialPipeline.cpp \
-    SamplingFilter.cpp \
     PreProcessingFilter.cpp \
     Pipeline.cpp \
     Persister.cpp \
@@ -32,7 +31,6 @@ SOURCES += \
 
 HEADERS += \
     SequentialPipeline.h \
-    SamplingFilter.h \
     PreProcessingFilter.h \
     Pipeline.h \
     Persister.h \

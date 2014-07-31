@@ -153,15 +153,15 @@ int main(int argc, const char *argv[])
 	}
 	cout << endl;
 
-    Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
-    model->train(images, labels);
+    Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
+    //model->train(images, labels);
     //model->save("training.xml");
     
-    //model->load("training.xml");
+    model->load("training.xml");
 
     Mat W = model->getMat("eigenvectors");
     Mat eValues = model->getMat("eigenvalues");
-    cout << "eigens: " << W.cols << endl;
+    cout << "eigens: " << W.size() << endl;
     Mat mean = model->getMat("mean");
 
 	int dpass = 0;
@@ -238,6 +238,9 @@ int main(int argc, const char *argv[])
 	
 	Mat barrack = imread("../../testFiles/FaceRec/barack_normal2_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	Mat barrack2 = imread("../../testFiles/FaceRec/barack_smile_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	
+	cout << "bn: " << barrack.reshape(1,1).size() << endl;
+	cout << "bn2: " << barrack2.reshape(1,1).size() << endl;
 	
 	if(isSameFace(barrack, barrack2, W, mean))
 	{

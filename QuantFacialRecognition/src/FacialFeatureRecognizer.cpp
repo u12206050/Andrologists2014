@@ -7,7 +7,7 @@ FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer)
 
 void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
 {
-    recognizer->load(filename.toStdString());
+	recognizer->load(filename.toStdString());
 }
 
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)

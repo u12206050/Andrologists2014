@@ -3,6 +3,10 @@
 
 #include "Capturer.h"
 #include "ErrorException.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <QDateTime>
+
+using namespace cv;
 
 class StreamCapturer : public Capturer
 {

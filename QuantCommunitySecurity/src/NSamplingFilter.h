@@ -1,7 +1,7 @@
 #ifndef N_SAMPLING_FILTER_H
 #define N_SAMPLING_FILTER_H
 
-#include "SamplingFilter.h"
+#include "Filter.h"
 
 class NSamplingFilter : public Filter
 {
