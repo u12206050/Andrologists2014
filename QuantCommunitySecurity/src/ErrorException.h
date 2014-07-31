@@ -17,4 +17,4 @@ class ErrorException
         int errorCode;
 };
 
-#endif // EXCEPTION_H
+#endif

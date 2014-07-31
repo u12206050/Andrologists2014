@@ -1,5 +1,5 @@
-#ifndef FACEDETECTFILTER_H
-#define FACEDETECTFILTER_H
+#ifndef FACE_DETECT_FILTER_H
+#define FACE_DETECT_FILTER_H
 
 #include "Filter.h"
 #include "ImageData.h"
@@ -23,4 +23,4 @@ class FaceDetectFilter : public Filter
         CascadeClassifier secondOpinion;
 };
 
-#endif // FACEDETECTFILTER_H
+#endif

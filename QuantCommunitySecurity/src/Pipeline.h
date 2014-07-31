@@ -1,5 +1,5 @@
-#if !defined(_PIPELINE_H)
-#define _PIPELINE_H
+#ifndef PIPELINE_H
+#define PIPELINE_H
 
 #include "Filter.h"
 #include "Capturer.h"
@@ -13,7 +13,6 @@ class Pipeline
 {
     public:
         virtual ~Pipeline();
-        virtual void process(int iterations) = 0;
         int getNumberOfFilters();
         void attachFilter(Filter* filter);
         void attachFilters(vector<Filter*> filters);
@@ -22,6 +21,8 @@ class Pipeline
         Capturer* detachCapturer();
         Persister* detachPersister();
         Filter* detachLastFilter();
+    
+	virtual void process(int iterations) = 0;
 
     protected:
         vector<Filter*> filters;
@@ -29,4 +30,4 @@ class Pipeline
         Persister* persister;
 };
 
-#endif  //_PIPELINE_H
+#endif

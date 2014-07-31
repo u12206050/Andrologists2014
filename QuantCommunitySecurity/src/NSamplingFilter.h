@@ -1,9 +1,9 @@
-#if !defined(_NSAMPLINGFILTER_H)
-#define _NSAMPLINGFILTER_H
+#ifndef N_SAMPLING_FILTER_H
+#define N_SAMPLING_FILTER_H
 
 #include "SamplingFilter.h"
 
-class NSamplingFilter : public SamplingFilter
+class NSamplingFilter : public Filter
 {
     public:
         NSamplingFilter(int n);

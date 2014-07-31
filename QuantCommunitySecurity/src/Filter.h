@@ -11,4 +11,4 @@ class Filter
 };
 
 
-#endif // FILTER_H
+#endif

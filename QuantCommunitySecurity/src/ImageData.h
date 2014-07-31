@@ -17,4 +17,4 @@ class ImageData
         qint64 timestamp;
 };
 
-#endif // IMAGEDATA_H
+#endif

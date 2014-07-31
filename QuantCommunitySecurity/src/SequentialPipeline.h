@@ -1,5 +1,5 @@
-#if !defined(_SEQUENTIALPIPELINE_H)
-#define _SEQUENTIALPIPELINE_H
+#ifndef SEQUENTIAL_PIPELINE_H
+#define SEQUENTIAL_PIPELINE_H
 
 #include "Pipeline.h"
 

@@ -1,5 +1,5 @@
-#if !defined(_STREAMCAPTURER_H)
-#define _STREAMCAPTURER_H
+#ifndef STREAM_CAPTURER_H
+#define STREAM_CAPTURER_H
 
 #include "Capturer.h"
 #include "ErrorException.h"
@@ -16,4 +16,4 @@ class StreamCapturer : public Capturer
         VideoCapture capturer;
 };
 
-#endif  //_RTSPCAPTURER_H
+#endif
