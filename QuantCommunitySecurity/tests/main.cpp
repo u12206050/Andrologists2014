@@ -6,6 +6,7 @@
 #include "LocalPersisterTest.h"
 #include "DatabasePersisterTest.h"
 #include "StreamCapturerTest.h"
+#include "ConfigReaderTest.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
 
 	StreamCapturerTest streamCapturerTest;
 	QTest::qExec(&streamCapturerTest, argc, argv);
+
+	ConfigReaderTest configReaderTest;
+	QTest::qExec(&configReaderTest, argc, argv);
 
     return 0;
 }

@@ -9,12 +9,24 @@
 #include "FaceDetectFilter.h"
 #include "ShowImageFilter.h"
 #include "PreProcessingFilter.h"
+#include "ConfigReader.h"
 
 using namespace std;
 using namespace cv;
 
 int main(/*int argc, char *argv[]*/)
 {
+	try
+	{
+		ConfigReader reader("../../testFiles/configTest.txt");
+	}
+	catch (ErrorException e)
+	{
+		cout << e.toString().toStdString() << endl;
+	}
+
+	return 1;
+
 	QString videoLocation("/home/zane/mjpg_cap/video4.mjpg");
     Capturer* capturer = new StreamCapturer(0);
 

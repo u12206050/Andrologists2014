@@ -1,0 +1,20 @@
+[SequentialPipeline]
+iterations=5;
+[StreamCapturer]
+location="http://192.168.0.5";
+[NSamplingFilter]
+n=5;
+[FaceDetectFilter]
+	haar1 = "place.xml";
+	haar2 = "place2.xml";
+
+[LocalPersister]
+
+directoy="/home";
+[DatabasePersister]
+type="postgre";
+host="localhost";
+name="quant";
+username="postgre";
+password="root";
+port=5345;

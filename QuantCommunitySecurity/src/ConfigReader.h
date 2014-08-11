@@ -2,11 +2,19 @@
 #define _CONFIGREADER_H
 
 #include <fstream>
+#include <sstream>
 #include <string>
 #include "Pipeline.h"
+#include "SequentialPipeline.h"
 #include "Capturer.h"
+#include "StreamCapturer.h"
 #include "Persister.h"
 #include "Filter.h"
+#include "NSamplingFilter.h"
+#include "DiffSamplingFilter.h"
+#include "FaceDetectFilter.h"
+#include "PreProcessingFilter.h"
+#include "LocalPersister.h"
 #include "ErrorException.h"
 #include <queue>
 
@@ -40,7 +48,7 @@ class ConfigReader
 
 		queue<string> tokens;
 		int currentToken;
-		Pipeline* pipleline;
+		Pipeline* pipelineProduct;
 		Capturer* capturerProduct;
 		vector<Filter*> filters;
 		Persister* persisterProduct;

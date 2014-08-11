@@ -11,4 +11,4 @@ class DatabasePersisterTest : public QObject
     private slots:
         void persistImageFileDataTest();
 };
-#endif // DATABASEPERSISTERTEST_H
+#endif
