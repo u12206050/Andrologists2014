@@ -1,0 +1,61 @@
+@font-face
+{
+	font-family: 'cfBlack';
+	src: url('fonts/Black.ttf');
+}
+@font-face
+{
+	font-family: 'cfBold';
+	src: url('fonts/Bold.ttf');
+}
+@font-face
+{
+	font-family: 'cfLight';
+	src: url('fonts/Light.ttf');
+}
+@font-face
+{
+	font-family: 'cfMedium';
+	src: url('fonts/Medium.ttf');
+}
+
+.borderL
+{
+	border:10px groove;
+	border-top-left-radius: 20px;
+	border-bottom-right-radius: 10px;	
+	border-top-right-radius: 100px 50px;	
+	border-bottom-left-radius: 100px 47px;
+	padding: 40px 20px;
+
+	transition-property: all;
+	transition-duration: 5s;
+	transition-timing-function: ease;
+}
+
+h1
+{
+	font-family: 'cfBold';
+}
+
+body
+{
+	font-family: 'cfMedium';
+}
+
+img
+{
+	max-width: 100%;
+}
+
+.button-wrap {
+    width: 70%;
+}
+
+.center {
+    text-align: center;
+}
+
+.darkred {
+	color: #EAEAEA;
+}
