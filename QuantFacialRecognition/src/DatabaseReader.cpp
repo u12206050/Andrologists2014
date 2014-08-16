@@ -51,8 +51,8 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 	}
 }
 
-vector<QString> DatabaseReader::getRandomIdentifiers(int caseId)
+QString DatabaseReader::getImageIds(QString randomIdentifier)
 {
-	//Select randomIdentifier FROM CaseResults WHERE case_id = caseId
+	//Select ImageId FROM CaseResults WHERE randomIdentifier = randomIdentifier
 	//Something like this
 }

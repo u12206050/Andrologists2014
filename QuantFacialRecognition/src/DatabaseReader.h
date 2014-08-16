@@ -10,7 +10,7 @@ class DatabaseReader
 	public:
 		DatabaseReader(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port);
 		GetAllFacesInRangeResponse* getAllFacesInRange(QDateTime begin, QDateTime end);
-		vector<QString> getRandomIdentifiers(int caseId);
+		QString getImageIds(QString randomIdentifier);
 
 	private:
 		QSqlDatabase database;
