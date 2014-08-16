@@ -50,3 +50,9 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 		throw ErrorException(error, 1);
 	}
 }
+
+vector<QString> DatabaseReader::getRandomIdentifiers(int caseId)
+{
+	//Select randomIdentifier FROM CaseResults WHERE case_id = caseId
+	//Something like this
+}
