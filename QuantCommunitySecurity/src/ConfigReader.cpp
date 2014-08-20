@@ -5,7 +5,6 @@ ConfigReader::ConfigReader(String filename)
 	ifstream inputFile(filename.c_str());
 	if (inputFile.is_open())
 	{
-			cout << "here1" << endl;
 		string line;
 		string input;
 		while (inputFile >> line)
@@ -63,6 +62,8 @@ void ConfigReader::config()
 	while (token == "NSamplingFilter" || token == "DiffSamplingFilter" || token =="FaceDetectFilter" || token == "preProcessingFilter")
 	{
 		filter();
+        consumeToken("[");
+        token = tokens.front();
 	}
 	persister();
 
@@ -228,7 +229,6 @@ void ConfigReader::preProcessingFilter()
 
 void ConfigReader::persister()
 {
-	consumeToken("[");
 	string token = tokens.front();
 	if (token == "LocalPersister")
 	{

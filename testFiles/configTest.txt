@@ -9,8 +9,8 @@ n=5;
 	haar2 = "place2.xml";
 
 [LocalPersister]
-
-directoy="/home";
+id=5;
+directory="/home";
 [DatabasePersister]
 type="postgre";
 host="localhost";
