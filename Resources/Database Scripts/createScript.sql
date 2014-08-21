@@ -11,6 +11,7 @@ CREATE TABLE faces
 	id bigserial NOT NULL,
 	filename character varying(200) NOT NULL,
 	image_id bigint NOT NULL,
+        isFemale boolean,
 	CONSTRAINT faces_primary_key PRIMARY KEY (id),
 	CONSTRAINT face_image_relationship FOREIGN KEY (image_id)
 		REFERENCES images (id) MATCH SIMPLE
