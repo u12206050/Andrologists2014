@@ -1,9 +1,9 @@
 #include "FaceDetectFilter.h"
 
-FaceDetectFilter::FaceDetectFilter(CascadeClassifier& faceCascade, CascadeClassifier& secondOpinion)
+FaceDetectFilter::FaceDetectFilter(string faceCascadeFilename, string faceCascadeSecondOpinionFilename)
 {
-    this->faceCascade = faceCascade;
-    this->secondOpinion = secondOpinion;
+    faceCascade.load(faceCascadeFilename);
+    secondOpinion.load(faceCascadeSecondOpinionFilename);
 }
 
 FaceDetectFilter::~FaceDetectFilter()

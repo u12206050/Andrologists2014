@@ -14,7 +14,7 @@ using namespace cv;
 class FaceDetectFilter : public Filter
 {
     public:
-        FaceDetectFilter(CascadeClassifier& faceCascade, CascadeClassifier& faceCascadeSecondOpinion);
+        FaceDetectFilter(string faceCascadeFilename, string faceCascadeSecondOpinionFilename);
         ~FaceDetectFilter();
         virtual ImageData* filter(ImageData* image);
 

@@ -35,10 +35,8 @@ int main(/*int argc, char *argv[]*/)
 
     Filter* sampling = new DiffSamplingFilter(0.16);
 
-    CascadeClassifier faceCascade;
-    faceCascade.load("/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt.xml");
-    CascadeClassifier secondOpinion;
-    secondOpinion.load("/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt_tree.xml");
+    string faceCascade = "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt.xml";
+    string secondOpinion = "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt_tree.xml";
     Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
 
 //    CascadeClassifier eyeCascade1;

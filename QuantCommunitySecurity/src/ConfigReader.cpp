@@ -29,21 +29,21 @@ void ConfigReader::tokenise(string input)
 	for (unsigned int i = 0; i < input.length(); i++)
 	{
 		char c = input[i];
-		if (c == '[' || c == ']' || c == ';' || c == '=')
+        if (c == '[' || c == ']' || c == ';' || c == '=' || c == '\"')
 		{
+            stringstream ss;
+            ss << c;
+            string charConvert;
+            ss >> charConvert;
 			if (token != "")
 			{
 				tokens.push(token);
-				stringstream ss;
-				ss << c;
-				string charConvert;
-				ss >> charConvert;
 				tokens.push(charConvert);
 				token = "";
 			}
 			else
 			{
-				tokens.push("[");
+                tokens.push(charConvert);
 			}
 		}
 		else
@@ -59,16 +59,13 @@ void ConfigReader::config()
 	capturer();
 	consumeToken("[");
 	string token = tokens.front();
-	while (token == "NSamplingFilter" || token == "DiffSamplingFilter" || token =="FaceDetectFilter" || token == "preProcessingFilter")
+    while (token == "NSamplingFilter" || token == "DiffSamplingFilter" || token =="FaceDetectFilter" || token == "PreProcessingFilter")
 	{
 		filter();
         consumeToken("[");
         token = tokens.front();
 	}
 	persister();
-
-
-
 }
 
 void ConfigReader::pipeline()
@@ -124,11 +121,22 @@ void ConfigReader::streamCapturer()
 	consumeToken("location");
 	consumeToken("=");
 	string token = tokens.front();
-	tokens.pop();
-	//work with token check if int
+    if (token == "\"")
+    {
+        consumeToken("\"");
+        token = tokens.front();
+        tokens.pop();
+        QString location(token.c_str());
+        capturerProduct = new StreamCapturer(location);
+        consumeToken("\"");
+    }
+    else
+    {
+        token = tokens.front();
+        tokens.pop();
+        capturerProduct = new StreamCapturer(atoi(token.c_str()));
+    }
 	consumeToken(";");
-	QString location(token.c_str());
-	//capturerProduct = new StreamCapturer(location);
 }
 
 void ConfigReader::filter()
@@ -190,41 +198,56 @@ void ConfigReader::faceDetectFilter()
 {
 	consumeToken("FaceDetectFilter");
 	consumeToken("]");
-	consumeToken("haar1");
+    consumeToken("haarCascade1");
 	consumeToken("=");
-	string token = tokens.front();
+    consumeToken("\"");
+    string haarCascade1 = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
-	consumeToken("haar2");
+    consumeToken("haarCascade2");
 	consumeToken("=");
-	token = tokens.front();
+    consumeToken("\"");
+    string haarCascade2 = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
-	//filters.push_back(new FaceDetectFilter(NULL, NULL));
+    filters.push_back(new FaceDetectFilter(haarCascade1, haarCascade2));
 }
 
 void ConfigReader::preProcessingFilter()
 {
 	consumeToken("PreProcessingFilter");
 	consumeToken("]");
-	consumeToken("eyeCasecade1");
+    consumeToken("eyeCascade1");
 	consumeToken("=");
+    consumeToken("\"");
 	string eyeCascade1 = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
-	consumeToken("eyeCasecade2");
+    consumeToken("eyeCascade2");
 	consumeToken("=");
+    consumeToken("\"");
 	string eyeCascade2 = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
-	consumeToken("targetSquareSize");
+    consumeToken("targetWidth");
 	consumeToken("=");
 	string token = tokens.front();
 	tokens.pop();
-	int size;
-	stringstream(token) >> size;
+    int targetWidth;
+    stringstream(token) >> targetWidth;
 	consumeToken(";");
-	//filters.push_back(new PreProcessingFilter());
+    consumeToken("targetHeight");
+    consumeToken("=");
+    token = tokens.front();
+    tokens.pop();
+    int targetHeight;
+    stringstream(token) >> targetHeight;
+    consumeToken(";");
+    filters.push_back(new PreProcessingFilter(targetWidth, targetHeight, eyeCascade1, eyeCascade2));
 }
 
 void ConfigReader::persister()
@@ -255,8 +278,10 @@ void ConfigReader::localPersister()
 	consumeToken(";");
 	consumeToken("directory");
 	consumeToken("=");
+    consumeToken("\"");
 	QString directory = tokens.front().c_str();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 	persisterProduct = new LocalPersister(directory, id);
 	databasePersister();
@@ -270,32 +295,42 @@ void ConfigReader::databasePersister()
 
 	consumeToken("type");
 	consumeToken("=");
+    consumeToken("\"");
 	string type = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("host");
 	consumeToken("=");
+    consumeToken("\"");
 	string host = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("name");
 	consumeToken("=");
+    consumeToken("\"");
 	string name = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("username");
 	consumeToken("=");
+    consumeToken("\"");
 	string username = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("password");
 	consumeToken("=");
+    consumeToken("\"");
 	string password = tokens.front();
 	tokens.pop();
+    consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("port");
@@ -305,8 +340,6 @@ void ConfigReader::databasePersister()
 	int port;
 	stringstream(portToken) >> port;
 	consumeToken(";");
-
-
 }
 
 void ConfigReader::consumeToken(string expected)
@@ -321,7 +354,7 @@ void ConfigReader::consumeToken(string expected)
 		cause.append(token.c_str());
 		cause.append(" found.");
 		throw ErrorException(cause, 1);
-	}
+    }
 }
 
 Pipeline* ConfigReader::createPipeline()
