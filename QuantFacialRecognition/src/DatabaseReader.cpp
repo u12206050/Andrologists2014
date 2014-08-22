@@ -51,8 +51,35 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 	}
 }
 
-QString DatabaseReader::getImageIds(QString randomIdentifier)
+QString DatabaseReader::getImagePath(QString randomIdentifier)
 {
+    if (database.open())
+    {
+        QSqlQuery query;
+        query.prepare("SELECT images.filename "
+                      "FROM images"
+                      "WHERE images.id=faces.image_id AND caseResults.randomIdentifier='randomIdentifier'");
+
+        if(!query.exec())
+        {
+            QString error("getting image path.");
+            throw ErrorException(error, 0);
+        }
+
+        QString filename;
+        while (query.next())
+        {
+            filename = query.value(0).toString();
+        }
+
+        return filename;
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 1);
+    }
+
 	//Select ImageId FROM CaseResults WHERE randomIdentifier = randomIdentifier
 	//Something like this
 }
