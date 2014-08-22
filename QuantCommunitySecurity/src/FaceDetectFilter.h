@@ -14,13 +14,14 @@ using namespace cv;
 class FaceDetectFilter : public Filter
 {
     public:
-        FaceDetectFilter(string faceCascadeFilename, string faceCascadeSecondOpinionFilename);
+        FaceDetectFilter(string faceCascadeFilename, string faceCascadeSecondOpinionFilename = "");
         ~FaceDetectFilter();
         virtual ImageData* filter(ImageData* image);
 
     private:
         CascadeClassifier faceCascade;
         CascadeClassifier secondOpinion;
+        bool useSecondOpinion;
 };
 
 #endif

@@ -4,7 +4,7 @@ void ConfigReaderTest::configReaderTest()
 {
 	try
 	{
-		ConfigReader reader("../../testFiles/configTest.txt");
+        ConfigReader reader("../../testFiles/configTest.txt");
 	}
 	catch (ErrorException e)
 	{
