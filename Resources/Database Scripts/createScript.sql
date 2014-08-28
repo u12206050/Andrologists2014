@@ -21,19 +21,28 @@ CREATE TABLE faces
 CREATE TABLE users
 (
 	id bigserial NOT NULL,
-	userName varchar(50),
-	password varchar(30),
+	userName varchar(50) NOT NULL,
+	password varchar(30) NOT NULL,
+	active boolean NOT NULL,
 	CONSTRAINT users_primary_key PRIMARY KEY (id)
 );
+
+CREATE TYPE Gender AS 
+ENUM ("M", "F");
 
 CREATE TABLE cases
 (
 	id bigserial NOT NULL,
 	description text,
+	subName text,
+	subSurname text,
+	subGender Gender,
+	subAge smallint,
 	image_id bigint NOT NULL,
 	status int,
 	progress smallint,
 	user_id bigint NOT NULL,
+	numResults smallint,
 	CONSTRAINT cases_primary_key PRIMARY KEY (id),
 	CONSTRAINT case_image_relationship FOREIGN KEY (image_id)
 		REFERENCES images (id) MATCH SIMPLE
