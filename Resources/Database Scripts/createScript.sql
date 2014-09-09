@@ -20,10 +20,10 @@ CREATE TABLE faces
 
 CREATE TABLE users
 (
-	userName varchar(50) NOT NULL,
+	username varchar(50) NOT NULL,
 	password varchar(30) NOT NULL,
 	active boolean NOT NULL,
-	CONSTRAINT users_primary_key PRIMARY KEY (userName)
+	CONSTRAINT users_primary_key PRIMARY KEY (username)
 );
 
 CREATE TYPE Gender AS 
@@ -33,36 +33,36 @@ CREATE TABLE cases
 (
 	id bigserial NOT NULL,
 	description text,
-	subName text,
-	subSurname text,
-	subGender Gender,
-	subAge smallint,
+	sub_name text,
+	sub_surname text,
+	sub_gender Gender,
+	sub_age smallint,
 	image_id bigint NOT NULL,
 	status int,
 	progress smallint,
-	userName varchar(50) NOT NULL,
-	numResults smallint,
+	username varchar(50) NOT NULL,
+	num_results smallint,
 	CONSTRAINT cases_primary_key PRIMARY KEY (id),
 	CONSTRAINT case_image_relationship FOREIGN KEY (image_id)
 		REFERENCES images (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT case_user_relationship FOREIGN KEY (userName)
-		REFERENCES users (userName) MATCH SIMPLE
+	CONSTRAINT case_user_relationship FOREIGN KEY (username)
+		REFERENCES users (username) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-CREATE TABLE caseResults
+CREATE TABLE case_results
 (
 	id bigserial NOT NULL,
-	image_id bigint NOT NULL,
+	face_id bigint NOT NULL,
 	case_id bigint NOT NULL,
-	percentageMatch smallint NOT NULL,
-	randomIdentifier varchar(20),
+	percentage_match smallint NOT NULL,
+	random_identifier varchar(20),
 	CONSTRAINT case_results_primary_key PRIMARY KEY (id),
-	CONSTRAINT caseResult_image_relationship FOREIGN KEY (image_id)
-		REFERENCES images (id) MATCH SIMPLE
-		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT caseResult_case_relationship FOREIGN KEY (case_id)
+	CONSTRAINT case_result_case_relationship FOREIGN KEY (case_id)
 		REFERENCES cases (id) MATCH SIMPLE
+		ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT case_result_face_relationship FOREIGN KEY (face_id)
+		REFERENCES faces (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );

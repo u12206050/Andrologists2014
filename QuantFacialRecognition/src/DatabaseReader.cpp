@@ -81,5 +81,67 @@ QString DatabaseReader::getImagePath(QString randomIdentifier)
     }
 
 	//Select ImageId FROM CaseResults WHERE randomIdentifier = randomIdentifier
-	//Something like this
+    //Something like this
+}
+
+QString DatabaseReader::getOriginalImageFilename(int caseId)
+{
+    if (database.open())
+    {
+        QSqlQuery query;
+        query.prepare("SELECT images.filename "
+                      "FROM cases, images"
+                      "WHERE images.id = cases.image_id AND cases.id = :caseId");
+        query.bindValue(":caseId", caseId);
+
+        if(!query.exec())
+        {
+            QString error("getting image path.");
+            throw ErrorException(error, 0);
+        }
+
+        QString filename = query.value(0).toString();
+
+        return filename;
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 1);
+    }
+}
+
+GetFaceDetailsResponse* DatabaseReader::getAllFaceFilenames()
+{
+    if (database.open())
+    {
+        GetFaceDetailsResponse* response = new GetFaceDetailsResponse;
+        vector<int> ids;
+        vector<QString> faceNames;
+        QSqlQuery query;
+        query.prepare("SELECT faces.filename, faces.id"
+                      "FROM faces");
+
+        if(!query.exec())
+        {
+            QString error("getting face filenames.");
+            throw ErrorException(error, 0);
+        }
+
+        while (query.next())
+        {
+            faceNames.push_back(query.value(0).toString());
+            ids.push_back(query.value(1).toInt());
+        }
+
+        response->faceFilnames = faceNames;
+        response->ids = ids;
+
+        return response;
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 1);
+    }
 }
