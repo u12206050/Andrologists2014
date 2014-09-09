@@ -12,10 +12,12 @@ TEMPLATE = lib
 SOURCES += \
     FacialFeatureRecognizer.cpp \
     ErrorException.cpp \
-    DatabaseReader.cpp
+    DatabaseReader.cpp \
+    CaseAuthenticator.cpp
 
 HEADERS += \
     FacialFeatureRecognizer.h \
     ErrorException.h \
     DatabaseReader.h \
-    GetAllFacesInRangeResponse.h
+    GetAllFacesInRangeResponse.h \
+    CaseAuthenticator.h

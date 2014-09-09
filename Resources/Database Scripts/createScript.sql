@@ -20,11 +20,10 @@ CREATE TABLE faces
 
 CREATE TABLE users
 (
-	id bigserial NOT NULL,
 	userName varchar(50) NOT NULL,
 	password varchar(30) NOT NULL,
 	active boolean NOT NULL,
-	CONSTRAINT users_primary_key PRIMARY KEY (id)
+	CONSTRAINT users_primary_key PRIMARY KEY (userName)
 );
 
 CREATE TYPE Gender AS 
@@ -41,14 +40,14 @@ CREATE TABLE cases
 	image_id bigint NOT NULL,
 	status int,
 	progress smallint,
-	user_id bigint NOT NULL,
+	userName varchar(50) NOT NULL,
 	numResults smallint,
 	CONSTRAINT cases_primary_key PRIMARY KEY (id),
 	CONSTRAINT case_image_relationship FOREIGN KEY (image_id)
 		REFERENCES images (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT case_user_relationship FOREIGN KEY (user_id)
-		REFERENCES users (id) MATCH SIMPLE
+	CONSTRAINT case_user_relationship FOREIGN KEY (userName)
+		REFERENCES users (userName) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
