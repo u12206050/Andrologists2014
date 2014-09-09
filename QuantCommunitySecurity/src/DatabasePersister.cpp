@@ -1,13 +1,8 @@
 ﻿#include "DatabasePersister.h"
 
-DatabasePersister::DatabasePersister(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port)
+DatabasePersister::DatabasePersister(QSqlDatabase database)
 {
-    database = QSqlDatabase::addDatabase(databaseType);
-    database.setHostName(hostname);
-    database.setDatabaseName(databaseName);
-    database.setUserName(username);
-    database.setPassword(password);
-    database.setPort(port);
+    this->database = database;
 }
 
 DatabasePersister::~DatabasePersister()

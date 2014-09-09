@@ -1,13 +1,8 @@
 #include "DatabaseReader.h"
 
-DatabaseReader::DatabaseReader(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port)
+DatabaseReader::DatabaseReader(QSqlDatabase database)
 {
-	database = QSqlDatabase::addDatabase(databaseType);
-	database.setHostName(hostname);
-	database.setDatabaseName(databaseName);
-	database.setUserName(username);
-	database.setPassword(password);
-	database.setPort(port);
+    this->database = database;
 }
 
 GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, QDateTime end)
@@ -111,7 +106,7 @@ QString DatabaseReader::getOriginalImageFilename(int caseId)
     }
 }
 
-GetFaceDetailsResponse* DatabaseReader::getAllFaceFilenames()
+GetFaceDetailsResponse* DatabaseReader::getAllFaceFilenamesAndIds()
 {
     if (database.open())
     {

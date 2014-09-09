@@ -11,7 +11,7 @@ using namespace std;
 class DatabasePersister
 {
     public:
-        DatabasePersister(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port);
+        DatabasePersister(QSqlDatabase database);
         ~DatabasePersister();
         void persistImageFileData(DatabasePersistRequest* request);
 

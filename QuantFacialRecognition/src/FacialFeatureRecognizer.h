@@ -9,21 +9,26 @@
 #include "PreProcessingFilter.h"
 #include "FaceDetectFilter.h"
 #include "ErrorException.h"
-#include "DatabasePersister.h"
+#include "CaseManager.h"
+#include <QtSql>
 
 using namespace cv;
 
 class FacialFeatureRecognizer
 {
     public:
-		FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer);
+        FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer, double threshold, QSqlDatabase database, Filter* faceDetectFilter, Filter* preProcessingFilter);
 		double compareFaces(Mat& face1, Mat& face2);
         void loadTrainingFromXML(QString& filename);
-        void processCase(int caseId);
+        void processCase(CaseManager caseManager);
 
     private:
         Ptr<FaceRecognizer> recognizer;
         double threshold;
+        QSqlDatabase database;
+        Filter* faceDetectFilter;
+        Filter* preProcessingFilter;
+
 
 };
 

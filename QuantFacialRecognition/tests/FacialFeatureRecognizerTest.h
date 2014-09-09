@@ -3,6 +3,7 @@
 
 #include <QtTest/QtTest>
 #include "FacialFeatureRecognizer.h"
+#include <QtSql>
 
 class FacialFeatureRecognizerTest : public QObject
 {

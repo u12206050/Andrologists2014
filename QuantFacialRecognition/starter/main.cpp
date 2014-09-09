@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include "CaseAuthenticator.h"
+#include "CaseManager.h"
 #include <unistd.h>
 
 using namespace std;

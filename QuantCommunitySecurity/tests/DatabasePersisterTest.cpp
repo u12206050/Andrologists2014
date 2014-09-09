@@ -9,6 +9,8 @@ void DatabasePersisterTest::persistImageFileDataTest()
     QString password("root");
     int port = 5432;
 
+    DatabaseConnection dbConnection(dbType, hostname, dbName, username, password, port);
+
     DatabasePersistRequest* request =  new DatabasePersistRequest;
 	request->originalImageFilename = "testFile";
     request->timeStamp = 10;
@@ -16,7 +18,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
     request->facesFilenames.push_back(QString("testFace2"));
     request->facesFilenames.push_back(QString("testFace3"));
 
-    DatabasePersister dbPersister = DatabasePersister(dbType, hostname, dbName, username, password, port);
+    DatabasePersister dbPersister = DatabasePersister(dbConnection.getDatabase());
     try
     {
         dbPersister.persistImageFileData(request);

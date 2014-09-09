@@ -5,12 +5,11 @@
 #include "GetAllFacesInRangeResponse.h"
 #include "GetFaceDetailsResponse.h"
 #include <QtSql>
-#include <vector>
 
 class DatabaseReader
 {
 	public:
-		DatabaseReader(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port);
+        DatabaseReader(QSqlDatabase database);
 		GetAllFacesInRangeResponse* getAllFacesInRange(QDateTime begin, QDateTime end);
         QString getImagePath(QString randomIdentifier);
         QString getOriginalImageFilename(int caseId);

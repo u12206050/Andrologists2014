@@ -4,6 +4,7 @@
 #include <QtTest/QtTest>
 
 #include "DatabasePersister.h"
+#include "DatabaseConnection.h"
 
 class DatabasePersisterTest : public QObject
 {
