@@ -3,6 +3,7 @@
 
 #include "ErrorException.h"
 #include "GetAllFacesInRangeResponse.h"
+#include "GetFaceDetailsResponse.h"
 #include <QtSql>
 #include <vector>
 
@@ -13,7 +14,7 @@ class DatabaseReader
 		GetAllFacesInRangeResponse* getAllFacesInRange(QDateTime begin, QDateTime end);
         QString getImagePath(QString randomIdentifier);
         QString getOriginalImageFilename(int caseId);
-        vector<QString> getAllFaceFilenames();
+        GetFaceDetailsResponse* getAllFaceFilenamesAndIds();
 
 	private:
 		QSqlDatabase database;
