@@ -1,8 +1,12 @@
 #include "CaseManager.h"
 
-CaseManager::CaseManager(QSqlDatabase database, int caseId)
+#include <iostream>
+
+using namespace std;
+
+CaseManager::CaseManager(DatabaseConnection* databaseConnection, int caseId)
 {
-    this->database = database;
+    this->databaseConnection = databaseConnection;
     this->caseId = caseId;
 }
 
@@ -33,7 +37,7 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
 
     randomIdentifier += faceId;
 
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
         query.prepare("INSERT INTO case_results "
@@ -41,7 +45,7 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
                       "VALUES (:faceId, :caseId, :percentageMatch, :randomIdentifier)");
         query.bindValue(":faceId", faceId);
         query.bindValue(":caseId", caseId);
-        query.bindValue(":pecentageMatch", percentageMatch);
+        query.bindValue(":percentageMatch", percentageMatch);
         QString qRandomIdentifier(randomIdentifier.c_str());
         query.bindValue(":randomIdentifier", qRandomIdentifier);
         if(!query.exec())
@@ -63,23 +67,31 @@ bool CaseManager::authenticateCase(QString username, QString password)
     {
         return false;
     }
-
-    QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM users, cases WHERE users.userName = cases.userName AND users.userName = :userName AND cases.case.id = :caseId AND users.password = :password");
-    query.bindValue(":userName", username);
-    query.bindValue(":caseId", caseId);
-    query.bindValue(":password", password);
-
-
-    if(!query.exec())
+    if (databaseConnection->getDatabase().open())
     {
-        QString error("Authenticating user");
-        throw ErrorException(error, 0);
+        QSqlQuery query;
+        query.prepare("SELECT COUNT(*) FROM users, cases WHERE users.username = cases.username AND users.username = :userName AND cases.id = :caseId AND users.password = :password");
+        query.bindValue(":userName", username);
+        query.bindValue(":caseId", caseId);
+        query.bindValue(":password", password);
+
+        if(!query.exec())
+        {
+            cout << query.lastError().text().toStdString() << endl;
+            QString error("Authenticating user");
+            throw ErrorException(error, 0);
+        }
+
+        query.next();
+        if (query.value(0).toInt() == 1)
+        {
+            return true;
+        }
     }
-
-    if (query.value(0).toInt() == 1)
+    else
     {
-        return true;
+        QString error("database closed.");
+        throw ErrorException(error, 3);
     }
 
     return false;

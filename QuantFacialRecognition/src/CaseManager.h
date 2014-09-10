@@ -4,19 +4,20 @@
 #include <QtSql>
 #include <string>
 #include "ErrorException.h"
+#include "DatabaseConnection.h"
 
 using namespace std;
 
 class CaseManager
 {
     public:
-        CaseManager(QSqlDatabase database, int caseId);
+        CaseManager(DatabaseConnection* databaseConnection, int caseId);
         void updateCaseStatus(int faceId, double percentageMatch);
         bool authenticateCase(QString username, QString password);
         int getCaseId();
 
     private:
-        QSqlDatabase database;
+        DatabaseConnection* databaseConnection;
         int caseId;
 };
 

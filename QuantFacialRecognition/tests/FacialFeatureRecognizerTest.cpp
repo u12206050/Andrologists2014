@@ -3,8 +3,7 @@
 void FacialFeatureRecognizerTest::compareSimilarFacesTest()
 {
     Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    QSqlDatabase database;
-    FacialFeatureRecognizer recognizer(model, 0, database, NULL, NULL);
+    FacialFeatureRecognizer recognizer(model, 0, NULL, NULL, NULL);
 	QString trainingFile("../../testFiles/FaceRec/training.xml");
     recognizer.loadTrainingFromXML(trainingFile);
 
@@ -20,8 +19,7 @@ void FacialFeatureRecognizerTest::compareSimilarFacesTest()
 void FacialFeatureRecognizerTest::compareNormalSmileSimilarFacesTest()
 {
 	Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    QSqlDatabase database;
-    FacialFeatureRecognizer recognizer(model, 0, database, NULL, NULL);
+    FacialFeatureRecognizer recognizer(model, 0, NULL, NULL, NULL);
 	QString trainingFile("../../testFiles/FaceRec/training.xml");
 	recognizer.loadTrainingFromXML(trainingFile);
 
@@ -37,8 +35,7 @@ void FacialFeatureRecognizerTest::compareNormalSmileSimilarFacesTest()
 void FacialFeatureRecognizerTest::compareNormalFrownSimilarFacesTest()
 {
 	Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    QSqlDatabase database;
-    FacialFeatureRecognizer recognizer(model, 0, database, NULL, NULL);
+    FacialFeatureRecognizer recognizer(model, 0, NULL, NULL, NULL);
 	QString trainingFile("../../testFiles/FaceRec/training.xml");
 	recognizer.loadTrainingFromXML(trainingFile);
 
@@ -54,8 +51,7 @@ void FacialFeatureRecognizerTest::compareNormalFrownSimilarFacesTest()
 void FacialFeatureRecognizerTest::compareSmileFrownSimilarFacesTest()
 {
 	Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    QSqlDatabase database;
-    FacialFeatureRecognizer recognizer(model, 0, database, NULL, NULL);
+    FacialFeatureRecognizer recognizer(model, 0, NULL, NULL, NULL);
 	QString trainingFile("../../testFiles/FaceRec/training.xml");
 	recognizer.loadTrainingFromXML(trainingFile);
 
@@ -71,8 +67,7 @@ void FacialFeatureRecognizerTest::compareSmileFrownSimilarFacesTest()
 void FacialFeatureRecognizerTest::compareDifferentFacesTest()
 {
 	Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    QSqlDatabase database;
-    FacialFeatureRecognizer recognizer(model, 0, database, NULL, NULL);
+    FacialFeatureRecognizer recognizer(model, 0, NULL, NULL, NULL);
 	QString trainingFile("../../testFiles/FaceRec/training.xml");
 	recognizer.loadTrainingFromXML(trainingFile);
 

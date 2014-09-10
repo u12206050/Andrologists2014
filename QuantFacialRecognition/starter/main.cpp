@@ -16,21 +16,27 @@ int main(int argc, char* argv[])
 
     int caseId = atoi(argv[0]);
     QString username = argv[1];
-    QString password = argv[2];
+    QString password = argv[2];*/
 
-    QString dbType("PGSQL");
+    int caseId = 1;
+    QString username = "zane";
+    QString password = "zane";
+
+    QString dbType("QPSQL");
     QString dbHost("localhost");
     QString dbName("quant");
     QString dbUser("postgres");
     QString dbPassword("root");
 
-    CaseAuthenticator ca(dbType, dbHost, dbName, dbUser, dbPassword, 5432);
-    if (!ca.authenticate(caseId, username, password))
+    DatabaseConnection* conn = new DatabaseConnection(dbType, dbHost, dbName, dbUser, dbPassword, 5432);
+
+    CaseManager manager(conn, caseId);
+    if (!manager.authenticateCase(username, password))
     {
         cout << "1" << endl;\
         return 1;
     }
-    cout << "0" << endl;*/
+    cout << "0" << endl;
 
     /*if (WINDOWS)
     {
@@ -59,7 +65,7 @@ int main(int argc, char* argv[])
     }
     if (LINUX)
     {*/
-    char* programPath = "main";
+    char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_GCC_32bit-Debug/app/app";
 
     pid_t pid = fork(); /* Create a child process */
 

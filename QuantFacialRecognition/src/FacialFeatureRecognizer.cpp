@@ -1,12 +1,12 @@
 #include "FacialFeatureRecognizer.h"
 
-FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer, double threshold, QSqlDatabase database, Filter* faceDetectFilter, Filter* preProcessingFilter)
+FacialFeatureRecognizer::FacialFeatureRecognizer(Ptr<FaceRecognizer> recognizer, double threshold, DatabaseConnection* databaseConnection, Filter* faceDetectFilter, Filter* preProcessingFilter)
 {
     this->recognizer = recognizer;
     this->threshold = threshold;
-    this->database = database;
     this->faceDetectFilter = faceDetectFilter;
     this->preProcessingFilter = preProcessingFilter;
+    this->databaseConnection = databaseConnection;
 }
 
 void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
@@ -14,10 +14,12 @@ void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
     recognizer->load(filename.toStdString());
 }
 
-void FacialFeatureRecognizer::processCase(CaseManager caseManager)
+void FacialFeatureRecognizer::processCase(int caseId)
 {
-    DatabaseReader dbReader(database);
-    QString filename = dbReader.getOriginalImageFilename(caseManager.getCaseId());
+    DatabaseReader dbReader(databaseConnection);
+    CaseManager* caseManager = new CaseManager(databaseConnection, caseId);
+     cout << "hrer" << endl;
+    QString filename = dbReader.getOriginalImageFilename(caseManager->getCaseId());
     Mat imageTaken = imread(filename.toStdString(), CV_LOAD_IMAGE_UNCHANGED);
     ImageData* imageData = new ImageData();
     imageData->image = imageTaken;
@@ -35,12 +37,13 @@ void FacialFeatureRecognizer::processCase(CaseManager caseManager)
 
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
-        Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
+        caseManager->updateCaseStatus(faceIds[i], 10);
+        /*Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
         if (percentageMatch <= threshold)
         {
-            caseManager.updateCaseStatus(faceIds[i], percentageMatch);
-        }
+            caseManager->updateCaseStatus(faceIds[i], percentageMatch);
+        }*/
     }
 
 }

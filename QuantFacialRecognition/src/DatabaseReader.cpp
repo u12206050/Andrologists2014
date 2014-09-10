@@ -1,13 +1,13 @@
 #include "DatabaseReader.h"
 
-DatabaseReader::DatabaseReader(QSqlDatabase database)
+DatabaseReader::DatabaseReader(DatabaseConnection* databaseConnection)
 {
-    this->database = database;
+    this->databaseConnection = databaseConnection;
 }
 
 GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, QDateTime end)
 {
-	if (database.open())
+    if (databaseConnection->getDatabase().open())
 	{
 		GetAllFacesInRangeResponse* response = new GetAllFacesInRangeResponse;
 
@@ -48,7 +48,7 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 
 QString DatabaseReader::getImagePath(QString randomIdentifier)
 {
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
         query.prepare("SELECT images.filename "
@@ -81,11 +81,11 @@ QString DatabaseReader::getImagePath(QString randomIdentifier)
 
 QString DatabaseReader::getOriginalImageFilename(int caseId)
 {
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
         query.prepare("SELECT images.filename "
-                      "FROM cases, images"
+                      "FROM cases, images "
                       "WHERE images.id = cases.image_id AND cases.id = :caseId");
         query.bindValue(":caseId", caseId);
 
@@ -95,6 +95,7 @@ QString DatabaseReader::getOriginalImageFilename(int caseId)
             throw ErrorException(error, 0);
         }
 
+        query.next();
         QString filename = query.value(0).toString();
 
         return filename;
@@ -108,13 +109,13 @@ QString DatabaseReader::getOriginalImageFilename(int caseId)
 
 GetFaceDetailsResponse* DatabaseReader::getAllFaceFilenamesAndIds()
 {
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         GetFaceDetailsResponse* response = new GetFaceDetailsResponse;
         vector<int> ids;
         vector<QString> faceNames;
         QSqlQuery query;
-        query.prepare("SELECT faces.filename, faces.id"
+        query.prepare("SELECT faces.filename, faces.id "
                       "FROM faces");
 
         if(!query.exec())
