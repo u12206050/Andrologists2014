@@ -205,14 +205,21 @@ void ConfigReader::faceDetectFilter()
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
-    consumeToken("haarCascade2");
-	consumeToken("=");
-    consumeToken("\"");
-    string haarCascade2 = tokens.front();
-	tokens.pop();
-    consumeToken("\"");
-	consumeToken(";");
-    filters.push_back(new FaceDetectFilter(haarCascade1, haarCascade2));
+    if (tokens.front() == "haarCascade2")
+    {
+        consumeToken("haarCascade2");
+        consumeToken("=");
+        consumeToken("\"");
+        string haarCascade2 = tokens.front();
+        tokens.pop();
+        consumeToken("\"");
+        consumeToken(";");
+        filters.push_back(new FaceDetectFilter(haarCascade1, haarCascade2));
+    }
+    else
+    {
+        filters.push_back(new FaceDetectFilter(haarCascade1));
+    }
 }
 
 void ConfigReader::preProcessingFilter()
@@ -296,7 +303,7 @@ void ConfigReader::databasePersister()
 	consumeToken("type");
 	consumeToken("=");
     consumeToken("\"");
-	string type = tokens.front();
+    QString type(tokens.front().c_str());
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
@@ -304,7 +311,7 @@ void ConfigReader::databasePersister()
 	consumeToken("host");
 	consumeToken("=");
     consumeToken("\"");
-	string host = tokens.front();
+    QString host(tokens.front().c_str());
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
@@ -312,7 +319,7 @@ void ConfigReader::databasePersister()
 	consumeToken("name");
 	consumeToken("=");
     consumeToken("\"");
-	string name = tokens.front();
+    QString name(tokens.front().c_str());
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
@@ -320,7 +327,7 @@ void ConfigReader::databasePersister()
 	consumeToken("username");
 	consumeToken("=");
     consumeToken("\"");
-	string username = tokens.front();
+    QString username(tokens.front().c_str());;
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
@@ -328,18 +335,23 @@ void ConfigReader::databasePersister()
 	consumeToken("password");
 	consumeToken("=");
     consumeToken("\"");
-	string password = tokens.front();
+    QString password(tokens.front().c_str());
 	tokens.pop();
     consumeToken("\"");
 	consumeToken(";");
 
 	consumeToken("port");
 	consumeToken("=");
-	string portToken = tokens.front();
+    QString portToken(tokens.front().c_str());
 	tokens.pop();
 	int port;
-	stringstream(portToken) >> port;
+    stringstream(portToken.toStdString()) >> port;
 	consumeToken(";");
+
+    DatabaseConnection* conn = new DatabaseConnection(type, host, name, username, password, port);
+
+    DatabasePersister* dbPersister = new DatabasePersister(conn);
+    persisterProduct->setDatabasePersister(dbPersister);
 }
 
 void ConfigReader::consumeToken(string expected)

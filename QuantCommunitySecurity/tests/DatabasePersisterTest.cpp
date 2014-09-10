@@ -4,12 +4,12 @@ void DatabasePersisterTest::persistImageFileDataTest()
 {
     QString dbType("QPSQL");
     QString hostname("127.0.0.1");
-    QString dbName("postgres");
+    QString dbName("quant");
     QString username("postgres");
     QString password("root");
     int port = 5432;
 
-    DatabaseConnection dbConnection(dbType, hostname, dbName, username, password, port);
+    DatabaseConnection* dbConnection= new DatabaseConnection(dbType, hostname, dbName, username, password, port);
 
     DatabasePersistRequest* request =  new DatabasePersistRequest;
 	request->originalImageFilename = "testFile";
@@ -18,7 +18,7 @@ void DatabasePersisterTest::persistImageFileDataTest()
     request->facesFilenames.push_back(QString("testFace2"));
     request->facesFilenames.push_back(QString("testFace3"));
 
-    DatabasePersister dbPersister = DatabasePersister(dbConnection.getDatabase());
+    DatabasePersister dbPersister = DatabasePersister(dbConnection);
     try
     {
         dbPersister.persistImageFileData(request);

@@ -2,6 +2,7 @@
 #define _LOCALPERSISTER_H
 
 #include "Persister.h"
+#include "DatabasePersister.h"
 #include <QTextStream>
 #include <sys/stat.h>
 #include <opencv2/highgui/highgui.hpp>
@@ -12,6 +13,7 @@ class LocalPersister : public Persister
 {
     public:
         LocalPersister(QString& directoryPath, int id);
+        LocalPersister(QString& directoryPath, int id, DatabasePersister* databasePersister);
         ~LocalPersister();
         void persistImageData(ImageData* image);
 

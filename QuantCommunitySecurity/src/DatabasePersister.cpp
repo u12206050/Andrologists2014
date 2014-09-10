@@ -1,8 +1,13 @@
 ﻿#include "DatabasePersister.h"
 
-DatabasePersister::DatabasePersister(QSqlDatabase database)
+DatabasePersister::DatabasePersister()
 {
-    this->database = database;
+
+}
+
+DatabasePersister::DatabasePersister(DatabaseConnection* databaseConnection)
+{
+    this->databaseConnection = databaseConnection;
 }
 
 DatabasePersister::~DatabasePersister()
@@ -12,7 +17,7 @@ DatabasePersister::~DatabasePersister()
 
 void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
 {
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
 		query.prepare("INSERT INTO images (filename, timestamp) VALUES (:filename, :timestamp)");

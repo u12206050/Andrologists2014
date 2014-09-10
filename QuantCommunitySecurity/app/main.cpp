@@ -18,16 +18,29 @@ int main(/*int argc, char *argv[]*/)
 {
 	try
 	{
-		ConfigReader reader("../../testFiles/configTest.txt");
+        ConfigReader reader("../../Resources/config.txt");
+        Pipeline* pipeline = reader.createPipeline();
+        QString windowName("Video Stream");
+        Filter* imageShower = new ShowImageFilter(windowName);
+        //pipeline->attachFilter(imageShower);
+        pipeline->attachCapturer(reader.createCapturer());
+        pipeline->attachFilters(reader.createFilters());
+        vector<Filter*> filters = reader.createFilters();
+        for (int i = 0;i < filters.size(); i++)
+        {
+            cout << filters[i] << endl;
+        }
+        pipeline->attachPersister(reader.createPersister());
+        pipeline->process(500);
 	}
 	catch (ErrorException e)
 	{
 		cout << e.toString().toStdString() << endl;
 	}
 
-	return 1;
+    /*return 1;
 
-	QString videoLocation("/home/zane/mjpg_cap/video4.mjpg");
+    QString videoLocation("/home/zane/mjpg_cap/video4.mjpg");
     Capturer* capturer = new StreamCapturer(0);
 
     QString windowName("Video Stream");
@@ -65,6 +78,6 @@ int main(/*int argc, char *argv[]*/)
     //QCoreApplication a(argc, argv);
 
 
-	//return a.exec();
+    //return a.exec();*/
     return 0;
 }

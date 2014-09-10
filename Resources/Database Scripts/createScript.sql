@@ -26,16 +26,13 @@ CREATE TABLE users
 	CONSTRAINT users_primary_key PRIMARY KEY (username)
 );
 
-CREATE TYPE Gender AS 
-ENUM ("M", "F");
-
 CREATE TABLE cases
 (
 	id bigserial NOT NULL,
 	description text,
 	sub_name text,
 	sub_surname text,
-	sub_gender Gender,
+	sub_isFemale boolean,
 	sub_age smallint,
 	image_id bigint NOT NULL,
 	status int,

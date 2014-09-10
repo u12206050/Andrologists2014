@@ -3,20 +3,20 @@
 
 #include "DatabasePersistRequest.h"
 #include "ErrorException.h"
-
-#include <QtSql>
+#include "DatabaseConnection.h"
 
 using namespace std;
 
 class DatabasePersister
 {
     public:
-        DatabasePersister(QSqlDatabase database);
+        DatabasePersister();
+        DatabasePersister(DatabaseConnection* databaseConnection);
         ~DatabasePersister();
-        void persistImageFileData(DatabasePersistRequest* request);
+        virtual void persistImageFileData(DatabasePersistRequest* request);
 
    private:
-        QSqlDatabase database;
+        DatabaseConnection* databaseConnection;
 };
 
 #endif // DATABASEPERSISTER_H

@@ -15,9 +15,9 @@ targetHeight=100;
 
 [LocalPersister]
 id=5;
-directory="/home";
+directory="/home/zane/images";
 [DatabasePersister]
-type="postgre";
+type="QPSQL";
 host="localhost";
 name="quant";
 username="postgre";

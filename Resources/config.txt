@@ -1,0 +1,17 @@
+[SequentialPipeline]
+iterations=50;
+[StreamCapturer]
+location=0;
+[FaceDetectFilter]
+	haarCascade1 = "../../testFiles/haarcascade_frontalface_alt2.xml";
+
+[LocalPersister]
+id=5;
+directory="/home/zane/images/";
+[DatabasePersister]
+type="QPSQL";
+host="127.0.0.1";
+name="quant";
+username="postgres";
+password="root";
+port=5432;

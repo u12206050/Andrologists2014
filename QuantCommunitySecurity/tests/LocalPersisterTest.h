@@ -4,6 +4,7 @@
 #include <QtTest/QtTest>
 #include "LocalPersister.h"
 #include <fstream>
+#include "FakeDatabasePersister.h"
 
 using namespace std;
 
