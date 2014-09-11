@@ -12,8 +12,9 @@
  void detectAndDisplay( Mat frame, string s );
 
  /** Global variables */
- String face_cascade_name = "haarcascade_frontalface_alt.xml";
- String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
+ String face_cascade_name = "../../testFiles/haarcascade_frontalface_alt2.xml";
+ //String eyes_cascade_name = "../../testFiles/haarcascade_eye_tree_eyeglasses.xml";
+ String eyes_cascade_name = "../../testFiles/haarcascade_eye.xml";
  CascadeClassifier face_cascade;
  CascadeClassifier eyes_cascade;
  string window_name = "Capture - Face detection";
@@ -27,11 +28,11 @@
    if( !eyes_cascade.load( eyes_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
 
 
-	Mat india = imread("/home/zane/Documents/COS301/MainProject/Spikes/FaceDetectAndEigenSpike/i_0_name_304802220.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat india = imread("2.pgm", CV_LOAD_IMAGE_UNCHANGED);
 	Mat barrack = imread("barrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	Mat many = imread("many.jpg", CV_LOAD_IMAGE_UNCHANGED); 
 	
-	cvtColor( india, india, CV_BGR2GRAY );
+	//cvtColor( india, india, CV_BGR2GRAY );
 	cvtColor( barrack, barrack, CV_BGR2GRAY );
 	cvtColor( many, many, CV_BGR2GRAY );
 	
@@ -44,7 +45,7 @@
        else
        { printf(" --(!) No captured frame -- Break!"); }
        
-             if( !barrack.empty() )
+             /*if( !barrack.empty() )
        { detectAndDisplay( barrack,"1" ); }
        else
        { printf(" --(!) No captured frame -- Break!"); }
@@ -52,7 +53,7 @@
               if( !many.empty() )
        { detectAndDisplay( many,"2" ); }
        else
-       { printf(" --(!) No captured frame -- Break!"); }
+       { printf(" --(!) No captured frame -- Break!"); }*/
        
       
    waitKey(0); 
@@ -66,10 +67,10 @@ void detectAndDisplay( Mat frame,string s )
   Mat frame_gray = frame;
 
   //cvtColor( frame, frame_gray, CV_BGR2GRAY );
-  equalizeHist( frame_gray, frame_gray );
+  //equalizeHist( frame_gray, frame_gray );
 
   //-- Detect faces
-  face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0) );
+  face_cascade.detectMultiScale( frame_gray, faces, 1.05, 2, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0) );
   cout << s << ": " << faces.size() << " faces in picture." << endl;
 
   for( size_t i = 0; i < faces.size(); i++ )
@@ -81,7 +82,10 @@ void detectAndDisplay( Mat frame,string s )
     std::vector<Rect> eyes;
 
     //-- In each face, detect eyes
-    eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 |CV_HAAR_SCALE_IMAGE, Size(0, 0) );
+    
+    //eyes_cascade.detectMultiScale( faceROI, eyes, 1.01, 4, 0 |CASCADE_FIND_BIGGEST_OBJECT, Size(0, 0) );
+    eyes_cascade.detectMultiScale( faceROI, eyes, 1.01, 4, 0 |CV_HAAR_SCALE_IMAGE, Size(0, 0) );
+    cout << s << ": " << eyes.size() << " eyes in picture." << endl;
 
     for( size_t j = 0; j < eyes.size(); j++ )
      {

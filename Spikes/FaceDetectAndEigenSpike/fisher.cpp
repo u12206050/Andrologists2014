@@ -3,6 +3,9 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "cvaux.h"
 
+#include "PreProcessingFilter.h"
+#include "FaceDetectFilter.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -47,13 +50,42 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
         CV_Error(CV_StsBadArg, error_message);
     }
     string line, path, classlabel;
+    
+	CascadeClassifier eyeCascade1;
+	eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
+	CascadeClassifier eyeCascade2;
+	eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
+	Filter* preProc = new PreProcessingFilter(220, 220, eyeCascade1, eyeCascade2);
+	
+	CascadeClassifier faceCascade;
+    faceCascade.load("../../testFiles/haarcascade_frontalface_alt.xml");
+    CascadeClassifier secondOpinion;
+    secondOpinion.load("../../haarcascade_frontalface_alt_tree.xml");
+    Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
+    int cnt = 0;
     while (getline(file, line)) 
     {	
+		cnt++;
+		cout << cnt << endl;
 		stringstream liness(line);
         getline(liness, path, separator);
         getline(liness, classlabel);
-        if(!path.empty() && !classlabel.empty()) {
-            images.push_back(imread(path, 0));
+
+
+        if(!path.empty() && !classlabel.empty()) 
+        {
+			Mat image = imread(path, 0);
+			ImageData* data = new ImageData();
+			data->image = image;
+			//imshow("preProc", image);
+			//waitKey(0);
+			data = faceDetect->filter(data);
+			//imshow("preProc", data->faces[0]);
+			//waitKey(0);
+			ImageData* result = preProc->filter(data);
+			//imshow("preProc", result->faces[0]);
+			//waitKey(0);
+            images.push_back(result->faces[0]);
             labels.push_back(atoi(classlabel.c_str()));
         }
     }
@@ -75,7 +107,7 @@ static bool isSameFace(Mat face1, Mat face2, Mat W, Mat mean)
 	double confidence = 1/ sqrt(dist);*/
     cout << "dist: " << dist << ";  ";
     
-    if (dist <= 3710)//fisher = 920 eigen = 3710
+    if (dist <= 3000)//fisher = 920 eigen = 3710 GGT        eigen = 140000					yale
     {
 		return true;
 	}
@@ -154,25 +186,29 @@ int main(int argc, const char *argv[])
 	cout << endl;
 
     Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-    //model->train(images, labels);
+    model->train(images, labels);
     //model->save("training.xml");
     
-    model->load("training.xml");
+    //model->load("training.xml");
 
     Mat W = model->getMat("eigenvectors");
     Mat eValues = model->getMat("eigenvalues");
     cout << "eigens: " << W.size() << endl;
     Mat mean = model->getMat("mean");
+    
+    imshow("mean", norm_0_255(mean.reshape(1, images[0].rows)));
+    waitKey(0);
 
 	int dpass = 0;
 	int dfail = 0;
-	for (int i = 0; i < generalisationImages.size()/2; i++)
+	for (int i = 0; i < generalisationImages.size()-2; i++)
 	{
-		for (int j = 10; j < generalisationImages.size(); j++)
+		for (int j = i; j < generalisationImages.size(); j++)
 		{
+			cout << generalisationLabels[i] << " ||| " << generalisationLabels[j] << endl;
 			if (generalisationLabels[i] == generalisationLabels[j] && isSameFace(generalisationImages[i], generalisationImages[j], W, mean))
 			{
-				cout << "PASS same faces HUUUUUUH" << endl;
+				cout << "PASS same faces" << endl;
 				dpass++;
 			}
 			else if (generalisationLabels[i] != generalisationLabels[j] && !isSameFace(generalisationImages[i], generalisationImages[j], W, mean))
@@ -187,7 +223,7 @@ int main(int argc, const char *argv[])
 			}
 		}
 	}
-	int pass = 0;
+	/*int pass = 0;
 	int fail = 0;
 	for (int i = 0; i < generalisationImages.size()/2-1; i++)
 	{
@@ -231,18 +267,46 @@ int main(int argc, const char *argv[])
 				fail++;
 			}
 		}
-	}
+	}*/
 	
 	cout << "Pass: " << dpass << " Fail: " << dfail << endl;
-	cout << "Pass: " << pass << " Fail: " << fail << endl;
+	//cout << "Pass: " << pass << " Fail: " << fail << endl;
 	
-	Mat barrack = imread("../../testFiles/FaceRec/barack_normal2_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
-	Mat barrack2 = imread("../../testFiles/FaceRec/barack_smile_p.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	CascadeClassifier eyeCascade1;
+	eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
+	CascadeClassifier eyeCascade2;
+	eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
+	Filter* preProc = new PreProcessingFilter(220, 220, eyeCascade1, eyeCascade2);
 	
-	cout << "bn: " << barrack.reshape(1,1).size() << endl;
-	cout << "bn2: " << barrack2.reshape(1,1).size() << endl;
+	CascadeClassifier faceCascade;
+    faceCascade.load("../../testFiles/haarcascade_frontalface_alt.xml");
+    CascadeClassifier secondOpinion;
+    secondOpinion.load("../../haarcascade_frontalface_alt_tree.xml");
+    Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
 	
-	if(isSameFace(barrack, barrack2, W, mean))
+	Mat barrack = imread("../../testFiles/FaceRec/barack_smile.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat barrack2 = imread("../../testFiles/FaceRec/barack_normal2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	
+	//Mat barrack = imread("kobus1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	//Mat barrack2 = imread("kobus2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	
+	ImageData* idata1 = new ImageData();
+	idata1->image = barrack;
+	ImageData* idata2 = new ImageData();
+	idata2->image = barrack2;
+	
+	idata1 = faceDetect->filter(idata1);
+	idata1 = preProc->filter(idata1);
+	
+	idata2 = faceDetect->filter(idata2);
+	idata2 = preProc->filter(idata2);
+	
+	imshow("b1", idata1->faces[0]);
+	imshow("b2", idata2->faces[0]);
+	waitKey(0);
+	
+	
+	if(isSameFace(idata1->faces[0], idata2->faces[0], W, mean))
 	{
 		cout << "Barack Barack Passed" << endl;
 	}
