@@ -55,10 +55,10 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
 	eyeCascade1.load("../../testFiles/haarcascade_eye.xml");
 	CascadeClassifier eyeCascade2;
 	eyeCascade2.load("../../testFiles/haarcascade_eye_tree_eyeglasses.xml");
-	Filter* preProc = new PreProcessingFilter(220, 220, eyeCascade1, eyeCascade2);
+	Filter* preProc = new PreProcessingFilter(140, 150, eyeCascade1, eyeCascade2);
 	
 	CascadeClassifier faceCascade;
-    faceCascade.load("../../testFiles/haarcascade_frontalface_alt.xml");
+    faceCascade.load("../../testFiles/haarcascade_frontalface_alt_tree.xml");
     CascadeClassifier secondOpinion;
     secondOpinion.load("../../haarcascade_frontalface_alt_tree.xml");
     Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
@@ -74,19 +74,22 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
 
         if(!path.empty() && !classlabel.empty()) 
         {
-			Mat image = imread(path, 0);
+			Mat image = imread(path, CV_LOAD_IMAGE_UNCHANGED);
 			ImageData* data = new ImageData();
 			data->image = image;
-			//imshow("preProc", image);
+			//imshow("orig", image);
 			//waitKey(0);
 			data = faceDetect->filter(data);
-			//imshow("preProc", data->faces[0]);
-			//waitKey(0);
-			ImageData* result = preProc->filter(data);
-			//imshow("preProc", result->faces[0]);
-			//waitKey(0);
-            images.push_back(result->faces[0]);
-            labels.push_back(atoi(classlabel.c_str()));
+			if (data->faces.size() > 0)
+			{
+				//imshow("facedetect", data->faces[0]);
+				//waitKey(0);
+				ImageData* result = preProc->filter(data);
+				//imshow("preProc", result->faces[0]);
+				//waitKey(0);
+				images.push_back(result->faces[0]);
+				labels.push_back(atoi(classlabel.c_str()));
+            }
         }
     }
 }
@@ -174,7 +177,7 @@ int main(int argc, const char *argv[])
 
     int height = images[0].rows;
     
-    cout << "Generalisation data" << endl;
+    /*cout << "Generalisation data" << endl;
     for (int i = 0; i < 20; i++)
     {
 		generalisationImages.push_back(images[images.size() - 1]);
@@ -183,11 +186,11 @@ int main(int argc, const char *argv[])
 		images.pop_back();
 		labels.pop_back();
 	}
-	cout << endl;
+	cout << endl;*/
 
     Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
     model->train(images, labels);
-    //model->save("training.xml");
+    model->save("training.xml");
     
     //model->load("training.xml");
 
@@ -199,7 +202,7 @@ int main(int argc, const char *argv[])
     imshow("mean", norm_0_255(mean.reshape(1, images[0].rows)));
     waitKey(0);
 
-	int dpass = 0;
+	/*int dpass = 0;
 	int dfail = 0;
 	for (int i = 0; i < generalisationImages.size()-2; i++)
 	{
@@ -222,7 +225,7 @@ int main(int argc, const char *argv[])
 				dfail++;
 			}
 		}
-	}
+	}*/
 	/*int pass = 0;
 	int fail = 0;
 	for (int i = 0; i < generalisationImages.size()/2-1; i++)
@@ -269,7 +272,7 @@ int main(int argc, const char *argv[])
 		}
 	}*/
 	
-	cout << "Pass: " << dpass << " Fail: " << dfail << endl;
+	/*cout << "Pass: " << dpass << " Fail: " << dfail << endl;
 	//cout << "Pass: " << pass << " Fail: " << fail << endl;
 	
 	CascadeClassifier eyeCascade1;
@@ -285,12 +288,12 @@ int main(int argc, const char *argv[])
     Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
 	
 	Mat barrack = imread("../../testFiles/FaceRec/barack_smile.jpg", CV_LOAD_IMAGE_UNCHANGED);
-	Mat barrack2 = imread("../../testFiles/FaceRec/barack_normal2.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	Mat barrack2 = imread("../../testFiles/FaceRec/barack_normal2.jpg", CV_LOAD_IMAGE_UNCHANGED);*/
 	
 	//Mat barrack = imread("kobus1.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	//Mat barrack2 = imread("kobus2.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	
-	ImageData* idata1 = new ImageData();
+	/*ImageData* idata1 = new ImageData();
 	idata1->image = barrack;
 	ImageData* idata2 = new ImageData();
 	idata2->image = barrack2;
@@ -313,7 +316,7 @@ int main(int argc, const char *argv[])
 	else
 	{
 		cout << "Barack Barack Failed" << endl;
-	}
+	}*/
 	
 	/*Mat barrack = imread("newbarrack.jpg", CV_LOAD_IMAGE_UNCHANGED);
 	cvtColor( barrack, barrack, CV_BGR2GRAY );
