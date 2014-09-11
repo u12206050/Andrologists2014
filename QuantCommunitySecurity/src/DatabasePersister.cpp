@@ -1,13 +1,13 @@
 ﻿#include "DatabasePersister.h"
 
-DatabasePersister::DatabasePersister(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port)
+DatabasePersister::DatabasePersister()
 {
-    database = QSqlDatabase::addDatabase(databaseType);
-    database.setHostName(hostname);
-    database.setDatabaseName(databaseName);
-    database.setUserName(username);
-    database.setPassword(password);
-    database.setPort(port);
+
+}
+
+DatabasePersister::DatabasePersister(DatabaseConnection* databaseConnection)
+{
+    this->databaseConnection = databaseConnection;
 }
 
 DatabasePersister::~DatabasePersister()
@@ -17,7 +17,7 @@ DatabasePersister::~DatabasePersister()
 
 void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
 {
-    if (database.open())
+    if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
 		query.prepare("INSERT INTO images (filename, timestamp) VALUES (:filename, :timestamp)");

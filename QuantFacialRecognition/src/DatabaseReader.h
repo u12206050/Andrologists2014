@@ -3,17 +3,21 @@
 
 #include "ErrorException.h"
 #include "GetAllFacesInRangeResponse.h"
+#include "GetFaceDetailsResponse.h"
+#include "DatabaseConnection.h"
 #include <QtSql>
 
 class DatabaseReader
 {
 	public:
-		DatabaseReader(QString& databaseType, QString& hostname, QString& databaseName, QString& username, QString& password, int port);
+        DatabaseReader(DatabaseConnection* databaseConnection);
 		GetAllFacesInRangeResponse* getAllFacesInRange(QDateTime begin, QDateTime end);
-		QString getImageIds(QString randomIdentifier);
+        QString getImagePath(QString randomIdentifier);
+        QString getOriginalImageFilename(int caseId);
+        GetFaceDetailsResponse* getAllFaceFilenamesAndIds();
 
 	private:
-		QSqlDatabase database;
+        DatabaseConnection* databaseConnection;
 };
 
 #endif // DATABASEREADER_H

@@ -1,18 +1,23 @@
 [SequentialPipeline]
 iterations=5;
 [StreamCapturer]
-location="http://192.168.0.5";
+location=0;
 [NSamplingFilter]
 n=5;
 [FaceDetectFilter]
-	haar1 = "place.xml";
-	haar2 = "place2.xml";
+	haarCascade1 = "place.xml";
+	haarCascade2 = "place2.xml";
+[PreProcessingFilter]
+eyeCascade1="place.xml";
+eyeCascade2="place.xml";
+targetWidth=100;
+targetHeight=100;
 
 [LocalPersister]
 id=5;
-directory="/home";
+directory="/home/zane/images";
 [DatabasePersister]
-type="postgre";
+type="QPSQL";
 host="localhost";
 name="quant";
 username="postgre";

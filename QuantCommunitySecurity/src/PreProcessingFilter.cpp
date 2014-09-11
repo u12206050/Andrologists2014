@@ -1,10 +1,11 @@
 #include "PreProcessingFilter.h"
 
-PreProcessingFilter::PreProcessingFilter(int targetSquareSize, CascadeClassifier& eyeCascade1, CascadeClassifier& eyeCascade2)
+PreProcessingFilter::PreProcessingFilter(int targetWidth, int targetHeight, string eyeCascade1Filename, string eyeCascade2Filename)
 {
-    this->eyeCascade1 = eyeCascade1;
-    this->eyeCascade2 = eyeCascade2;
-    this->targetSquareSize = targetSquareSize;
+    eyeCascade1.load(eyeCascade1Filename);
+    eyeCascade2.load(eyeCascade2Filename);
+    this->targetWidth = targetWidth;
+    this->targetHeight = targetHeight;
 }
 
 PreProcessingFilter::~PreProcessingFilter()
@@ -18,7 +19,7 @@ ImageData* PreProcessingFilter::filter(ImageData* image)
     Point leftEye, rightEye;
     for (unsigned int i = 0; i < image->faces.size(); i++)
     {
-        image->faces[i] = getPreprocessedFace(image->faces[i], targetSquareSize, eyeCascade1, eyeCascade2, true, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
+        image->faces[i] = getPreprocessedFace(image->faces[i], targetWidth, targetHeight, eyeCascade1, eyeCascade2, true, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
     }
     return image;
 }
@@ -203,10 +204,8 @@ void PreProcessingFilter::equalizeLeftAndRightHalves(Mat &faceImg)
     }
 }
 
-Mat PreProcessingFilter::getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
+Mat PreProcessingFilter::getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, int desiredFaceHeight, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye)
 {
-    int desiredFaceHeight = desiredFaceWidth;
-
     if (storeLeftEye)
         storeLeftEye->x = -1;
     if (storeRightEye)

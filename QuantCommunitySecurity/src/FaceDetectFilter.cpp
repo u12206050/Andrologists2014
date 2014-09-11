@@ -1,9 +1,16 @@
 #include "FaceDetectFilter.h"
 
-FaceDetectFilter::FaceDetectFilter(CascadeClassifier& faceCascade, CascadeClassifier& secondOpinion)
+#include <iostream>
+using namespace std;
+
+FaceDetectFilter::FaceDetectFilter(string faceCascadeFilename, string faceCascadeSecondOpinionFilename)
 {
-    this->faceCascade = faceCascade;
-    this->secondOpinion = secondOpinion;
+    faceCascade.load(faceCascadeFilename);
+    useSecondOpinion = faceCascadeSecondOpinionFilename != "";
+    if (useSecondOpinion)
+    {
+        secondOpinion.load(faceCascadeSecondOpinionFilename);
+    }
 }
 
 FaceDetectFilter::~FaceDetectFilter()
@@ -20,17 +27,26 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
     Mat grayImage;
     cvtColor(frame, grayImage, CV_BGR2GRAY);
     equalizeHist(grayImage, grayImage);
-    faceCascade.detectMultiScale(frame, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0));
+    imshow("Cmon", frame);
+    faceCascade.detectMultiScale(frame, faces, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(10, 10));
+    cout << "faceCnt: " << faces.size() << endl;
 
     for(unsigned int i = 0; i < faces.size(); i++)
     {
         Rect face_i = faces[i];
         Mat face = frame(face_i);
         vector<Rect> testFaces;
-        secondOpinion.detectMultiScale(face, testFaces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0));
-        if (testFaces.size() > 0)
+        if (useSecondOpinion)
         {
-            image->addFace(face);
+            secondOpinion.detectMultiScale(face, testFaces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0));
+            if (testFaces.size() > 0)
+            {
+                image->addFace(face);
+            }
+        }
+        else
+        {
+           image->addFace(face);
         }
     }
 

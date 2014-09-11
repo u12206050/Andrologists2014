@@ -24,7 +24,8 @@ SOURCES += \
     LocalPersisterTest.cpp \
     DatabasePersisterTest.cpp \
     StreamCapturerTest.cpp \
-    ConfigReaderTest.cpp
+    ConfigReaderTest.cpp \
+    FakeDatabasePersister.cpp
 
 LIBS += -L../src -lapplib
 LIBS += `pkg-config opencv --cflags --libs`
@@ -42,6 +43,7 @@ HEADERS += \
     LocalPersisterTest.h \
     DatabasePersisterTest.h \
     StreamCapturerTest.h \
-    ConfigReaderTest.h
+    ConfigReaderTest.h \
+    FakeDatabasePersister.h
 
 OTHER_FILES +=

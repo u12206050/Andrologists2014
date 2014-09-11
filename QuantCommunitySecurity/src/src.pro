@@ -27,7 +27,8 @@ SOURCES += \
     StreamCapturer.cpp \
     ShowImageFilter.cpp \
     DatabasePersister.cpp \
-    ErrorException.cpp
+    ErrorException.cpp \
+    DatabaseConnection.cpp
 
 HEADERS += \
     SequentialPipeline.h \
@@ -48,4 +49,5 @@ HEADERS += \
     ShowImageFilter.h \
     DatabasePersister.h \
     DatabasePersistRequest.h \
-    ErrorException.h
+    ErrorException.h \
+    DatabaseConnection.h

@@ -3,7 +3,7 @@
 void LocalPersisterTest::filterTest()
 {
     QString testPath("./images/");
-    Persister* persister = new LocalPersister(testPath, 0);
+    Persister* persister = new LocalPersister(testPath, 0, new FakeDatabasePersister());
 
     ImageData* data = new ImageData;
     data->image = imread("../../testFiles/same1.jpg", CV_LOAD_IMAGE_UNCHANGED);

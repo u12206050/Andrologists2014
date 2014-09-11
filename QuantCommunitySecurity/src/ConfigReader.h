@@ -16,6 +16,7 @@
 #include "PreProcessingFilter.h"
 #include "LocalPersister.h"
 #include "ErrorException.h"
+#include "DatabaseConnection.h"
 #include <queue>
 
 using namespace std;

@@ -15,7 +15,7 @@ const double FACE_ELLIPSE_H = 0.80;
 class PreProcessingFilter : public Filter
 {
     public:
-        PreProcessingFilter(int targetSquareSize, CascadeClassifier& eyeCascade1, CascadeClassifier& eyeCascade2);
+        PreProcessingFilter(int targetWidth, int targetHeight, string eyeCascade1Filename, string eyeCascade21Filename);
         ~PreProcessingFilter();
         ImageData* filter(ImageData* image);
 
@@ -24,8 +24,9 @@ class PreProcessingFilter : public Filter
         void detectLargestObject(const Mat &image, CascadeClassifier &cascade, Rect &largestObject, int scaledWidth);
         void detectBothEyes(const Mat &face, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, Point &leftEye, Point &rightEye, Rect *searchedLeftEye, Rect *searchedRightEye);
         void equalizeLeftAndRightHalves(Mat &faceImg);
-        Mat getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye);
-        int targetSquareSize;
+        Mat getPreprocessedFace(Mat &srcImg, int targetWidth, int targetHeight, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, bool doLeftAndRightSeparately, Point *storeLeftEye, Point *storeRightEye, Rect *searchedLeftEye, Rect *searchedRightEye);
+        int targetWidth;
+        int targetHeight;
         CascadeClassifier eyeCascade1;
         CascadeClassifier eyeCascade2;
 };

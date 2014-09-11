@@ -5,6 +5,7 @@ CONFIG += ordered
 SUBDIRS = \
             src \
             app \
-            tests
+            tests\
+            starter
 app.depends = src
 tests.depends = src
