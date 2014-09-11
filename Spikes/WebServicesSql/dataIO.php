@@ -1,9 +1,12 @@
 <?php
 
-require("connectDB.php");
+//require("connectDB.php");
 require("classes.php");
 
-	/*function connect()
+
+connect();
+
+	function connect()
 	{
 		define("DBNAME","facialrec");
 		define("DBHOST","localhost");
@@ -29,7 +32,7 @@ require("classes.php");
 		    pg_close($pgconn);
 		    $pgconn = null;
 		}
-	}*/
+	}
 	
 	function validateUser($username, $password)
 	{
@@ -122,7 +125,7 @@ require("classes.php");
 				if (mysql_num_rows($results1) == 1)
 				{				
 					$row1 = mysql_fetch_array($results1);
-					$case = Case($row1);	
+					$case = Cases($row1);	
 					return json_encode($case); //return case obj
 				}
 				
@@ -142,13 +145,13 @@ require("classes.php");
 		{
 			if (mysql_num_rows($results1) > 0)
 			{
-				$cases = [];
+				$casesarr;
 				while ($row1 = mysql_fetch_array($results1))
 				{
-					$tmp = case($row1);
-					$cases[] = $tmp;
+					$tmp = Cases($row1);
+					$casesarr[] = $tmp;
 				}
-				return $cases; //return cases[] of case
+				return $casesarr; //return cases[] of case
 			}
 		}		
 	}
@@ -174,7 +177,7 @@ require("classes.php");
 			{
 				if (mysql_num_rows($results1) > 0)
 				{
-					$results = [];
+					$results;
 					while ($row1 = mysql_fetch_array($results1) && $fromIndex < 10)
 					{
 						$tmp = Result($row1);
@@ -262,7 +265,7 @@ require("classes.php");
 			else
 			{
 				$sql = "INSERT INTO cases
-					VALUES ('".$description"','".$subName"','".$subSurname"','".$subGender"','".$subAge"','".$imageid"','".$status"','".$progress"','".$username"','".$numResults"'); '";
+					VALUES ('".$description."','".$subName."','".$subSurname."','".$subGender."','".$subAge."','".$imageid."','".$status."','".$progress."','".$username."','".$numResults."'); '";
 					
 				if ($results = mysql_query($sql))
 				{

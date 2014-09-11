@@ -1,4 +1,4 @@
---
+﻿--
 -- PostgreSQL database dump
 --
 
@@ -311,7 +311,7 @@ ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::reg
 --
 
 COPY cameras (id, ipaddress, location) FROM stdin;
-\.
+
 
 
 --
@@ -330,7 +330,7 @@ SELECT pg_catalog.setval('cameras_id_seq', 1, false);
 --
 
 COPY caseresults (id, image_id, case_id, percentagematch, randomidentifier) FROM stdin;
-\.
+
 
 
 --
@@ -349,7 +349,7 @@ SELECT pg_catalog.setval('caseresults_id_seq', 1, false);
 --
 
 COPY cases (id, description, subname, subsurname, subgender, subage, image_id, status, progress, username, numresults) FROM stdin;
-\.
+
 
 
 --
@@ -368,7 +368,7 @@ SELECT pg_catalog.setval('cases_id_seq', 1, false);
 --
 
 COPY faces (id, filename, image_id, isfemale) FROM stdin;
-\.
+
 
 
 --
@@ -387,7 +387,7 @@ SELECT pg_catalog.setval('faces_id_seq', 1, false);
 --
 
 COPY images (id, filename, "timestamp", camera_id) FROM stdin;
-\.
+
 
 
 --
@@ -406,7 +406,7 @@ SELECT pg_catalog.setval('images_id_seq', 1, false);
 --
 
 COPY users (username, password, active) FROM stdin;
-\.
+
 
 
 --
