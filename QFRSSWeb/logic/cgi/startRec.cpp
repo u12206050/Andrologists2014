@@ -1,8 +1,8 @@
-#include <iostream>
+
 
 int main()
 {
-	//authenticate
+	if (case)
 
 	if (WINDOWS)
 	{

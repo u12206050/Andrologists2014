@@ -23,6 +23,17 @@ void cgiError()
 
 void dumpFile(const char* filename)
 {
+	// Get the image type and send the headers
+	const char* imgtype = "gif"; // assume gif by default
+	char* ptr = strrchr(filename, '.');
+	if (ptr && (strcasecmp(ptr, ".jpg") == 0 || strcasecmp(ptr, ".jpeg") == 0))
+	{
+	    imgtype = "jpeg";
+	}
+
+	cout << "Content-Type: " << "image/" << imgtype << endl;
+	cout << endl;
+
 	ifstream file(filename, ios::in | ios::binary);
 
 	if (file)
@@ -58,7 +69,7 @@ int main()
 	if (_setmode(_fileno(stdout), _fmode) == -1) {}
 	#endif
 	// Set the path where your images are located. NOTE: Not a url.
-	char path[] = "../images/";
+	char path[] = "../htdocs/QFRSSWeb/images/";
 	// First, we get the filename of the image to send
 	char* querystr = getenv("QUERY_STRING");
 	char* imgparm  = querystr ? strstr(querystr, "image=") : 0;
@@ -67,19 +78,15 @@ int main()
 	{
 	    cgiError();
 	}
-
-	// Get the image type and send the headers
-	const char* imgtype = "gif"; // assume gif by default
-	char* ptr = strrchr(imagename, '.');
-	if (ptr && (strcasecmp(ptr, ".jpg") == 0 || strcasecmp(ptr, ".jpeg") == 0))
-	{
-	    imgtype = "jpeg";
+	if (imagename[0] != '#')
+	{		
+		strcat(path,imagename);
+		// Send the image
+		dumpFile(path);
 	}
-
-	cout << "Content-Type: " << "image/" << imgtype << endl;
-	cout << endl;	
-	strcat(path,imagename);
-	// Send the image
-	dumpFile(path);
+	else
+	{
+		//get from database.
+	}
 	return 0;
 }

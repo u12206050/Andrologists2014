@@ -140,7 +140,7 @@
                        </div>
                         <div class="ui-block-b">
                             <div class="border-wrap">
-                                <input type="file" accept="image/*" id="facepic" name="facepic" data-theme="d" placeholder="Take a picture"/>
+                                <input type="file" capture="camera" accept="image/*" id="facepic" name="facepic" data-theme="d" placeholder="Take a picture"/>
                                 <label for="facepic" class="error"></label>
                                 <input type="hidden" name="action" value="openCase"/>                                 
                                 <div class="ui-grid-solo">

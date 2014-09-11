@@ -10,10 +10,8 @@
 		if ((($_FILES["file"]["type"] == "image/gif")
 			|| ($_FILES["file"]["type"] == "image/jpeg")
 			|| ($_FILES["file"]["type"] == "image/jpg")
-			|| ($_FILES["file"]["type"] == "image/pjpeg")
-			|| ($_FILES["file"]["type"] == "image/x-png")
 			|| ($_FILES["file"]["type"] == "image/png"))
-			&& ($_FILES["file"]["size"] <= 2000000)
+			&& ($_FILES["file"]["size"] <= 5000000)
 			&& in_array($extension, $allowedExts))
 		{
 			if ($_FILES["file"]["error"] > 0)
@@ -24,10 +22,11 @@
 			}
 			else
 			{
-				$fileName = md5_file($Title.$user->ID).".".$extension;
-				if (!(file_exists("chirpdata/user/" . $fileName)))
+				$TIMESTAMP = date_timestamp_get();
+				$fileName = $TIMESTAMP.".".$extension;
+				if (!(file_exists("/" . $fileName)))
 				{
-					move_uploaded_file($_FILES["file"]["tmp_name"], "bookImages/" . $fileName);
+					move_uploaded_file($_FILES["file"]["tmp_name"], "caseImages/" . $fileName);
 					return $fileName;
 				}
 			}
@@ -35,7 +34,7 @@
 		else
 		{
 			if ($debug = 1)
-				echo "Invalid file, max-size: 2mb";
+				echo "Invalid file, max-size: 5mb";
 			return -1;
 		}
 	}
