@@ -24,15 +24,16 @@ int main()
         string faceCascade = "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt2.xml";
         Filter* faceDetect = new FaceDetectFilter(faceCascade);
 
-        Filter* preProc = new PreProcessingFilter(400, 400,
+        Filter* preProc = new PreProcessingFilter(140, 150,
                              "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_eye.xml",
                              "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_eye_tree_eyeglasses.xml");
 
         Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-        FacialFeatureRecognizer recognizer(model, 50000, conn, faceDetect, preProc);
-        QString trainingFile("/home/zane/Documents/COS301/MainProject/testFiles/FaceRec/training.xml");
+        FacialFeatureRecognizer recognizer(model, 2300, conn, faceDetect, preProc);
+        QString trainingFile("/home/zane/Documents/COS301/training1.xml");
         recognizer.loadTrainingFromXML(trainingFile);
         recognizer.processCase(caseId);
+        cout << "end" << endl;
     }
     catch (ErrorException e)
     {

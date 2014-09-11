@@ -22,16 +22,16 @@ int main(/*int argc, char *argv[]*/)
         Pipeline* pipeline = reader.createPipeline();
         QString windowName("Video Stream");
         Filter* imageShower = new ShowImageFilter(windowName);
-        //pipeline->attachFilter(imageShower);
+        pipeline->attachFilter(imageShower);
         pipeline->attachCapturer(reader.createCapturer());
         pipeline->attachFilters(reader.createFilters());
         vector<Filter*> filters = reader.createFilters();
-        for (int i = 0;i < filters.size(); i++)
+        for (unsigned int i = 0;i < filters.size(); i++)
         {
             cout << filters[i] << endl;
         }
         pipeline->attachPersister(reader.createPersister());
-        pipeline->process(500);
+        pipeline->process(-1);
 	}
 	catch (ErrorException e)
 	{

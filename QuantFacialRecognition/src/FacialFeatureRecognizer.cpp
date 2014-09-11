@@ -37,13 +37,13 @@ void FacialFeatureRecognizer::processCase(int caseId)
 
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
-        caseManager->updateCaseStatus(faceIds[i], 10);
-        /*Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
+        Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
+        cout << "compared face: " << percentageMatch << endl;
         if (percentageMatch <= threshold)
         {
             caseManager->updateCaseStatus(faceIds[i], percentageMatch);
-        }*/
+        }
     }
 
 }

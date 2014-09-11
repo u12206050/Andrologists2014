@@ -230,7 +230,7 @@ Mat PreProcessingFilter::getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, 
         gray = faceImg;
     }
 
-    Point leftEye, rightEye;
+    /*Point leftEye, rightEye;
     detectBothEyes(gray, eyeCascade1, eyeCascade2, leftEye, rightEye, searchedLeftEye, searchedRightEye);
 
     if (storeLeftEye)
@@ -258,18 +258,18 @@ Mat PreProcessingFilter::getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, 
         rot_mat.at<double>(1, 2) += desiredFaceHeight * DESIRED_LEFT_EYE_Y - eyesCenter.y;
 
         Mat warped = Mat(desiredFaceHeight, desiredFaceWidth, CV_8U, Scalar(128));
-        warpAffine(gray, warped, rot_mat, warped.size());
+        warpAffine(gray, warped, rot_mat, warped.size());*/
 
         if (!doLeftAndRightSeparately)
         {
-            equalizeHist(warped, warped);
+            equalizeHist(gray, gray);  //used to be warped
         }
         else
         {
-            equalizeLeftAndRightHalves(warped);
+            equalizeLeftAndRightHalves(gray); //used to be warped
         }
 
-        Mat filtered = Mat(warped.size(), CV_8U);
+        /*Mat filtered = Mat(warped.size(), CV_8U);
         bilateralFilter(warped, filtered, 0, 20.0, 2.0);
 
         Mat mask = Mat(warped.size(), CV_8U, Scalar(0));
@@ -278,9 +278,13 @@ Mat PreProcessingFilter::getPreprocessedFace(Mat &srcImg, int desiredFaceWidth, 
         ellipse(mask, faceCenter, size, 0, 0, 360, Scalar(255), CV_FILLED);
 
         Mat dstImg = Mat(warped.size(), CV_8U, Scalar(128));
-        filtered.copyTo(dstImg, mask);
+        filtered.copyTo(dstImg, mask);*/
+
+        Size s(desiredFaceWidth, desiredFaceHeight);
+        Mat dstImg;
+        resize(gray, dstImg, s);
 
         return dstImg;
-    }
-    return Mat();
+    /*}
+    return Mat();*/
 }

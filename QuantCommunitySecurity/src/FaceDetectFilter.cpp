@@ -27,7 +27,6 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
     Mat grayImage;
     cvtColor(frame, grayImage, CV_BGR2GRAY);
     equalizeHist(grayImage, grayImage);
-    imshow("Cmon", frame);
     faceCascade.detectMultiScale(frame, faces, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(10, 10));
     cout << "faceCnt: " << faces.size() << endl;
 
