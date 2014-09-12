@@ -6,12 +6,15 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
     try
     {
-        cout << "started" << endl;
-        int caseId = 1;
+        cout << "started: " << argv[0] << endl;
+        int caseId = 1;//atoi(argv[0]);
+
+        cout << "caseId: " << caseId << endl;
+
 
         QString dbType("QPSQL");
         QString dbHost("127.0.0.1");

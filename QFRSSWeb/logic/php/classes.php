@@ -1,9 +1,9 @@
 <?php
-    echo "classes.php";
+    //echo "classes.php";
 	//Classes
-	class XCase {
+	class Cases {
 		public $ID = "";
-		public $UserID = "";
+		public $Username = "";
 		public $Image = "";
 		public $sub_Name = "";
 		public $sub_Surname = "";
@@ -13,68 +13,68 @@
 		public $StatusCode = "";
 		public $StatusInfo = "";
 		public $NumberOfResults = "";
-
-		public function printX() 
+		
+		function printX()
 		{
 			echo "<h5>Case details</h5>";
-			echo "<p>ID: <strong>".$this->ID."</strong></p>";
-			echo "<p>UserID: <strong>".$this->UserID."</strong></p>";
-			echo "<p>Image: <strong>".$this->Image."</strong></p>";
-			echo "<p>sub_Name: <strong>".$this->sub_Name."</strong></p>";
-			echo "<p>sub_Surname: <strong>".$this->sub_Surname."</strong></p>";
-			echo "<p>sub_Gender: <strong>".$this->sub_Gender."</strong></p>";
-			echo "<p>sub_Age: <strong>".$this->sub_Age."</strong></p>";
-			echo "<p>Description: <strong>".$this->Description."</strong></p>";
-			echo "<p>StatusCode: <strong>".$this->StatusCode."</strong></p>";
-			echo "<p>StatusInfo: <strong>".$this->StatusInfo."</strong></p>";
-			echo "<p>NumberOfResults: <strong>".$this->NumberOfResults."</strong></p>";
+			echo "<h6>ID: <strong>".this->ID."</strong></h6>";
+			echo "<h6>UserID: <strong>".this->$Username."</strong></h6>";
+			echo "<h6>Image: <strong>".this->Image."</strong></h6>";
+			echo "<h6>sub_Name: <strong>".this->sub_Name."</strong></h6>";
+			echo "<h6>sub_Surname: <strong>".this->sub_Surname."</strong></h6>";
+			echo "<h6>sub_Gender: <strong>".this->sub_Gender."</strong></h6>";
+			echo "<h6>sub_Age: <strong>".this->sub_Age."</strong></h6>";
+			echo "<h6>Description: <strong>".this->Description."</strong></h6>";
+			echo "<h6>StatusCode: <strong>".this->StatusCode."</strong></h6>";
+			echo "<h6>StatusInfo: <strong>".this->StatusInfo."</strong></h6>";
+			echo "<h6>NumberOfResults: <strong>".this->NumberOfResults."</strong></h6>";
 		}
 	}	
 
 	class Image {
 		public $ID = "";
-		public $Filename = "";
 		public $TimeStamp = "";
-		public $Location = "";
+		public $LocationX = "";
+		public $Filename = "";
 		//public $Meta = "";
 	}
 	
 	class User {
-		public $ID = "";
+		//public $ID = "";
 		public $Username = "";
-		public $UserIP = "";//Only for server side auth.
 		public $Active = "";//May user access site
 	}
 	
 	class Result {
 		public $ID = "";//ROWID Within the table
 		public $ImageCode = "";
+		public $CaseID ="";
 		public $Image = "";
 		public $Match = "";
 	}
     
 	//Sql row functions
-	function xcase($row)
+	function Cases($row)
 	{
-		$tmp = new XCase;
+		$tmp = new Cases();
 		if ($row != null)
 		{
 			$tmp->ID = $row['id'];
-			$tmp->UserID = $row['user_id'];
-			$tmp->Image = getImage($row['image_id']);
+			$tmp->Username = $row['username'];
+			$tmp->Image = getImage($row['image_id'],1);
 			$tmp->sub_Name = $row['subName'];
 			$tmp->sub_Surname = $row['subSurname'];
 			$tmp->sub_Gender = $row['subGender'];
 			$tmp->sub_Age = $row['subAge'];
 			$tmp->Description = $row['description'];
-			$tmp->StatusCode = $row['status'];
-			$tmp->StatusInfo = $row['progress'];
+			$tmp->StatusCode = $row['progess'];
+			$tmp->StatusInfo = $row['status'];
 			$tmp->NumberOfResults = $row['numResults'];
 		}
 		else
 		{
-			$tmp->ID = "test";
-			$tmp->UserID = "test";
+			$tmp->ID =  "test";
+			$tmp->Username = "test";
 			$tmp->Image = "test";
 			$tmp->sub_Name = "test";
 			$tmp->sub_Surname = "test";
@@ -88,43 +88,31 @@
 		return $tmp;
 	}
 
-	function image($row)
+	function Image($row)
 	{
-		$tmp->ID = $row['id '];
-		$tmp->Filename = $row['filename'];
+		$tmp = new Image();
+		$tmp->ID = $row['id'];		
 		$tmp->TimeStamp = $row['timestamp'];
-		$tmp->Location = $row['location'];
-		//public $Meta = "";
+		$tmp->LocationX = $row['Location'];
+		$tmp->Filename = $row['filename'];
+		return $tmp;
 	}
 	
-	function user($row)
+	function User($row)
 	{
 		$tmp = new User();
-		if ($row != null)
-		{
-			$tmp->ID = $row['id'];
-			$tmp->Username = $row['userName'];		
-			$tmp->Active = $row['active'];
-		}
+		$tmp->Username = $row['username'];		
+		$tmp->Active = $row['active'];
 		return $tmp;
 	}
 
-	function result($row)
+	function Result($row)
 	{
 		$tmp = new Result();
-		if ($row != null)
-		{
-			$tmp->ID = $row['id'];
-			$tmp->ImageCode = $row['randomIdentifier'];
-			$tmp->Image = getImage($row['image_id']);
-			$tmp->Match = $row['percentageMatch'];
-		}
+		$tmp->ID = $row['id'];
+		$tmp->ImageCode = $row['randomIdentifier'];
+		$tmp->Image = getImage($row['image_id'],0);
+		$tmp->Match = $row['percentageMatch'];
 		return $tmp;
-	}
-
-	function getImage($imageID)
-	{
-		echo $imageID;
-		return new Image();
 	}
 ?>

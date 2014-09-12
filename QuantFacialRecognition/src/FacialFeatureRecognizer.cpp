@@ -18,7 +18,6 @@ void FacialFeatureRecognizer::processCase(int caseId)
 {
     DatabaseReader dbReader(databaseConnection);
     CaseManager* caseManager = new CaseManager(databaseConnection, caseId);
-     cout << "hrer" << endl;
     QString filename = dbReader.getOriginalImageFilename(caseManager->getCaseId());
     Mat imageTaken = imread(filename.toStdString(), CV_LOAD_IMAGE_UNCHANGED);
     ImageData* imageData = new ImageData();
@@ -35,11 +34,14 @@ void FacialFeatureRecognizer::processCase(int caseId)
     vector<QString> faceFilenames = response->faceFilnames;
     vector<int> faceIds = response->ids;
 
+    caseManager->instialiseCaseComparisons(faceIds.size());
+
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
         Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
         cout << "compared face: " << percentageMatch << endl;
+        caseManager->updateProgress();
         if (percentageMatch <= threshold)
         {
             caseManager->updateCaseStatus(faceIds[i], percentageMatch);

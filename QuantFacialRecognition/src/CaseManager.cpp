@@ -1,6 +1,7 @@
 #include "CaseManager.h"
 
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -35,7 +36,11 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         randomIdentifier += c;
     }
 
-    randomIdentifier += faceId;
+    stringstream ss;
+    ss << faceId;
+    string strFaceId;
+    ss >> strFaceId;
+    randomIdentifier += strFaceId;
 
     if (databaseConnection->getDatabase().open())
     {
@@ -51,6 +56,38 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         if(!query.exec())
         {
             QString error("inserting case result.");
+            throw ErrorException(error, 0);
+        }
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 3);
+    }
+}
+void CaseManager::updateProgress()
+{
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE cases SET progress = progress + 1 WHERE id = :caseId");
+    updateQuery.bindValue(":caseId", caseId);
+    if(!updateQuery.exec())
+    {
+        QString error("updating case progress.");
+        throw ErrorException(error, 0);
+    }
+}
+
+void CaseManager::instialiseCaseComparisons(int numComparisons)
+{
+    if (databaseConnection->getDatabase().open())
+    {
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE cases SET num_results = :numComparisons WHERE id = :caseId");
+        updateQuery.bindValue(":caseId", caseId);
+        updateQuery.bindValue(":numComparisons", numComparisons);
+        if(!updateQuery.exec())
+        {
+            QString error("updating case progress.");
             throw ErrorException(error, 0);
         }
     }

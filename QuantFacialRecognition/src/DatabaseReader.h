@@ -12,7 +12,7 @@ class DatabaseReader
 	public:
         DatabaseReader(DatabaseConnection* databaseConnection);
 		GetAllFacesInRangeResponse* getAllFacesInRange(QDateTime begin, QDateTime end);
-        QString getImagePath(QString randomIdentifier);
+        QString getImagePath(QString randomIdentifier, int type);
         QString getOriginalImageFilename(int caseId);
         GetFaceDetailsResponse* getAllFaceFilenamesAndIds();
 

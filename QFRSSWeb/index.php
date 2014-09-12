@@ -1,5 +1,8 @@
 <?php require('header.php');?>
-    <img id="loader" src="images/loader.gif" alt="loading...">
+    <div id="loader">
+        <img src="images/loader.gif">
+        <p id="loadingInfo">loading...</p>
+    </div>
     <div id="fader"></div>
     <div id="ErrorMsg">        
         <label for="ErrorMsg"></label>
@@ -45,6 +48,7 @@
     <div data-role="page" id="account" data-theme="a">
         <div data-role="header" data-position="inline">
             <h1>Account</h1>
+            <h3 id="Userlogged"></h3>
             <?php require('menumin.html');?>              
         </div>
         <div data-role="content" data-theme="a">                
@@ -170,14 +174,16 @@
     <!--CAPTURE FACE_RESULTS-->
     <div data-role="page" id="results" data-theme="e">
         <div data-role="header" data-position="inline">
-            <h1>Case</h1>
+            <h1>Case: <strong id="caseID">-999</strong></h1>
             <?php require('menualt.html');?> 
         </div>
         <div data-role="content" data-theme="a">
             <div id="" data-role="collapsibleset" data-content-theme="a">
+                
                 <div class="ui-grid-b ui-responsive center">                                    
-                    <div class="ui-block-a"><h3>Case number: <strong id="caseID">-999</strong></h3></div>
-                    <div class="ui-block-b"><h3>Status: <strong id="statusCode">busy [-11]</strong></h3></div>                    
+                    <div class="ui-block-b"><h3>StatusCode: <strong id="statusCode">-11</strong></h3></div>
+                    <div class="ui-block-b"><h3>StatusInfo: <strong id="statusInfo">none</strong></h3></div>                    
+                    <div class="ui-block-c"><h3>Results: <strong id="noOfResults">-1</strong></h3></div> 
                 </div>
                 <div id="resultOverview">
                     <div data-role="collapsible"> <h2>One month ago</h2> 
@@ -197,7 +203,7 @@
             </div>
         </div>
         <div data-role="footer" data-theme="d">
-            <h4><button id="btnLoadResults" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh button-wrap">Refresh</button></div></h4>
+            <h4><button id="btnRefresh" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh button-wrap">Refresh</button></div></h4>
             
         </div>
     </div>
@@ -218,7 +224,7 @@
             </div>
         </div>
         <div data-role="footer">
-            <h4>Recognition match: 0%</h4>
+            <h4 id="orgMatch">Recognition match: 0%</h4>
         </div>
     </div>  
 

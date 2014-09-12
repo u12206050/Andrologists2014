@@ -4,23 +4,51 @@
 #include "CaseManager.h"
 #include <unistd.h>
 
-using namespace std;
+#include "cgicc/Cgicc.h"
+#include "cgicc/HTTPHTMLHeader.h"
+#include "cgicc/HTMLClasses.h"
 
-int main(int argc, char* argv[])
+using namespace std;
+using namespace cgicc;
+
+int main()
 {
-    /*if (argc != 3)
+    Cgicc cgi;
+
+    int caseId;
+    QString username;
+    QString password;
+
+    form_iterator userIter = cgi.getElement("user");
+    if (userIter != cgi.getElements().end())
     {
-        cout << "2" << endl;
-        return 1;
+       username = QString((**userIter).c_str());
     }
 
-    int caseId = atoi(argv[0]);
-    QString username = argv[1];
-    QString password = argv[2];*/
+    form_iterator passIter = cgi.getElement("pass");
+    if (passIter != cgi.getElements().end())
+    {
+       password = QString((**passIter).c_str());
+    }
 
-    int caseId = 1;
-    QString username = "zane";
-    QString password = "zane";
+    form_iterator caseIter = cgi.getElement("caseId");
+    if (caseIter != cgi.getElements().end())
+    {
+       caseId = atoi((**caseIter).c_str());
+    }
+
+    // Send HTTP header
+    /*cout << HTTPHTMLHeader() << endl;
+
+    // Set up the HTML document
+    cout << html() << head(title("cgicc example")) << endl;
+    cout << body() << endl;
+
+    cout << username.toStdString() << endl;
+    cout << password.toStdString() << endl;
+    cout << caseId << endl;
+
+    cout << body() << html();*/
 
     QString dbType("QPSQL");
     QString dbHost("localhost");
@@ -34,7 +62,7 @@ int main(int argc, char* argv[])
     if (!manager.authenticateCase(username, password))
     {
         cout << "1" << endl;\
-        return 1;
+        //return 1;
     }
     cout << "0" << endl;
 
@@ -74,7 +102,7 @@ int main(int argc, char* argv[])
         std::cerr << "Uh-Oh! fork() failed.\n";
         exit(1);
     case 0: /* Child process */
-        execl(programPath, NULL); /* Execute the program */
+        execl(programPath, "1", NULL); /* Execute the program */
         std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
         exit(1);
     default: /* Parent process */
