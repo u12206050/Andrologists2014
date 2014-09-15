@@ -14,20 +14,20 @@
 		public $StatusInfo = "";
 		public $NumberOfResults = "";
 		
-		function printX()
+		public function printX()
 		{
 			echo "<h5>Case details</h5>";
-			echo "<h6>ID: <strong>".this->ID."</strong></h6>";
-			echo "<h6>UserID: <strong>".this->$Username."</strong></h6>";
-			echo "<h6>Image: <strong>".this->Image."</strong></h6>";
-			echo "<h6>sub_Name: <strong>".this->sub_Name."</strong></h6>";
-			echo "<h6>sub_Surname: <strong>".this->sub_Surname."</strong></h6>";
-			echo "<h6>sub_Gender: <strong>".this->sub_Gender."</strong></h6>";
-			echo "<h6>sub_Age: <strong>".this->sub_Age."</strong></h6>";
-			echo "<h6>Description: <strong>".this->Description."</strong></h6>";
-			echo "<h6>StatusCode: <strong>".this->StatusCode."</strong></h6>";
-			echo "<h6>StatusInfo: <strong>".this->StatusInfo."</strong></h6>";
-			echo "<h6>NumberOfResults: <strong>".this->NumberOfResults."</strong></h6>";
+			echo "<p>ID: <strong>".$this->ID."</strong></p>";
+			echo "<p>UserID: <strong>".$this->Username."</strong></p>";
+			echo "<p>Image: <strong>".$this->Image."</strong></p>";
+			echo "<p>sub_Name: <strong>".$this->sub_Name."</strong></p>";
+			echo "<p>sub_Surname: <strong>".$this->sub_Surname."</strong></p>";
+			echo "<p>sub_Gender: <strong>".$this->sub_Gender."</strong></p>";
+			echo "<p>sub_Age: <strong>".$this->sub_Age."</strong></p>";
+			echo "<p>Description: <strong>".$this->Description."</strong></p>";
+			echo "<p>StatusCode: <strong>".$this->StatusCode."</strong></p>";
+			echo "<p>StatusInfo: <strong>".$this->StatusInfo."</strong></p>";
+			echo "<p>NumberOfResults: <strong>".$this->NumberOfResults."</strong></p>";
 		}
 	}	
 
@@ -73,17 +73,17 @@
 		}
 		else
 		{
-			$tmp->ID =  "test";
-			$tmp->Username = "test";
-			$tmp->Image = "test";
-			$tmp->sub_Name = "test";
-			$tmp->sub_Surname = "test";
-			$tmp->sub_Gender = "test";
-			$tmp->sub_Age = "test";
-			$tmp->Description = "test";
-			$tmp->StatusCode = "test";
-			$tmp->StatusInfo = "test";
-			$tmp->NumberOfResults = "test";
+			$tmp->ID = "0";
+			$tmp->Username = "user";
+			$tmp->Image = Image(null);
+			$tmp->sub_Name = "Preview_John";
+			$tmp->sub_Surname = "Preview_Smith";
+			$tmp->sub_Gender = "M";
+			$tmp->sub_Age = "1";
+			$tmp->Description = "Preview_Found in area 51";
+			$tmp->StatusCode = "3";
+			$tmp->StatusInfo = "Preview";
+			$tmp->NumberOfResults = "1";
 		}
 		return $tmp;
 	}
@@ -91,28 +91,58 @@
 	function Image($row)
 	{
 		$tmp = new Image();
-		$tmp->ID = $row['id'];		
-		$tmp->TimeStamp = $row['timestamp'];
-		$tmp->LocationX = $row['Location'];
-		$tmp->Filename = $row['filename'];
+		if ($row != null)
+		{
+			$tmp->ID = $row['id'];		
+			$tmp->TimeStamp = $row['timestamp'];
+			$tmp->LocationX = $row['Location'];
+			$tmp->Filename = $row['filename'];
+		}
+		else
+		{
+			$tmp->ID = "0";
+			$tmp->TimeStamp = "32/13/3125 25:60";
+			$tmp->LocationX = "Area 51";
+			$tmp->Filename = "notfound.jpg";
+		}
 		return $tmp;
 	}
 	
 	function User($row)
 	{
 		$tmp = new User();
-		$tmp->Username = $row['username'];		
-		$tmp->Active = $row['active'];
+		if ($row != null)
+		{
+			//$tmp->ID = $row['id'];	
+			$tmp->Username = $row['username'];		
+			$tmp->Active = $row['active'];
+		}
+		else
+		{
+			//s$tmp->ID = "0";
+			$tmp->Username = "Preview_user";
+			$tmp->Active = "true";
+		}
 		return $tmp;
 	}
 
 	function Result($row)
 	{
 		$tmp = new Result();
-		$tmp->ID = $row['id'];
-		$tmp->ImageCode = $row['randomIdentifier'];
-		$tmp->Image = getImage($row['image_id'],0);
-		$tmp->Match = $row['percentageMatch'];
+		if ($row != null)
+		{
+			$tmp->ID = $row['id'];
+			$tmp->ImageCode = $row['randomIdentifier'];
+			$tmp->Image = getImage($row['image_id'],0);
+			$tmp->Match = $row['percentageMatch'];
+		}
+		else
+		{
+			$tmp->ID = "0";
+			$tmp->ImageCode = "0";
+			$tmp->Image = Image(null);
+			$tmp->Match = "101%";
+		}
 		return $tmp;
 	}
 ?>

@@ -79,8 +79,9 @@ int main()
 	    cgiError();
 	}
 	if (imagename[0] != '#')
-	{		
-
+	{	
+		if (imagename[0] == '0')
+			imagename = {'c','a','s','e','I','m','a','g','e','s','/','n','o','t','f','o','u','n','d','.','j','p','g'};
 		strcat(path,imagename);
 		// Send the image
 		cout << path;

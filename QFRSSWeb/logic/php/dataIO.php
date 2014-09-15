@@ -1,13 +1,11 @@
 <?php
-
-require("classes.php");
-require("connectDB.php");
-	
 	function validateUser($username, $password)
 	{
-		$conn = connect();
-		$username = trim(mysql_real_escape_string($username));
-		$password = trim(mysql_real_escape_string($password));
+		$conn = connect(); if ($conn == null) return null;		
+		//echo "Connection is: ".pg_connection_reset($conn);
+		$username = trim(pg_escape_string($conn,$username));
+		$password = trim(pg_escape_string($conn,$password));
+		//echo $password;
 		$errors = array();  	// array to hold validation errors
 		$data 	= array(); 	// array to pass back data
 	
@@ -17,51 +15,102 @@ require("connectDB.php");
 		if (empty($password))
 			$errors['password'] = 'password is required.';
 			
-		if (!empty($errors)) {
+		if (!empty($errors)){
 		$data['success'] = false;
 		$data['errors']  = $errors;
 		} 
 		else 
 		{
-			$sql = pg_query($conn, "SELECT * FROM users WHERE userName='".$username."' AND password='".$password."' AND active=true;");
-			
-			if ($results = pg_fetch_row($sql) == 1)
-			{				
-				$row1 = pg_fetch_row($results1);
-				$user = User($row1);	
-				$data['success'] = true;
-				$data['message'] = $user; //return userObj if isActive else -1
+			try
+			{		
+				$query = "SELECT * FROM users WHERE userName='{$username}' AND password=crypt('{$password}', '2a068uKrXaZiFsbdet62kkZSSOida') AND active=true;";								
+				$sql = pg_query($conn, $query);
+				//echo $query;	
+				if (pg_num_rows($sql) == 1)
+				{			
+					$row = pg_fetch_array($sql);	
+					$user = User($row);	
+					$data['success'] = true;
+					$data['message'] = $user; //return userObj if isActive else -1
+				}
+				else
+				{
+					$data['success'] = false;
+					$errors['Reason'] = "Invalid username and/or password entered";	
+				}
 			}
-			else
+			catch (Exception $e)
 			{
 				$data['success'] = false;
-				$errors['Failed in'] = "validateUser";
+				$errors['Failed in'] = "validateUser: ".$e->getMessage()."\n";
 				$errors['SQL error'] = pg_last_error($conn);
-				$data['errors'] = 'Success!';				
 			}
 		}
+		$data['errors']  = $errors;	
 		disconnect();
-		return json_encode($data); // return all our data to an AJAX call
+		return $data; // return all our data to an AJAX call
+	}
+
+	function getUsers()
+	{
+		$conn = connect(); if ($conn == null) return null;	
+		$data = array(); 
+		$data['success'] = false;
+		if ($_SESSION['admin'] == true)
+		{				
+			try
+			{		
+				$query = "SELECT * FROM users WHERE username <> 'admin';";								
+				$sql = pg_query($conn, $query);
+				//echo $query;	
+				if (pg_num_rows($sql) > 0)
+				{		
+					$users = array();
+					while ($row = pg_fetch_array($sql))
+					{
+						$tmp = User($row);
+						$users[] = $tmp;
+					}	
+					$data['success'] = true;
+					$data['message'] = $users; //return userObj if isActive else -1
+				}
+				else
+				{
+					$data['success'] = false;
+					$errors['errors'] = "No users exist";	
+				}
+			}
+			catch (Exception $e)
+			{
+				$data['success'] = false;
+				$errors['Failed in'] = "getUsers: ".$e->getMessage()."\n";
+				$errors['SQL error'] = pg_last_error($conn);
+			}
+		}
+		else
+			$errors = "You are not an administrator";
+		$data['errors']  = $errors;	
+		disconnect();
+		return $data; // return all our data to an AJAX call
 	}
 	
 	function getImage($imageID, $b)
 	{
-		$conn = connect();
-		$imageID = trim(mysql_real_escape_string($imageID));
+		$conn = connect(); if ($conn == null) return null;
+		$imageID = trim(pg_escape_string($imageID));
 		$img = null;
 		if (empty($imageID))
 			return $img;
 		
-		if ($b = "1")
-				$sql = pg_query($conn, "SELECT * FROM images WHERE id='".$imageID."';");
+		if ($b == "1")
+				$sql = pg_query($conn, "SELECT * FROM images WHERE id='{$imageID}';");
 			else
-				$sql = pg_query($conn, "SELECT id, timestamp, Location FROM images WHERE id='".$imageID."';");
+				$sql = pg_query($conn, "SELECT id, timestamp, Location FROM images WHERE id='{$imageID}';");
 		
 		
-		if ($results = pg_fetch_row($sql)==1)
+		if ($results = pg_fetch_array($sql)==1)
 		{				
-			$row1 = pg_fetch_row($results1);
-			$img = Image($row1); 			
+			$img = Image($results); 			
 		}
 		disconnect();
 		return $img;		
@@ -69,8 +118,8 @@ require("connectDB.php");
 	
 	function getCase($caseID, $progress)
 	{
-		$conn = connect();
-		$caseID = trim(mysql_real_escape_string($caseID));
+		$conn = connect(); if ($conn == null) return null;
+		$caseID = trim(pg_escape_string($caseID));
 		$errors = array();  	
 		$data 	= array(); 
 		
@@ -84,15 +133,14 @@ require("connectDB.php");
 		else
 		{
 			$sql = null;
-			if ($progress = "1")
-				$sql = pg_query($conn, "SELECT status, progress, numResults  FROM cases WHERE id='".$caseID."';");
+			if ($progress == "1")
+				$sql = pg_query($conn, "SELECT status, progress, numResults  FROM cases WHERE id='{$caseID}';");
 			else
-				$sql = pg_query($conn, "SELECT * FROM cases WHERE id='".$caseID."';");
+				$sql = pg_query($conn, "SELECT * FROM cases WHERE id='{$caseID}';");
 			
-			if ($results = pg_fetch_row($sql)==1)
+			if ($results = pg_fetch_array($sql)==1)
 			{				
-				$row1 = pg_fetch_row($results1);
-				$case = Cases($row1);	
+				$case = Cases($results);	
 				$data['success'] = true;
 				$data['message'] = $case; 
 			}
@@ -101,59 +149,64 @@ require("connectDB.php");
 				$data['success'] = false;
 				$errors['Failed in'] = "SQL Failed in getCase";
 				$errors['SQL error'] = pg_last_error($conn);
-				$data['errors'] = 'Success!';
+				$data['errors']  = $errors;
 			}
 		}
 		disconnect();
-		return json_encode($data); 
+		return $data; 
 	}
 	
 	function getAllCases($userName)
-	{
-		$conn = connect();
-		$userName = trim(mysql_real_escape_string($userName));
+	{		
+		$userName = trim(pg_escape_string($userName));
 		$errors = array();  	
 		$data 	= array(); 
-		
+		$conn = connect(); if ($conn == null) $errors['SQL error'] = "Connection to database failed";
 		if (empty($userName))
 		$errors['userName'] = 'userName is required.';
 		
 		if (!empty($errors)) {
-		$data['success'] = false;
-		$data['errors']  = $errors;
+			$data['success'] = false;
 		} 
 		else
 		{
-			$sql = pg_query($conn, "SELECT * FROM cases WHERE username='".$userName."';");
-			
+			try
+			{
+				$sql = pg_query($conn, "SELECT * FROM cases WHERE username='{$userName}';");		
 				
 				if (pg_num_rows($sql) > 0)
 				{
 					$casesarr = array();  
-					while ($row1 = pg_fetch_row($results1))
+					while ($row = pg_fetch_array($sql))
 					{
-						$tmp = Cases($row1);
+						$tmp = Cases($row);
 						$casesarr[] = $tmp;
 					}
 					$data['success'] = true;
 					$data['message'] = $casearr; 
-				}	
+				}
 				else
 				{
 					$data['success'] = false;
-					$errors['Failed in'] = "SQL Failed in getAllCases";
-					$errors['SQL error'] = pg_last_error($conn);
-					$data['errors'] = 'Success!';
+					$errors['message'] = "No cases";
 				}
+			}
+			catch (Exception $e)				
+			{
+				$data['success'] = false;
+				$errors['Failed in'] = "SQL Failed in getAllCases";
+				$errors['SQL error'] = pg_last_error($conn);				
+			}
 		}
+		$data['errors']  = $errors;
 		disconnect();
-		return json_encode($data); 	
+		return $data; 	
 	}
 
 	function getResults($caseID, $fromIndex)
 	{
-		$conn = connect();
-		$caseID = trim(mysql_real_escape_string($caseID));
+		$conn = connect(); if ($conn == null) return null;
+		$caseID = trim(pg_escape_string($caseID));
 	
 		$errors = array();  	
 		$data 	= array(); 
@@ -162,23 +215,20 @@ require("connectDB.php");
 		$errors['caseID'] = 'caseID is required.';
 		
 		if (!empty($errors)) {
-		$data['success'] = false;
-		$data['errors']  = $errors;
+			$data['success'] = false;
 		} 
 		else
 		{
-			$sql = pg_query($conn, "SELECT * FROM caseresults WHERE case_id='".$caseID."' AND id >= '" .$fromIndex."';");
+			$sql = pg_query($conn, "SELECT * FROM caseresults WHERE case_id='{$caseID}' AND id >= '{$fromIndex}' LIMIT 10;");
 			
 			
 				if (pg_num_rows($sql) > 0)
 				{
 					$results = array();
-					$start = 0;
-					while ($row1 = pg_fetch_row($sql) && $start < 10)
+					while ($row = pg_fetch_array($sql))
 					{
-						$tmp = Result($row1);
+						$tmp = Result($row);
 						$results[] = $tmp;
-						$start++;
 					}
 					$data['success'] = true;
 					$data['message'] = $results; 
@@ -188,20 +238,20 @@ require("connectDB.php");
 					$data['success'] = false;
 					$errors['Failed in'] = "SQL Failed in getResults";
 					$errors['SQL error'] = pg_last_error($conn);
-					$data['errors'] = 'Success!';
+					$data['errors']  = $errors;
 				}
 				
 		}
 		disconnect();
-		return json_encode($data); 
+		return $data; 
 	}
 	
 	function updateUser($username, $FIELD, $VALUE)
 	{
-		$conn = connect();
-		$userName = trim(mysql_real_escape_string($userName));
-		$FIELD = trim(mysql_real_escape_string($FIELD));
-		$VALUE = trim(mysql_real_escape_string($VALUE));
+		$conn = connect(); if ($conn == null) return null;
+		$userName = trim(pg_escape_string($userName));
+		$FIELD = trim(pg_escape_string($FIELD));
+		$VALUE = trim(pg_escape_string($VALUE));
 		
 		$errors = array();  	
 		$data 	= array(); 
@@ -219,41 +269,46 @@ require("connectDB.php");
 		} 
 		else
 		{
-			
-			$sql = pg_query($conn, "UPDATE users
-				SET '".$FIELD."' = '".$VALUE."'
-				WHERE username = '".$username."';");	
+			if ($FIELD == "password")
+				$sql = pg_query($conn, "UPDATE users
+										SET password = crypt('{$VALUE}', '2a068uKrXaZiFsbdet62kkZSSOida')
+										WHERE username = '{$username}';");
+			else
+				$sql = pg_query($conn, "UPDATE users
+										SET {$FIELD} = '{$VALUE}'
+										WHERE username = '{$username}';");	
 				
 			if ($sql)
 			{
 				$data['success'] = true;
+				$data['message'] = $username."has been updated";
 			}
 			else
 			{
 				$data['success'] = false;
 				$errors['Failed in'] = "SQL Failed in updateUser";
 				$errors['SQL error'] = pg_last_error($conn);
-				$data['errors'] = 'Success!';
+				$data['errors']  = $errors;
 			}
 		}
 		disconnect();
-		return json_encode($data); 
+		return $data; 
 	}
 	
 
 	function openCase($description, $subName, $subSurname, $subGender, $subAge, $imageid, $status, $progress, $username, $numResults)
 	{
-		$conn = connect();
-		$description = trim(mysql_real_escape_string($description));
-		$subName = trim(mysql_real_escape_string($subName));
-		$subSurname = trim(mysql_real_escape_string($subSurname));
-		$subGender = trim(mysql_real_escape_string($subGender));
-		$subAge = trim(mysql_real_escape_string($subAge));
-		$imageid = trim(mysql_real_escape_string($imageid));
-		$status = trim(mysql_real_escape_string($status));
-		$progress = trim(mysql_real_escape_string($progress));
-		$username = trim(mysql_real_escape_string($username));
-		$numResults = trim(mysql_real_escape_string($numResults));
+		$conn = connect(); if ($conn == null) return null;
+		$description = trim(pg_escape_string($description));
+		$subName = trim(pg_escape_string($subName));
+		$subSurname = trim(pg_escape_string($subSurname));
+		$subGender = trim(pg_escape_string($subGender));
+		$subAge = trim(pg_escape_string($subAge));
+		$imageid = trim(pg_escape_string($imageid));
+		$status = trim(pg_escape_string($status));
+		$progress = trim(pg_escape_string($progress));
+		$username = trim(pg_escape_string($username));
+		$numResults = trim(pg_escape_string($numResults));
 		
 		$errors = array();  	
 		$data 	= array(); 
@@ -287,12 +342,12 @@ require("connectDB.php");
 			else
 			{
 				 $sql = pg_query($conn,"INSERT INTO cases
-					VALUES ('".$description."','".$subName."','".$subSurname."','".$subGender."','".$subAge."','".$imageid."','".$status."','".$progress."','".$username."','".$numResults."'); '");
+					VALUES ('{$description}','{$subName}','{$subSurname}','{$subGender}','{$subAge}','{$imageid}','{$status}','{$progress}','{$username}','{$numResults}'); '");
 				
 	
 				if ($sql)
 				{
-					$row = pg_fetch_row($sql);
+					$row = pg_fetch_array($sql);
 					$data['success'] = true;
 					$data['message'] = $row['id'];
 				}
@@ -301,22 +356,22 @@ require("connectDB.php");
 					$data['success'] = false;
 					$errors['Failed in'] = "SQL Failed in openCase";
 					$errors['SQL error'] = pg_last_error($conn);
-					$data['errors'] = 'Success!';
+					$data['errors']  = $errors;
 				}
 			}
 			disconnect();
-			return json_encode($data); 
+			return $data; 
 		
 	}
 	
 	function register($username, $password, $isActive)
 	{
-		$conn = connect();
+		$conn = connect(); if ($conn == null) return null;
 		
-		$username = trim(mysql_real_escape_string($username));
-		$password = trim(mysql_real_escape_string($password));
-		$isActive = trim(mysql_real_escape_string($isActive));
-		$userIP = trim(mysql_real_escape_string($userIP));
+		$username = trim(pg_escape_string($username));
+		$password = trim(pg_escape_string($password));
+		$isActive = trim(pg_escape_string($isActive));
+		$userIP = trim(pg_escape_string($userIP));
 		
 		$errors = array();  	
 		$data 	= array(); 
@@ -337,11 +392,11 @@ require("connectDB.php");
 		else
 		{
 			 $sql = pg_query($conn,"INSERT INTO users
-				VALUES ('".$username."',  '".$password."' , '".$isActive."')");
+				VALUES ('{$username}',  '{$password}' , '{$isActive}')");
 				
 				if ($sql)
 				{
-					$row = pg_fetch_row($sql);
+					$row = pg_fetch_array($sql);
 					$data['success'] = true;
 					$data['message'] = $row['username'];
 				}
@@ -350,17 +405,17 @@ require("connectDB.php");
 					$data['success'] = false;
 					$errors['Failed in'] = "SQL Failed in register";
 					$errors['SQL error'] = pg_last_error($conn);
-					$data['errors'] = 'Success!';
+					$data['errors']  = $errors;
 				}
 				
 		}
 		disconnect();
-		return json_encode($data); 
+		return $data; 
 	}
 	
 	function uploadImage()
 	{
-		$conn = connect();
+		$conn = connect(); if ($conn == null) return null;
 		
 		$allowedExts = array("gif", "jpeg", "jpg", "png");
 		$temp = explode(".", $_FILES["file"]["name"]);
@@ -374,9 +429,8 @@ require("connectDB.php");
 		{
 			if ($_FILES["file"]["error"] > 0)
 			{
-				if ($debug = 1)
+				if (DEV)
 					echo "Error Code: " . $_FILES["file"]["error"] ;
-				return -1;
 			}
 			else
 			{
@@ -386,44 +440,18 @@ require("connectDB.php");
 				{
 					move_uploaded_file($_FILES["file"]["tmp_name"], "caseImages/" . $fileName);
 					
-					
-					return $fileName;
 					$sql =  pg_query($conn,"INSERT INTO images
-					VALUES ('".$fileName."',  '".$TIMESTAMP."'')");
+					VALUES ('{$fileName}', '{$TIMESTAMP}')");
 					
 					if ($sql)
 					{
-						$row = pg_fetch_row($sql);
-						$data['success'] = true;
-						$data['message'] = $row['username'];
+						disconnect();
+						return $fileName;
 					}
-					else
-					{
-						$data['success'] = false;
-						$errors['Failed in'] = "SQL Failed in uploadImage";
-						$errors['SQL error'] = pg_last_error($conn);
-						$data['errors'] = 'Success!';
-					}	
 				}
 			}
 		}
-		else
-		{
-			if ($debug = 1)
-			{
-				$data['success'] = false;
-				$errors['Failed in'] = "SQL Failed in uploadImage: Invalid file, max-size: 5mb";
-				$errors['SQL error'] = pg_last_error($conn);
-				$data['errors'] = 'Success!';
-			}
-				
-			
-		}
 		disconnect();
-		return json_encode($data);
-		
+		return -1;
 	}
-	
-	
-
 ?>

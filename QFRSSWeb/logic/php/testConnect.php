@@ -4,13 +4,13 @@
 	define("DBHOST","localhost");
 	define("DBPORT","5432");
 	define("DBUSERNAME","postgres");
-	define("DBPASSWORD","root");
+	define("DBPASSWORD","data");
 	define("DEV","true");
 	define("CGIPATH","http://localhost/cgi-bin/");
 	$pgconn = null;
-	
-	echo "<h3>Require all php files</h3>";
-	require './classes.php';
+	$_REQUEST["action"] = "Tests";
+	echo "<h3>Require all php files</h3>";	
+	echo require("classes.php");
 	echo "<h3>Done</h3>";
 	
 	//TestClasses
@@ -42,6 +42,7 @@
 			$result = pg_query($pgconn, "INSERT INTO users VALUES ('name', 'pass', true)");
 			if (!$result) {
 			  echo "Insert error occurred.\n";
+			  echo pg_last_error($pgconn);
 			}
 			else
 			{

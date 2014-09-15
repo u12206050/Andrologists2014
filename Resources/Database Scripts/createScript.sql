@@ -21,7 +21,7 @@ CREATE TABLE faces
 CREATE TABLE users
 (
 	username varchar(50) NOT NULL,
-	password varchar(30) NOT NULL,
+	password varchar(100) NOT NULL,
 	active boolean NOT NULL,
 	CONSTRAINT users_primary_key PRIMARY KEY (username)
 );
