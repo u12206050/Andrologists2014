@@ -98,19 +98,21 @@
 	{
 		$conn = connect(); if ($conn == null) return null;
 		$imageID = trim(pg_escape_string($imageID));
-		$img = null;
+		$img = Image(null);
 		if (empty($imageID))
 			return $img;
 		
 		if ($b == "1")
-				$sql = pg_query($conn, "SELECT * FROM images WHERE id='{$imageID}';");
+				$sql = pg_query($conn, "SELECT * FROM images WHERE id='{$imageID}'");
 			else
-				$sql = pg_query($conn, "SELECT id, timestamp, Location FROM images WHERE id='{$imageID}';");
+				$sql = pg_query($conn, "SELECT id, timedate, location FROM images WHERE id='{$imageID}'");
 		
-		
-		if ($results = pg_fetch_array($sql)==1)
-		{				
-			$img = Image($results); 			
+		if ($sql)
+		{
+			if ($results = pg_fetch_array($sql))
+			{				
+				$img = Image($results); 			
+			}
 		}
 		disconnect();
 		return $img;		
@@ -134,7 +136,7 @@
 		{
 			$sql = null;
 			if ($progress == "1")
-				$sql = pg_query($conn, "SELECT status, progress, numResults  FROM cases WHERE id='{$caseID}';");
+				$sql = pg_query($conn, "SELECT status, progress, num_results  FROM cases WHERE id='{$caseID}';");
 			else
 				$sql = pg_query($conn, "SELECT * FROM cases WHERE id='{$caseID}';");
 			
@@ -165,25 +167,23 @@
 		if (empty($userName))
 		$errors['userName'] = 'userName is required.';
 		
-		if (!empty($errors)) {
-			$data['success'] = false;
-		} 
-		else
+		$data['success'] = false;
+		if (empty($errors)) 
 		{
-			try
+			$sql = pg_query($conn, "SELECT * FROM cases WHERE username='{$userName}';");		
+			if ($sql)
 			{
-				$sql = pg_query($conn, "SELECT * FROM cases WHERE username='{$userName}';");		
-				
 				if (pg_num_rows($sql) > 0)
 				{
 					$casesarr = array();  
 					while ($row = pg_fetch_array($sql))
 					{
 						$tmp = Cases($row);
+						//$tmp->printX();
 						$casesarr[] = $tmp;
 					}
 					$data['success'] = true;
-					$data['message'] = $casearr; 
+					$data['message'] = $casesarr; 
 				}
 				else
 				{
@@ -191,7 +191,7 @@
 					$errors['message'] = "No cases";
 				}
 			}
-			catch (Exception $e)				
+			else			
 			{
 				$data['success'] = false;
 				$errors['Failed in'] = "SQL Failed in getAllCases";
@@ -214,14 +214,12 @@
 		if (empty($caseID))
 		$errors['caseID'] = 'caseID is required.';
 		
-		if (!empty($errors)) {
-			$data['success'] = false;
-		} 
-		else
+		$data['success'] = false;
+		if (empty($errors))
 		{
 			$sql = pg_query($conn, "SELECT * FROM caseresults WHERE case_id='{$caseID}' AND id >= '{$fromIndex}' LIMIT 10;");
-			
-			
+			if ($sql)
+			{	
 				if (pg_num_rows($sql) > 0)
 				{
 					$results = array();
@@ -238,10 +236,17 @@
 					$data['success'] = false;
 					$errors['Failed in'] = "SQL Failed in getResults";
 					$errors['SQL error'] = pg_last_error($conn);
-					$data['errors']  = $errors;
 				}
+			}
+			else			
+			{
+				$data['success'] = false;
+				$errors['Failed in'] = "SQL Failed in getAllCases";
+				$errors['SQL error'] = pg_last_error($conn);				
+			}
 				
 		}
+		$data['errors']  = $errors;
 		disconnect();
 		return $data; 
 	}
@@ -281,7 +286,7 @@
 			if ($sql)
 			{
 				$data['success'] = true;
-				$data['message'] = $username."has been updated";
+				$data['message'] = "{$username} has been updated";
 			}
 			else
 			{
@@ -296,7 +301,7 @@
 	}
 	
 
-	function openCase($description, $subName, $subSurname, $subGender, $subAge, $imageid, $status, $progress, $username, $numResults)
+	function createCase($description, $subName, $subSurname, $subGender, $subAge, $imageid, $status, $progress, $username, $numResults)
 	{
 		$conn = connect(); if ($conn == null) return null;
 		$description = trim(pg_escape_string($description));
@@ -306,15 +311,15 @@
 		$subAge = trim(pg_escape_string($subAge));
 		$imageid = trim(pg_escape_string($imageid));
 		$status = trim(pg_escape_string($status));
-		$progress = trim(pg_escape_string($progress));
 		$username = trim(pg_escape_string($username));
-		$numResults = trim(pg_escape_string($numResults));
+		$progress = 1;
+		$numResults = 0;
 		
 		$errors = array();  	
 		$data 	= array(); 
 		
 			if (empty($description))
-			$errors['description'] = 'description is required.';
+				$description = "None";
 			 if (empty($subName))
 			$errors['subName'] = 'subName is required.';
 			 if (empty($subSurname))
@@ -324,16 +329,11 @@
 			 if (empty($subAge))
 			$errors['subAge'] = 'subAge is required.';
 			 if (empty($imageid))
-			$errors['imageid'] = 'imageid is required.';
+			$errors['imageid'] = 'picture is required.';
 			 if (empty($status))
 			$errors['status'] = 'status is required.';
-			 if (empty($progress))
-			$errors['progress'] = 'progress is required.';
 			 if (empty($username))
-			$errors['username'] = 'username is required.';
-			 if (empty($numResults))
-			$errors['numResults'] = 'numResults is required.';
-			
+			$errors['username'] = 'username is required.';			
 			
 			if (!empty($errors)) {
 			$data['success'] = false;
@@ -341,15 +341,17 @@
 			} 
 			else
 			{
-				 $sql = pg_query($conn,"INSERT INTO cases
-					VALUES ('{$description}','{$subName}','{$subSurname}','{$subGender}','{$subAge}','{$imageid}','{$status}','{$progress}','{$username}','{$numResults}'); '");
+				$query = "INSERT INTO cases (description,sub_name,sub_surname,sub_gender,sub_age,image_id,status,progress,username,num_results)
+					VALUES ('{$description}','{$subName}','{$subSurname}','{$subGender}',{$subAge},{$imageid},'{$status}','{$progress}','{$username}',{$numResults}) RETURNING id";
+				//echo $query;
+				$sql = pg_query($conn,$query);
 				
 	
 				if ($sql)
 				{
-					$row = pg_fetch_array($sql);
 					$data['success'] = true;
-					$data['message'] = $row['id'];
+					$row = pg_fetch_array($sql);
+					$data['message'] = $row['0'];
 				}
 				else
 				{
@@ -371,7 +373,6 @@
 		$username = trim(pg_escape_string($username));
 		$password = trim(pg_escape_string($password));
 		$isActive = trim(pg_escape_string($isActive));
-		$userIP = trim(pg_escape_string($userIP));
 		
 		$errors = array();  	
 		$data 	= array(); 
@@ -381,8 +382,7 @@
 		 if (empty($password))
 		$errors['password'] = 'password is required.';
 		 if (empty($isActive))
-		$errors['isActive'] = 'isActive is required.';
-	
+		$errors['isActive'] = 'isActive is required.';	
 		
 		
 		if (!empty($errors)) {
@@ -392,13 +392,12 @@
 		else
 		{
 			 $sql = pg_query($conn,"INSERT INTO users
-				VALUES ('{$username}',  '{$password}' , '{$isActive}')");
+				VALUES ('{$username}',  crypt('{$password}', '2a068uKrXaZiFsbdet62kkZSSOida') , '{$isActive}')");
 				
 				if ($sql)
 				{
-					$row = pg_fetch_array($sql);
 					$data['success'] = true;
-					$data['message'] = $row['username'];
+					$data['message'] = "{$username} has been created";
 				}
 				else
 				{
@@ -406,8 +405,7 @@
 					$errors['Failed in'] = "SQL Failed in register";
 					$errors['SQL error'] = pg_last_error($conn);
 					$data['errors']  = $errors;
-				}
-				
+				}				
 		}
 		disconnect();
 		return $data; 
@@ -415,7 +413,7 @@
 	
 	function uploadImage()
 	{
-		$conn = connect(); if ($conn == null) return null;
+		
 		
 		$allowedExts = array("gif", "jpeg", "jpg", "png");
 		$temp = explode(".", $_FILES["file"]["name"]);
@@ -434,22 +432,45 @@
 			}
 			else
 			{
-				$TIMESTAMP = date_timestamp_get();
-				$fileName = $TIMESTAMP.".".$extension;
+				$timestamp = microtime(get_as_float);
+				$fileName = uniqid().".".$extension;
 				if (!(file_exists("/" . $fileName)))
 				{
-					move_uploaded_file($_FILES["file"]["tmp_name"], "caseImages/" . $fileName);
-					
-					$sql =  pg_query($conn,"INSERT INTO images
-					VALUES ('{$fileName}', '{$TIMESTAMP}')");
-					
-					if ($sql)
-					{
-						disconnect();
-						return $fileName;
-					}
+					move_uploaded_file($_FILES["file"]["tmp_name"], UPLOAD_DIR . $fileName);
+					return insertImage($fileName);				
 				}
 			}
+		}
+		return -1;
+	}
+
+	function saveImage($base64img)
+	{	    
+		$timestamp = microtime(get_as_float);
+		//echo date("D/M/Y H:i:s.u" , $date);
+	    $base64img = str_replace('data:image/jpeg;base64,', '', $base64img);
+	    $data = base64_decode($base64img);
+	    $filename = uniqid() . '.jpg';
+	    //echo "FILENAME: ".$filename;
+	    $file = UPLOAD_DIR . $filename;
+	    file_put_contents($file, $data);
+	    return insertImage($filename, $timestamp);
+	}
+
+	function insertImage($filename, $timestamp)
+	{
+		$conn = connect(); if ($conn == null) return null;
+		$sql =  pg_query($conn,"INSERT INTO images (filename, timedate) VALUES ('{$filename}', {$timestamp}) RETURNING id");
+		if ($sql)
+		{
+			$row = pg_fetch_array($sql);
+			$imageID = $row['0'];
+			disconnect();
+			return $imageID;
+		}
+		else
+		{
+			echo pg_last_error($conn);
 		}
 		disconnect();
 		return -1;

@@ -6,6 +6,7 @@
 		if ($_REQUEST["action"] == "logout")
 		{
 			session_destroy();
+			echo "Logged out";
 		}
 		require("classes.php");
 		require("dataIO.php");
@@ -30,6 +31,7 @@
 			if ($data['success'] == true)
 			{
 				$_SESSION['username'] = $data['message']->Username;
+				//Keeping track of the session. Uses encrypted password and client's ip together with md5
 				$data['passkey'] = md5(substr($password,4,10)+get_client_ip());
 				$_SESSION['user'] = $data['passkey'];
 				$data['admin'] = false;
@@ -42,12 +44,62 @@
 			echo json_encode($data);
 		} 
 		else
-		if ($_POST["action"] == "register")
+		if ($_POST["action"] == "registerUser")
 		{
-			$username = $_POST["user"];
+			$newUser = $_POST["ruser"];
 			$password = $_POST["pass"];
-			$isActive = 'true';
-			$data = register($username, $password, $isActive);
+			$passKey = $_POST["passKey"];
+			if (isset($_SESSION['user']) && isset($_SESSION['admin']) && $_SESSION['user'] == $passKey && $_SESSION['admin'] == true)
+			{
+				$data = register($newUser, $password, true);
+			}
+			else
+			{
+				$data["success"] = false;
+				$data["errors"] = "You are not allowed to access this. Admin only.";
+			}
+			echo json_encode($data);
+		}
+		else
+		if ($_POST["action"] == "updatePassword")
+		{
+			$newPassword = $_POST["newPass"];
+			$oldPassword = $_POST["oldPass"];
+			$passKey = $_POST["passKey"];
+			if (isset($_SESSION['user']) && isset($_SESSION['username']) && $_SESSION['user'] == $passKey)
+			{
+				$data = validateUser($_SESSION['username'],$oldPassword);
+				if ($data['success'] == true)
+				{
+					$data = updateUser($_SESSION['username'], "password", $newPassword);
+					if ($data['success'] == true)
+					{
+						$data['passkey'] = md5(substr($newPassword,4,10)+get_client_ip());
+						$_SESSION['user'] = $data['passkey'];
+					}
+				}
+			}
+			else
+			{
+				$data["success"] = false;
+				$data["errors"] = "Invalid authentication please login.";
+			}
+			echo json_encode($data);
+		} 
+		else
+		if ($_POST["action"] == "updateUser")
+		{
+			$newUser = $_POST["ruser"];
+			$passKey = $_POST["passKey"];
+			if (isset($_SESSION['user']) && isset($_SESSION['admin']) && $_SESSION['user'] == $passKey && $_SESSION['admin'] == true)
+			{
+				$data = register($newUser, '5656674d2a4c675f8bf727885ff75ea607256c398111a524980ea91ef864f8bd', true);
+			}
+			else
+			{
+				$data["success"] = false;
+				$data["errors"] = "You are not allowed to access this. Admin only.";
+			}
 			echo json_encode($data);
 		} 
 		else
@@ -71,21 +123,36 @@
 			echo json_encode($data);
 		} 
 		else
-		if ($_POST["action"] == "openCase")
-		{
-			$description = $_POST["desc"];
-			$subName = $_POST["fname"];
-			$subSurname = $_POST["surname"];
-			$subGender = $_POST["gender"];
-			$subAge = $_POST["age"];
-			$imageid = $_POST["facepic"];
-			$status = 'started';
-			$progress = 1;
-			$username = $_POST["user"];
-			$numResults = 0;
-			
-			$data = openCase($description, $subName, $subSurname, $subGender, $subAge, $imageid, $status, $progress, $username, $numResults);
-		
+		if ($_POST["action"] == "createCase")
+		{			
+			$passKey =  $_POST["passKey"];
+			if (isset($_SESSION['user']) && $_SESSION['user'] == $passKey)
+			{
+				$subName = $_POST["fname"];
+				$subSurname = $_POST["surname"];
+				$subGender = $_POST["gender"];
+				$subAge = $_POST["age"];
+				$description = $_POST["desc"];
+				$faceImg = $_POST["facepic"];
+				$status = 'started';
+				$imageID = saveImage($faceImg);
+				//echo "IMAGEID: {$imageID} %";
+				if ($imageID !== -1)
+				{
+					$data = createCase($description, $subName, $subSurname, $subGender, $subAge, $imageID, $status, $progress, $_SESSION['username'], $numResults);
+					//echo "done";
+				}
+				else
+				{
+					$data["success"] = false;
+					$data["errors"] = "Invalid image supplied";
+				}
+			}
+			else
+			{
+				$data["success"] = false;
+				$data["errors"] = "Incorrect arguments supplied, please login";
+			}			
 			echo json_encode($data);
 		} 
 		else

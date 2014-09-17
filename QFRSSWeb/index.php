@@ -1,7 +1,7 @@
 <?php require('header.php');?>
     <div id="loader">
         <img src="images/loader.gif">
-        <p id="loadingInfo">loading...</p>
+        <p id="loadingInfo" class="center">loading...</p>
     </div>
     <div id="fader"></div>    
     
@@ -46,7 +46,7 @@
                 <div class="center" id="casesOverview"></div>
                 <div class="ui-grid-b ui-responsive center">
                     <div class="ui-block-a"><button data-theme="b" class="ui-btn-icon-left ui-icon-refresh block-button" data-icon="refresh" onClick="outputAllCases();">Reload Cases</button></div>     
-                    <div class="ui-block-b"><button data-theme="c" class="ui-btn-icon-left ui-icon-alert block-button" data-icon="alert" onClick="$.mobile.navigate('#changePass', { transition: 'slide' });">Password</button></div>
+                    <div class="ui-block-b"><button data-theme="c" id="btnChangePassword" class="ui-btn-icon-left ui-icon-alert block-button" data-icon="alert">Password</button></div>
                     <div class="ui-block-c"><button data-theme="c" id='adminLink' class="ui-btn-icon-left ui-icon-gear block-button" data-icon="gear" onClick="$.mobile.navigate('#admin', { transition: 'slide' });getNimda();" style='display: none'>Administration</button></div>
                 </div>   
             </div>              
@@ -61,7 +61,7 @@
         <div data-role="header" data-position="inline">
             <h1>Capture Face</h1>
         </div>
-        <form id="uploadFace" runat="server" data-ajax="false" method="post" action="">
+        <form id="uploadFace" runat="server" enctype="multipart/form-data" data-ajax="false" method="post" action="">
             <div data-role="content" data-theme="e">                
                 <div class="ui-grid-a ui-responsive center">                                    
                     <div class="ui-block-a">
@@ -92,6 +92,7 @@
                    </div>
                     <div class="ui-block-b">
                         <div class="border-wrap">
+                            <!--<iframe src="facefrm.php"></iframe>-->
                             <input type="file" capture="camera" accept="image/*" id="facepic" name="facepic" data-theme="d"/>
                             <label for="facepic" class="error"></label>
                             <input type="hidden" name="action" value="openCase"/>                                 
@@ -193,7 +194,7 @@
     </div>
 
     <!--PASSWORD-->
-    <div data-role="dialog" id="changePass" data-theme="c">
+    <div data-role="dialog" id="changePassword" data-theme="c">
         <div data-role="header">
             <h1>Change password</h1>
         </div>
@@ -201,15 +202,15 @@
             <div class="ui-grid-solo">
                 <div class="ui-block-a center">     
                     <legend>Change password:</legend> 
-                    <form id="updateUser" action="" method="post">                            
+                    <form id="frmUpdatePassword" action="" method="post"> 
+                        <input type="password" name="u_oldpass" id="u_oldpass" placeholder="Current Password"/> 
+                        <label for="u_oldpass" class="error"></label>                              
                         <input type="password" name="u_pass" id="u_pass" placeholder="New Password"/>
                         <label for="u_pass" class="error"></label>                            
                         <input type="password" name="u_repass" id="u_repass" placeholder="Re-enter Password"/> 
-                        <label for="u_repass" class="error"></label>  
-                        <input type="password" name="u_repass" id="u_repass" placeholder="Old Password"/> 
-                        <label for="u_repass" class="error"></label>                                 
-                        <label id="updateError" class="error"></label>                   
-                        <input data-theme="b" type="submit" id="btnUpdate" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left center button-wrap" data-icon="check" value="Update"/>                        
+                        <label for="u_repass" class="error"></label>                                                        
+                        <label id="updatePassError" class="error"></label>                   
+                        <input data-theme="b" type="submit" id="btnUpdatePassword" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left center button-wrap" data-icon="check" value="Update"/>                        
                     </form>
                 </div>
             </div>

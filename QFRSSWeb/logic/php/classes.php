@@ -18,8 +18,7 @@
 		{
 			echo "<h5>Case details</h5>";
 			echo "<p>ID: <strong>".$this->ID."</strong></p>";
-			echo "<p>UserID: <strong>".$this->Username."</strong></p>";
-			echo "<p>Image: <strong>".$this->Image."</strong></p>";
+			echo "<p>UserID: <strong>".$this->Username."</strong></p>";			
 			echo "<p>sub_Name: <strong>".$this->sub_Name."</strong></p>";
 			echo "<p>sub_Surname: <strong>".$this->sub_Surname."</strong></p>";
 			echo "<p>sub_Gender: <strong>".$this->sub_Gender."</strong></p>";
@@ -28,14 +27,25 @@
 			echo "<p>StatusCode: <strong>".$this->StatusCode."</strong></p>";
 			echo "<p>StatusInfo: <strong>".$this->StatusInfo."</strong></p>";
 			echo "<p>NumberOfResults: <strong>".$this->NumberOfResults."</strong></p>";
+			echo "<p>Image: </p>";
+			$this->Image->printX();
 		}
 	}	
 
 	class Image {
 		public $ID = "";
-		public $TimeStamp = "";
+		public $TimeDate = "";
 		public $LocationX = "";
 		public $Filename = "";
+		
+		public function printX()
+		{
+			echo "<h5>Image details</h5>";
+			echo "<p>ID: <strong>".$this->ID."</strong></p>";
+			echo "<p>TimeDate: <strong>".$this->TimeDate."</strong></p>";
+			echo "<p>Location: <strong>".$this->LocationX."</strong></p>";
+			echo "<p>Filename: <strong>".$this->Filename."</strong></p>";
+		}
 		//public $Meta = "";
 	}
 	
@@ -62,19 +72,19 @@
 			$tmp->ID = $row['id'];
 			$tmp->Username = $row['username'];
 			$tmp->Image = getImage($row['image_id'],1);
-			$tmp->sub_Name = $row['subName'];
-			$tmp->sub_Surname = $row['subSurname'];
-			$tmp->sub_Gender = $row['subGender'];
-			$tmp->sub_Age = $row['subAge'];
+			$tmp->sub_Name = $row['sub_name'];
+			$tmp->sub_Surname = $row['sub_surname'];
+			$tmp->sub_Gender = $row['sub_gender'];
+			$tmp->sub_Age = $row['sub_age'];
 			$tmp->Description = $row['description'];
-			$tmp->StatusCode = $row['progess'];
+			$tmp->StatusCode = $row['progress'];
 			$tmp->StatusInfo = $row['status'];
-			$tmp->NumberOfResults = $row['numResults'];
+			$tmp->NumberOfResults = $row['num_results'];
 		}
 		else
 		{
 			$tmp->ID = "0";
-			$tmp->Username = "user";
+			$tmp->Username = "testuser";
 			$tmp->Image = Image(null);
 			$tmp->sub_Name = "Preview_John";
 			$tmp->sub_Surname = "Preview_Smith";
@@ -94,16 +104,16 @@
 		if ($row != null)
 		{
 			$tmp->ID = $row['id'];		
-			$tmp->TimeStamp = $row['timestamp'];
-			$tmp->LocationX = $row['Location'];
+			$tmp->TimeDate = $row['timedate'];
+			$tmp->LocationX = $row['location'];
 			$tmp->Filename = $row['filename'];
 		}
 		else
 		{
 			$tmp->ID = "0";
-			$tmp->TimeStamp = "32/13/3125 25:60";
-			$tmp->LocationX = "Area 51";
-			$tmp->Filename = "notfound.jpg";
+			$tmp->TimeDate = "undefined";
+			$tmp->LocationX = "undefined";
+			$tmp->Filename = "undefined";
 		}
 		return $tmp;
 	}
@@ -120,7 +130,7 @@
 		else
 		{
 			//s$tmp->ID = "0";
-			$tmp->Username = "Preview_user";
+			$tmp->Username = "testuser";
 			$tmp->Active = "true";
 		}
 		return $tmp;
@@ -132,9 +142,9 @@
 		if ($row != null)
 		{
 			$tmp->ID = $row['id'];
-			$tmp->ImageCode = $row['randomIdentifier'];
+			$tmp->ImageCode = $row['random_identifier'];
 			$tmp->Image = getImage($row['image_id'],0);
-			$tmp->Match = $row['percentageMatch'];
+			$tmp->Match = $row['percentage_match'];
 		}
 		else
 		{

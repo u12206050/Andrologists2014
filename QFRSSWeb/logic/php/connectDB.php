@@ -7,9 +7,10 @@
 		define("DBHOST","localhost");
 		define("DBPORT","5432");
 		define("DBUSERNAME","postgres");
-		define("DBPASSWORD","HideSafe");
+		define("DBPASSWORD","data");
 		define("DEV","false");
 		define("CGIPATH","http://localhost/cgi-bin/");
+		define("UPLOAD_DIR", "../../caseImages/");
 		$pgconn = null;	
 		if (connect() != null)
 		{

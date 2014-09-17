@@ -1,5 +1,6 @@
 $(document).ready(function()
-{ 
+{ 	
+	$.removeCookie("ssaP");
 	loader = function(inout, msg)
 	{
 		if (inout === 1)
@@ -29,11 +30,23 @@ $(document).ready(function()
   
 	$("#btnLogin").click(function(){login(); return false;});
 	$("#btnregister").click(function(){register(); return false;});
-	$("#facepic").change(function(){readURL(this);});
+	$("#facepic").change(function()
+	{
+		if (readURL(this) == -1)
+		{
+			label("facepic").text("Invalid file type").fadeIn();
+		} else
+			label("facepic").text("valid").hide();
+	});
 	$("#submitCapture").click(function(){CreateCase(); return false;});
 	$("#btnRefresh").click(function(){updateResults();});
 	$("#stopRefreshing").click(function(){stopRefreshing();});
-	$("#updateUser").submit(function(){updateUser(this);});  
+	$("#btnUpdatePassword").click(function(){updatePassword(); return false;});  
+	$("#btnChangePassword").click(function()
+		{
+			clearHide(["u_oldpass","u_pass","u_repass", "updatePassError"]);
+			$.mobile.navigate('#changePassword', {transition: 'pop', role: 'dialog'});
+		});  
 	$(".showText").click(function(){error($(this).text());});    
 	 
 
@@ -41,6 +54,8 @@ $(document).ready(function()
 	{
 		if (this.id !== "contactus" && this.id !== "about" && this.id !== "login" && $L === 0)
 			logout();
+		if (this.id !== "captureface")
+			clearHide(["fname","surname","age","desc","facepic"]);
 	});
 	$("#contactus").on("pagebeforecreate" , function()
 	{
@@ -140,13 +155,20 @@ $(document).ready(function()
 	logout = function()
 	{
 		$.removeCookie("ssaP");
-		$.mobile.navigate("#login", { transition: "slide" });
-		location.reload(true);
+		$.post('logic/php/connectDB.php', { action: "logout" }, function(data)
+			{				
+				$L = 0;
+				$.mobile.navigate("#login", { transition: "slide" });
+				clearHide(["user","pass","loginError"]);
+				location.reload(true);
+				error(data);
+			});
+
 	};
 
-	register = function(form)
+	register = function()
 	{
-		if ($("#user").val() !== "Admin")
+		if ($("#user").val() !== "admin")
 		{
 			error("Admin functionality not allowed!");
 			return;	
@@ -154,7 +176,8 @@ $(document).ready(function()
 		loader(1);
 		if (validate([["reg_user","Username",true]]))
 		{
-	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $("#reg_user").val(), }, function(data)
+			var $ida = Sha256.hash("idaqfrss"+$("#reg_user").val());
+	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $("#reg_user").val(), pass: $ida}, function(data)
 			{	
 				$.mobile.navigate("#account", { transition: "slide" });
 			}).fail(function(data)
@@ -177,6 +200,70 @@ $(document).ready(function()
 
 		});
 	};
+
+	updatePassword = function(form)
+	{
+		if ($L === 1)
+		{
+			if (validate([["u_pass","Password",true],["u_repass","Re-enter password",true],["u_oldpass","Current Password",true]]))
+			{
+				$pass1 = $("#u_pass").val();
+				$pass2 = $("#u_repass").val();
+				if ($pass1 === $pass2)
+				{
+					var $ida1 = Sha256.hash("ida"+$("#pass").val()+$("#user").val());
+					var $ida2 = Sha256.hash("ida"+$pass1+$("#user").val());
+					$.post('logic/php/connectDB.php', { action: "updatePassword", passKey: $.cookie("ssaP"), newPass: $ida2, oldPass: $ida1 }, function(data)
+					{	
+						if (data && data.success === true)
+						{
+							$.cookie("ssaP", data.passkey);
+							clearHide(["u_oldpass","u_pass","u_repass", "updatePassError"]);
+							$("#updatePassError").text(data.message).fadeIn();				
+						}	
+						else
+						{					
+							var $out = "";	
+							if (data.errors)
+							{					
+								$.each( data.errors, function( key, val )
+								{
+									$out += val+"\n";
+								});
+								$("#updatePassError").text($out).fadeIn();
+							}
+							else error("Failed to update password. "+JSON.stringify(data));
+							loader(0);
+						}
+					}, 'json').fail(function(data)
+					{
+						error("Failed to update password. "+JSON.stringify(data));
+						loader(0);
+					});
+				}
+				else
+				{
+					$("#u_repass").text("New passwords do not match").show();
+				}
+			}
+		} else logout();	
+	};
+
+	clearHide = function(inputs)
+	{
+		for	(var index = 0; index < inputs.length; index++)
+		{
+			var input = inputs[index];
+			var lbl = label(input);
+			$("#"+input).val('');
+			$("#"+input).text('');
+			if (lbl !== null)
+			{
+				lbl.text('');
+				lbl.hide();
+			}
+		}
+	}
 
 	//Send an array of inputs eg. [["textBox","Description",true,false],["textBox","Description",true,false]]
 	validate = function(inputs)
@@ -236,44 +323,61 @@ $(document).ready(function()
 		{
 			clearInterval($refreshing);
 		}
-		if (validate([["fname","First Name",true],["surname","Surname",true],["gender","Gender",false,2],["age","Age",false,1],["facepic","Picture",false,3]]) === 1)
-		{			
-      $.post('logic/php/connectDB.php', { action: "createCase", passKey: $.cookie("ssaP"), form: $("#uploadFace").serialize() }, function(data)
-			{	
-				if (data && data.success === true)
-				{		
-					loader(1, "Starting facial recognition");	
-					var $result = data.message;		
-					$CaseID = $result.ID;
-					$("#caseID").html($CaseID);
-					$.post('logic/cgi/startRec.cgi', { passKey: $.cookie("ssaP"), caseID: $CaseID }).done(function(data)
-					{
-						if (data === 1)
+		if (validate([["fname","First Name",true],["surname","Surname",true],["gender","Gender",false,2],["age","Age",false,1]]) === true)
+		{	
+			$img = $("#capturefacepreview").attr('src');
+			if (label("facepic").text() == "valid" && $img !== "")
+			{				
+	      		$.post('logic/php/connectDB.php', { action: "createCase", passKey: $.cookie("ssaP"), fname: $("#fname").val(), surname: $("#surname").val(), gender: $("#gender").val(), age: $("#age").val(), desc: $("#desc").val(), facepic: $img }, function(data)
+				{	
+					if (data && data.success === true) 
+					{		
+						loader(1, "Starting facial recognition");			
+						$CaseID = data.message;
+						$("#caseID").html($CaseID);
+						var $ida = Sha256.hash("ida"+$("#pass").val()+$("#user").val());	
+						$.post('http://localhost/cgi-bin/starter.cgi', { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
 						{
-							loader(1, "Started...");
-							$refreshing = setInterval(function(){refreshResultStatus();}, 2500);
-							$("#statusCode").html("1");
-							$("#statusInfo").html("Started");
-							$("#noOfResults").html("0");							
-							$.mobile.navigate("#results");
-						}
-					}).fail(function(data)
+							if (data === 1)
+							{
+								loader(1, "Started...");
+								$refreshing = setInterval(function(){refreshResultStatus();}, 2500);
+								$("#statusCode").html("1");
+								$("#statusInfo").html("Started");
+								$("#noOfResults").html("0");							
+								$.mobile.navigate("#results");
+							}
+						}).fail(function(data)
+						{
+							error("Starting facial recognition failed. "+JSON.stringify(data));
+							loader(0);	
+						});					
+					}
+					else
 					{
-						error("Starting facial recognition failed. "+JSON.stringify(data));
-						loader(0);	
-					});					
-				}
-				else
+						var $out = "";	
+						if (data.errors)
+						{					
+							$.each( data.errors, function( key, val )
+							{
+								$out += val+"\n";
+							});
+							error($out);
+						}
+						else error("Failed to create case. "+JSON.stringify(data));
+						loader(0);
+					}						
+				}, 'json').fail(function(data)
 				{
-					error(data.errors);
-				}
-				loader(0);	
-				
-			}, 'json').fail(function(data)
-			{
-				error("Refreshing Case progress failed. "+JSON.stringify(data));
-				loader(0);	
-			});                                                                                                                                                                        			
+					error("Failed to create case. "+JSON.stringify(data));
+					loader(0);	
+				});
+			} 
+			else
+			{ 
+				error("No valid picture selected");
+				loader(0);  
+			}                                                                                                                                                                     			
 		}
 		else
 			loader(0);			
@@ -413,46 +517,60 @@ $(document).ready(function()
 	//Formats the json data into the correct format
 	outputAllCases = function()
 	{
-		loader(1);
+		loader(1,"Getting all cases");
 		$.post('logic/php/connectDB.php', { action: "getCases", passKey: $.cookie("ssaP") }, function(data)
 		{	
 			if (data && data.success === true)
 			{
-				var $new = "<div data-role='collapsible' data-theme='e' data-content-theme='e'>"+
-							"<h2>Recent Cases:</h2>"+
-							"<ul data-role='listview' data-split-icon='eye' data-split-theme='b'>";
-				$.each( data.message, function( key, val )
-				{					
-					if (val.Image === null)
-						val.Image = jQuery.parseJSON( '{ "ID": "-1", "TimeStamp": "undefined", "Location": "none", "Filename": "none.png" }' );
-					var $img = val.Image;
-					$cases[val.ID] = val;
-					$new += 	"<li id='"+val.ID+"'>"+
-		                            "<a class='aCase'>"+
-		                                "<h3>"+val.sub_Name+" "+val.sub_Surname+"</h3>"+
-		                                "<p>No. of results: "+val.NumberOfResults+"</p>"+
-		                            "</a>"+
-		                            "<a class='aPreview'>Preview</a>"+
-		                        "</li>";
-				});
-				$new += "	</ul>"+
-						"</div>";
-				$('#casesOverview').html($new).trigger('create');
-				$(".aCase").click(function(){OpenCase($(this).parent().get(0).id);});
-				$(".aPreview").click(function()
+				if (data.message)
 				{
-					var $case = $cases[$(this).parent().get(0).id];
-					popImage("caseImages/"+$case.Image.Filename, "Gender: "+$case.sub_Gender,"Age: "+$case.sub_Age,"DateTime: "+$case.Image.TimeStamp,$case.Description);
-				});
+					$group = 2;
+					var $new = "<div data-role='collapsible' data-theme='e' data-content-theme='e'>"+
+								"<h2>Recent Cases 1</h2>"+
+								"<ul data-role='listview' data-split-icon='eye' data-split-theme='b'>";
+					$.each( data.message, function( key, val )
+					{		
+						if ((key+1) % 10 === 0)
+			            {
+			            	$new += "	</ul>"+
+									"</div>";
+			            	$new += "<div data-role='collapsible' data-theme='e' data-content-theme='e'>"+
+										"<h2>Recent Cases "+($group++)+"</h2>"+
+										"<ul data-role='listview' data-split-icon='eye' data-split-theme='b'>";
+			            }			
+						if (val.Image === null)
+							val.Image = jQuery.parseJSON( '{ "ID": "-1", "TimeStamp": "undefined", "Location": "none", "Filename": "none.png" }' );
+						var $img = val.Image;
+						$cases[val.ID] = val;
+						$new += 	"<li id='"+val.ID+"'>"+
+			                            "<a class='aCase'>"+
+			                                "<h3>"+val.sub_Name+" "+val.sub_Surname+"</h3>"+
+			                                "<p>No. of results: "+val.NumberOfResults+"</p>"+
+			                            "</a>"+
+			                            "<a class='aPreview'>Preview</a>"+
+			                        "</li>";			            
+					});
+					$new += "	</ul>"+
+							"</div>";
+					$('#casesOverview').html($new).trigger('create');
+					$(".aCase").click(function(){OpenCase($(this).parent().get(0).id);});
+					$(".aPreview").click(function()
+					{
+						var $case = $cases[$(this).parent().get(0).id];
+						popImage("caseImages/"+$case.Image.Filename, "Gender: "+$case.sub_Gender,"Age: "+$case.sub_Age,"DateTime: "+$case.Image.TimeStamp,$case.Description,false);
+					});
+				}
+				else
+					$('#casesOverview').html("<h4>No cases created yet</h4>");
 			}
 			else
 			{
-				$('#casesOverview').html("<h3 class='error'>Failed to load cases</h3><h4 class='error'>Errors: "+data.errors+"</h4>");
+				$('#casesOverview').html("<h3 class='error'>Failed to load cases</h3><h4 class='error'>Errors: "+JSON.stringify(data)+"</h4>");
 			}
 			loader(0);
 		}, 'json').fail(function(data)
 		{
-			$('#casesOverview').html("<h3 class='error'>Failed to load cases</h3>");
+			$('#casesOverview').html("<h3 class='error'>Failed to load cases</h3><h4 class='error'>Errors: "+JSON.stringify(data)+"</h4>");
 			loader(0);
 		});	
 	};
@@ -488,13 +606,14 @@ $(document).ready(function()
 							"<h2>Add new user</h2>"+
 							"<ul data-role='listview'>";	
 				$new += 		"<li>"+
-									"<input id='reg_user' placeholder='New Username'>"+
+									"<input id='reg_user' name='reg_user' placeholder='New Username'>"+
+									"<label for='reg_user' class='error'></label>"+
 									"<button id='btnRegUser'>Create</button>"+	
 								"</li>";		
 				$new += "	</ul>"+
 						"</div>";	
 				$('#userView').html($new).trigger('create');	
-				$("input[name=active]").checked(function()
+				$("input[name=active]").on("checked", function()
 				{
 					
 				});	
@@ -504,7 +623,7 @@ $(document).ready(function()
 				});
 				$("#btnRegUser").click(function()
 				{
-					
+					register();
 				});					
 				loader(0);
 			}
@@ -520,27 +639,32 @@ $(document).ready(function()
 		});
 	};
 
-	popImage = function(img, d1,d2,d3,d4)
+	popImage = function(img, d1,d2,d3,d4,cgi)
 	{
 		$("#d1").html(d1);
 		$("#d2").html(d2);
 		$("#d3").html(d3);
 		$("#d4").html(d4);
-		$("#facepreview").attr('src',"http://localhost:1080/cgi-bin/geti.qfr?image="+img+"&original=1");
+		if (cgi === false)
+			$("#facepreview").attr('src',img);
+		else
+			$("#facepreview").attr('src',"http://localhost/cgi-bin/geti.qfr?image="+img+"&original=1");
 		$.mobile.navigate('#popup', {transition: 'pop', role: 'dialog'});
 	};
 
 	readURL = function(input)
 	{
-
 		if (input.files && input.files[0])
 		{
-			var reader = new FileReader();
-			reader.onload = function (e)
+			if(input.files[0].type == "image/jpeg")
 			{
-				$('#capturefacepreview').attr('src', e.target.result);
-			};
-			reader.readAsDataURL(input.files[0]);
+				var reader = new FileReader();
+				reader.onload = function (e)
+				{
+					$('#capturefacepreview').attr('src', e.target.result);
+				};
+				reader.readAsDataURL(input.files[0]);
+			} else return -1;
 		}
 	};
 
