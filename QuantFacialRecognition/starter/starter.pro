@@ -14,3 +14,4 @@ SOURCES += main.cpp \
 
 LIBS += -L../src -lapplib
 LIBS += -lcgicc
+LIBS += `pkg-config opencv --cflags --libs`

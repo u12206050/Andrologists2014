@@ -7,7 +7,7 @@
 		define("DBHOST","localhost");
 		define("DBPORT","5432");
 		define("DBUSERNAME","postgres");
-		define("DBPASSWORD","data");
+		define("DBPASSWORD","root");
 		define("DEV","false");
 		define("CGIPATH","http://localhost/cgi-bin/");
 		define("UPLOAD_DIR", "../../caseImages/");

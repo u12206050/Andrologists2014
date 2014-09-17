@@ -47,7 +47,8 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         QSqlQuery query;
         query.prepare("INSERT INTO case_results "
                       "(face_id, case_id, percentage_match, random_identifier) "
-                      "VALUES (:faceId, :caseId, :percentageMatch, :randomIdentifier)");
+                      "VALUES (:faceId, :caseId, :percentageMatch, :randomIdentifier); "
+                      "UPDATE cases SET num_results = num_results + 1 WHERE id = :caseId;");
         query.bindValue(":faceId", faceId);
         query.bindValue(":caseId", caseId);
         query.bindValue(":percentageMatch", percentageMatch);
@@ -56,38 +57,6 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         if(!query.exec())
         {
             QString error("inserting case result.");
-            throw ErrorException(error, 0);
-        }
-    }
-    else
-    {
-        QString error("database closed.");
-        throw ErrorException(error, 3);
-    }
-}
-void CaseManager::updateProgress()
-{
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE cases SET progress = progress + 1 WHERE id = :caseId");
-    updateQuery.bindValue(":caseId", caseId);
-    if(!updateQuery.exec())
-    {
-        QString error("updating case progress.");
-        throw ErrorException(error, 0);
-    }
-}
-
-void CaseManager::instialiseCaseComparisons(int numComparisons)
-{
-    if (databaseConnection->getDatabase().open())
-    {
-        QSqlQuery updateQuery;
-        updateQuery.prepare("UPDATE cases SET num_results = :numComparisons WHERE id = :caseId");
-        updateQuery.bindValue(":caseId", caseId);
-        updateQuery.bindValue(":numComparisons", numComparisons);
-        if(!updateQuery.exec())
-        {
-            QString error("updating case progress.");
             throw ErrorException(error, 0);
         }
     }
@@ -107,7 +76,7 @@ bool CaseManager::authenticateCase(QString username, QString password)
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
-        query.prepare("SELECT COUNT(*) FROM users, cases WHERE users.username = cases.username AND users.username = :userName AND cases.id = :caseId AND users.password = :password");
+        query.prepare("SELECT COUNT(*) FROM users, cases WHERE users.username = cases.username AND users.username = :userName AND cases.id = :caseId AND users.password = crypt(:password, '2a068uKrXaZiFsbdet62kkZSSOida')");
         query.bindValue(":userName", username);
         query.bindValue(":caseId", caseId);
         query.bindValue(":password", password);
@@ -134,7 +103,51 @@ bool CaseManager::authenticateCase(QString username, QString password)
     return false;
 }
 
+
+
 int CaseManager::getCaseId()
 {
     return caseId;
+}
+
+void CaseManager::setProgress(int progress)
+{
+    if (databaseConnection->getDatabase().open())
+    {
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE cases SET progress = :progress WHERE id = :caseId");
+        updateQuery.bindValue(":caseId", caseId);
+        updateQuery.bindValue(":progress", progress);
+        if(!updateQuery.exec())
+        {
+            QString error("updating case progress.");
+            throw ErrorException(error, 0);
+        }
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 3);
+    }
+}
+
+void CaseManager::setStatus(string status)
+{
+    if (databaseConnection->getDatabase().open())
+    {
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE cases SET status = :status WHERE id = :caseId");
+        updateQuery.bindValue(":caseId", caseId);
+        updateQuery.bindValue(":status", QString(status.c_str()));
+        if(!updateQuery.exec())
+        {
+            QString error("updating case progress.");
+            throw ErrorException(error, 0);
+        }
+    }
+    else
+    {
+        QString error("database closed.");
+        throw ErrorException(error, 3);
+    }
 }

@@ -31,15 +31,15 @@ int main()
        password = QString((**passIter).c_str());
     }
 
-    form_iterator caseIter = cgi.getElement("caseId");
+    form_iterator caseIter = cgi.getElement("caseID");
     if (caseIter != cgi.getElements().end())
     {
        caseId = atoi((**caseIter).c_str());
     }
 
     // Send HTTP header
-    /*cout << HTTPHTMLHeader() << endl;
-
+    cout << HTTPHTMLHeader() << endl;
+    /*
     // Set up the HTML document
     cout << html() << head(title("cgicc example")) << endl;
     cout << body() << endl;
@@ -61,10 +61,9 @@ int main()
     CaseManager manager(conn, caseId);
     if (!manager.authenticateCase(username, password))
     {
-        cout << "1" << endl;\
-        //return 1;
+        cout << "Could not authenticate user" << endl;\
+        return 1;
     }
-    cout << "0" << endl;
 
     /*if (WINDOWS)
     {
@@ -97,26 +96,19 @@ int main()
 
     pid_t pid = fork(); /* Create a child process */
 
-    switch (pid) {
-    case -1: /* Error */
-        std::cerr << "Uh-Oh! fork() failed.\n";
-        exit(1);
-    case 0: /* Child process */
-        execl(programPath, "1", NULL); /* Execute the program */
-        std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
-        exit(1);
-    default: /* Parent process */
-        std::cout << "Process created with pid " << pid << "\n";
-        int status;
-
-        /*while (!WIFEXITED(status))
-        {
-            waitpid(pid, status, 0);
-        }
-
-        std::cout << "Process exited with " << WEXITSTATUS(status) << "\n";*/
+    switch (pid)
+    {
+        case -1:
+            cout << "Could not start new process" << "\n";
+            exit(1);
+        case 0:
+            execl(programPath, "1", NULL); /* Execute the program */
+            std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
+            cout << "Could not start new process" << "\n";
+            exit(1);
+        default: /* Parent process */
+            std::cout << "pp1" << "\n";
 
         return 0;
     }
-    //}
 }

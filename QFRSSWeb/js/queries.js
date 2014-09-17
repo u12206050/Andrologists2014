@@ -336,7 +336,7 @@ $(document).ready(function()
 						$CaseID = data.message;
 						$("#caseID").html($CaseID);
 						var $ida = Sha256.hash("ida"+$("#pass").val()+$("#user").val());	
-						$.post('http://localhost/cgi-bin/starter.cgi', { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
+						$.post('http://localhost/starter.cgi', { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
 						{
 							if (data === 1)
 							{
@@ -346,6 +346,11 @@ $(document).ready(function()
 								$("#statusInfo").html("Started");
 								$("#noOfResults").html("0");							
 								$.mobile.navigate("#results");
+							}
+							else
+							{
+								loader(0);
+								error(data);
 							}
 						}).fail(function(data)
 						{

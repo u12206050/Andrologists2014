@@ -34,7 +34,8 @@ void dumpFile(const char* filename)
 int main ()
 {	
 	cout << "Content-type:text/html\r\n\r\n";
-	cout << "<html>\n";
+	cout << 1 << endl;
+	/*cout << "<html>\n";
 	cout << "<head>\n";
 	cout << "<title>QFRSS</title>\n";
 	cout << "</head>\n";
@@ -43,7 +44,7 @@ int main ()
 	cout << "<image src='/cgi-bin/geti.cgi?image=Desert.jpg'>";
 	//http://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm
 	cout << "</body>\n";
-	cout << "</html>\n";
+	cout << "</html>\n";*/
 
 	return 0;
 }

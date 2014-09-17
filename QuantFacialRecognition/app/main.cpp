@@ -10,10 +10,10 @@ int main(int argc, char* argv[])
 {
     try
     {
-        cout << "started: " << argv[0] << endl;
-        int caseId = 1;//atoi(argv[0]);
+        //cout << "started: " << argv[0] << endl;
+        int caseId = atoi(argv[0]);
 
-        cout << "caseId: " << caseId << endl;
+        //cout << "caseId: " << caseId << endl;
 
 
         QString dbType("QPSQL");
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         QString trainingFile("/home/zane/Documents/COS301/training1.xml");
         recognizer.loadTrainingFromXML(trainingFile);
         recognizer.processCase(caseId);
-        cout << "end" << endl;
+        //cout << "end" << endl;
     }
     catch (ErrorException e)
     {

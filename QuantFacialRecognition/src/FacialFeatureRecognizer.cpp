@@ -25,29 +25,38 @@ void FacialFeatureRecognizer::processCase(int caseId)
     imageData = faceDetectFilter->filter(imageData);
     if (imageData->faces.size() == 0)
     {
-        QString cause("No face in image.");
-        throw ErrorException(cause, 0);
+        caseManager->setProgress(-1);
+        caseManager->setStatus("No faces in image");
+        return;
+    }
+    if (imageData->faces.size() > 1)
+    {
+        caseManager->setProgress(-1);
+        caseManager->setStatus("More than one face in image");
+        return;
     }
     imageData = preProcessingFilter->filter(imageData);
+
+    caseManager->setProgress(0);
+    caseManager->setStatus("busy");
+    return;
 
     GetFaceDetailsResponse* response = dbReader.getAllFaceFilenamesAndIds();
     vector<QString> faceFilenames = response->faceFilnames;
     vector<int> faceIds = response->ids;
-
-    caseManager->instialiseCaseComparisons(faceIds.size());
 
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
         Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
         cout << "compared face: " << percentageMatch << endl;
-        caseManager->updateProgress();
         if (percentageMatch <= threshold)
         {
             caseManager->updateCaseStatus(faceIds[i], percentageMatch);
         }
+        caseManager->setProgress(i/faceFilenames.size()*100.0);
     }
-
+    caseManager->setStatus("finished");
 }
 
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)
