@@ -120,7 +120,7 @@
     <div data-role="page" id="results" data-theme="e">
         <div data-role="header" data-position="inline">
             <h1>Case: <strong id="caseID">-999</strong></h1>
-            <?php require('menualt.html');?> 
+            <?php //require('menualt.html');?> 
         </div>
         <div data-role="content" data-theme="a">
             <div class="ui-grid-b ui-responsive center">                                    
@@ -155,7 +155,7 @@
         <div data-role="footer">
             <h4 id="d4" class="center"></h4>
         </div>
-    </div>  
+    </div>
 
     <!--CONTACT US-->
     <div data-role="page" id="contactus" data-theme="a">
@@ -228,7 +228,7 @@
             </div>           
         </div>
         <div data-role="footer" data-position='fixed' data-theme="d">
-            <h4><a href="#account" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-user button-wrap">Account</a></div></h4>      
+            <h4><a href="#account" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-user button-wrap">Account</a></h4>      
         </div>
     </div>  
 <?php require('footer.php');?> 
