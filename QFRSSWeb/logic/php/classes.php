@@ -143,7 +143,7 @@
 		{
 			$tmp->ID = $row['id'];
 			$tmp->ImageCode = $row['random_identifier'];
-			$tmp->Image = getImage($row['image_id'],0);
+			$tmp->Image = getImage($row['face_id'],0);
 			$tmp->Match = $row['percentage_match'];
 		}
 		else
