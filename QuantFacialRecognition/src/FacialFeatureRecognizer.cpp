@@ -16,13 +16,19 @@ void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
 
 void FacialFeatureRecognizer::processCase(int caseId)
 {
+    fstream file2;
+    file2.open("/home/zane/Documents/COS301/MainProject/log2.txt", ios::out);
+    file2 << "started processCase, Caseid: " << caseId << endl;
     DatabaseReader dbReader(databaseConnection);
     CaseManager* caseManager = new CaseManager(databaseConnection, caseId);
     QString filename = dbReader.getOriginalImageFilename(caseManager->getCaseId());
+    filename = "/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/" + filename;
+    file2 << "got orignal filename:" << filename.toStdString() <<", Caseid: " << caseId << endl;
     Mat imageTaken = imread(filename.toStdString(), CV_LOAD_IMAGE_UNCHANGED);
     ImageData* imageData = new ImageData();
     imageData->image = imageTaken;
     imageData = faceDetectFilter->filter(imageData);
+    file2 << "Fininsed PreProc, Caseid: " << caseId << endl;
     if (imageData->faces.size() == 0)
     {
         caseManager->setProgress(-1);
@@ -39,7 +45,6 @@ void FacialFeatureRecognizer::processCase(int caseId)
 
     caseManager->setProgress(0);
     caseManager->setStatus("busy");
-    return;
 
     GetFaceDetailsResponse* response = dbReader.getAllFaceFilenamesAndIds();
     vector<QString> faceFilenames = response->faceFilnames;
@@ -57,6 +62,7 @@ void FacialFeatureRecognizer::processCase(int caseId)
         caseManager->setProgress(i/faceFilenames.size()*100.0);
     }
     caseManager->setStatus("finished");
+    file2.close();
 }
 
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)

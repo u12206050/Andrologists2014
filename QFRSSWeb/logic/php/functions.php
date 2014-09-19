@@ -159,7 +159,7 @@
 		if ($_POST["action"] == "getResults")
 		{
 			$passKey = $_POST["passKey"];
-			if (isset($_SESSION['user']) && $_SESSION['user'] == $passKey &&isset($_POST['LastIndex']) && isset($_POST['caseID']))
+			if (isset($_SESSION['user']) && $_SESSION['user'] == $passKey && isset($_POST['LastIndex']) && isset($_POST['caseID']))
 			{
 				$fromIndex = $_POST["LastIndex"];
 				$caseID = $_POST["caseID"];			

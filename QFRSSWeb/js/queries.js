@@ -1,5 +1,6 @@
 $(document).ready(function()
 { 	
+	$server = "";
 	$.removeCookie("ssaP");
 	loader = function(inout, msg)
 	{
@@ -331,14 +332,14 @@ $(document).ready(function()
 	      		$.post('logic/php/connectDB.php', { action: "createCase", passKey: $.cookie("ssaP"), fname: $("#fname").val(), surname: $("#surname").val(), gender: $("#gender").val(), age: $("#age").val(), desc: $("#desc").val(), facepic: $img }, function(data)
 				{	
 					if (data && data.success === true) 
-					{		
-						loader(1, "Starting facial recognition");			
+					{											
 						$CaseID = data.message;
 						$("#caseID").html($CaseID);
 						var $ida = Sha256.hash("ida"+$("#pass").val()+$("#user").val());	
-						$.post('http://localhost/starter.cgi', { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
+						loader(1, "Starting facial recognition");
+						$.post($server+"starter.cgi", { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
 						{
-							if (data === 1)
+							if (data === "1")
 							{
 								loader(1, "Started...");
 								$refreshing = setInterval(function(){refreshResultStatus();}, 2500);
@@ -480,7 +481,7 @@ $(document).ready(function()
 								$img = jQuery.parseJSON( '{ "ID": "-1", "TimeStamp": "undefined", "Location": "none", "Filename": "none.png" }' );
 							$new += 	"<li>"+
 											"<a class='faceResult' id='"+val.ImageCode+"'>"+
-												"<img src='http://localhost:1080/cgi-bin/geti.qfr?image="+val.ImageCode+"'>"+
+												"<img src='"+$server+"geti.cgi?image="+val.ImageCode+"&org=1'>"+
 												"<p>Date & Time: "+$img.TimeStamp+"</p>"+
 												"<p>Location: "+$img.LocationX+"</p>"+
 												"<p>Match: "+val.Match+"</p>"+
@@ -653,7 +654,7 @@ $(document).ready(function()
 		if (cgi === false)
 			$("#facepreview").attr('src',img);
 		else
-			$("#facepreview").attr('src',"http://localhost/cgi-bin/geti.qfr?image="+img+"&original=1");
+			$("#facepreview").attr('src',$server+"geti.cgi?image="+img+"&org=1");
 		$.mobile.navigate('#popup', {transition: 'pop', role: 'dialog'});
 	};
 

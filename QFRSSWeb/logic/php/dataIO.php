@@ -207,9 +207,11 @@
 	{
 		$conn = connect(); if ($conn == null) return null;
 		$caseID = trim(pg_escape_string($caseID));
-	
+		$fromIndex = trim(pg_escape_string($fromIndex));
+		
 		$errors = array();  	
 		$data 	= array(); 
+		
 		
 		if (empty($caseID))
 		$errors['caseID'] = 'caseID is required.';
@@ -217,7 +219,7 @@
 		$data['success'] = false;
 		if (empty($errors))
 		{
-			$sql = pg_query($conn, "SELECT * FROM caseresults WHERE case_id='{$caseID}' AND id >= '{$fromIndex}' LIMIT 10;");
+			$sql = pg_query($conn, "SELECT * FROM case_results WHERE case_id='{$caseID}' AND id >= '{$fromIndex}' LIMIT 10;");
 			if ($sql)
 			{	
 				if (pg_num_rows($sql) > 0)

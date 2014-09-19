@@ -3,6 +3,7 @@
 #include "FacialFeatureRecognizer.h"
 #include "PreProcessingFilter.h"
 #include "FaceDetectFilter.h"
+#include <fstream>
 
 using namespace std;
 
@@ -12,6 +13,10 @@ int main(int argc, char* argv[])
     {
         //cout << "started: " << argv[0] << endl;
         int caseId = atoi(argv[0]);
+
+        fstream file;
+        file.open("/home/zane/Documents/COS301/MainProject/log.txt", ios::out);
+        file << "Started facerec process, caseId: " << caseId << endl;
 
         //cout << "caseId: " << caseId << endl;
 
@@ -35,7 +40,10 @@ int main(int argc, char* argv[])
         FacialFeatureRecognizer recognizer(model, 2300, conn, faceDetect, preProc);
         QString trainingFile("/home/zane/Documents/COS301/training1.xml");
         recognizer.loadTrainingFromXML(trainingFile);
+        file << "busy facerec, caseId: " << caseId << endl;
         recognizer.processCase(caseId);
+        file << "end facerec, caseId: " << caseId << endl << endl;
+        file.close();
         //cout << "end" << endl;
     }
     catch (ErrorException e)

@@ -74,16 +74,21 @@ int main()
 
     Cgicc cgi;
 
-    form_iterator idenIter = cgi.getElement("randomIdentifier");
+    form_iterator idenIter = cgi.getElement("image");
     if (idenIter != cgi.getElements().end())
     {
        randomIdentifier = QString((**idenIter).c_str());
     }
 
-    form_iterator type = cgi.getElement("type");
+    form_iterator type = cgi.getElement("org");
     if (type != cgi.getElements().end())
     {
        identifierType = atoi((**type).c_str());
+    }
+    else
+    {
+        dumpFile(randomIdentifier.toStdString().c_str());
+        return 0;
     }
 
     QString dbType("QPSQL");

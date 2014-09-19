@@ -51,17 +51,17 @@ QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
-        if (type == 0)
+        if (type != 0)
         {
-            query.prepare("SELECT images.filename "
-                          "FROM images, case_results"
-                          "WHERE images.id = case_results.image_id AND case_results.randomIdentifier = :randomIdentifier");
+            query.prepare("SELECT faces.filename "
+                          "FROM faces, case_results"
+                          "WHERE faces.id = case_results.face_id AND case_results.randomIdentifier = :randomIdentifier");
         }
         else
         {
-            query.prepare("SELECT faces.filename "
+            query.prepare("SELECT images.filename "
                           "FROM images, case_results, faces"
-                          "WHERE images.id=faces.image_id AND images.id = case_results.image_id AND case_results.randomIdentifier = :randomIdentifier");
+                          "WHERE images.id=faces.image_id AND faces.id = case_results.faces_id AND case_results.randomIdentifier = :randomIdentifier");
         }
 
         query.bindValue(":randomIdentifier", randomIdentifier);
@@ -76,6 +76,10 @@ QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
         while (query.next())
         {
             filename = query.value(0).toString();
+            if (filename.toStdString()[0] != '/')
+            {
+                filename = "/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/" + filename;
+            }
         }
 
         return filename;

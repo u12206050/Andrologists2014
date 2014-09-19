@@ -47,8 +47,7 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         QSqlQuery query;
         query.prepare("INSERT INTO case_results "
                       "(face_id, case_id, percentage_match, random_identifier) "
-                      "VALUES (:faceId, :caseId, :percentageMatch, :randomIdentifier); "
-                      "UPDATE cases SET num_results = num_results + 1 WHERE id = :caseId;");
+                      "VALUES (:faceId, :caseId, :percentageMatch, :randomIdentifier)");
         query.bindValue(":faceId", faceId);
         query.bindValue(":caseId", caseId);
         query.bindValue(":percentageMatch", percentageMatch);
@@ -58,6 +57,17 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
         {
             QString error("inserting case result.");
             throw ErrorException(error, 0);
+        }
+
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE cases "
+                      "SET num_results = num_results +1 "
+                      "WHERE id = :caseId");
+        updateQuery.bindValue(":caseId", caseId);
+        if(!updateQuery.exec())
+        {
+            QString error("updating case result.");
+            throw ErrorException(error, 1);
         }
     }
     else

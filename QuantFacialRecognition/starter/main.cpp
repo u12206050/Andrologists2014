@@ -3,6 +3,7 @@
 #include <string>
 #include "CaseManager.h"
 #include <unistd.h>
+#include <sstream>
 
 #include "cgicc/Cgicc.h"
 #include "cgicc/HTTPHTMLHeader.h"
@@ -95,6 +96,10 @@ int main()
     char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_GCC_32bit-Debug/app/app";
 
     pid_t pid = fork(); /* Create a child process */
+    stringstream ss;
+    ss << caseId;
+    string strCaseId;
+    ss >> strCaseId;
 
     switch (pid)
     {
@@ -102,12 +107,12 @@ int main()
             cout << "Could not start new process" << "\n";
             exit(1);
         case 0:
-            execl(programPath, "1", NULL); /* Execute the program */
+            execl(programPath, strCaseId.c_str(), NULL); /* Execute the program */
             std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
             cout << "Could not start new process" << "\n";
             exit(1);
         default: /* Parent process */
-            std::cout << "pp1" << "\n";
+            std::cout << "1" << "\n";
 
         return 0;
     }
