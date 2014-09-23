@@ -54,14 +54,14 @@ QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
         if (type != 0)
         {
             query.prepare("SELECT faces.filename "
-                          "FROM faces, case_results"
-                          "WHERE faces.id = case_results.face_id AND case_results.randomIdentifier = :randomIdentifier");
+                          "FROM faces, case_results "
+                          "WHERE faces.id = case_results.face_id AND case_results.random_identifier = :randomIdentifier");
         }
         else
         {
             query.prepare("SELECT images.filename "
-                          "FROM images, case_results, faces"
-                          "WHERE images.id=faces.image_id AND faces.id = case_results.faces_id AND case_results.randomIdentifier = :randomIdentifier");
+                          "FROM images, case_results, faces "
+                          "WHERE images.id=faces.image_id AND faces.id = case_results.faces_id AND case_results.random_identifier = :randomIdentifier");
         }
 
         query.bindValue(":randomIdentifier", randomIdentifier);

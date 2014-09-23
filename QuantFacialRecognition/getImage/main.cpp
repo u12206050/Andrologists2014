@@ -59,7 +59,7 @@ void dumpFile(const char* filename)
 
 int main()
 {
-    #if _WIN32
+    /*#if _WIN32
     // Standard I/O is in text mode by default; since we intend
     // to send binary image data to standard output, we have to
     // set it to binary mode.
@@ -67,14 +67,14 @@ int main()
     _fmode = _O_BINARY;
     if (_setmode(_fileno(stdin), _fmode) == -1) {}
     if (_setmode(_fileno(stdout), _fmode) == -1) {}
-    #endif
+    #endif*/
 
     QString randomIdentifier;
     int identifierType;
 
     Cgicc cgi;
 
-    form_iterator idenIter = cgi.getElement("image");
+    /*form_iterator idenIter = cgi.getElement("image");
     if (idenIter != cgi.getElements().end())
     {
        randomIdentifier = QString((**idenIter).c_str());
@@ -89,7 +89,10 @@ int main()
     {
         dumpFile(randomIdentifier.toStdString().c_str());
         return 0;
-    }
+    }*/
+
+    randomIdentifier = QString("Koa71rXVfn12");
+    identifierType = 1;
 
     QString dbType("QPSQL");
     QString dbHost("localhost");
@@ -101,9 +104,16 @@ int main()
 
     DatabaseReader reader(conn);
 
-    QString filename = reader.getImagePath(randomIdentifier, identifierType);
+    try
+    {
+        QString filename = reader.getImagePath(randomIdentifier, identifierType);
+        dumpFile(filename.toStdString().c_str());
 
-    dumpFile(filename.toStdString().c_str());
+    }
+    catch (ErrorException e)
+    {
+        cout << e.toString().toStdString() << endl;
+    }
 
     return 0;
 }
