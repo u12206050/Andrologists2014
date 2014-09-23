@@ -264,7 +264,7 @@
 		$data 	= array(); 
 		
 		if (empty($username))
-		$errors['username'] = 'username is required.';
+		$errors['username'] = 'Registered User is required.';
 		 if (empty($FIELD))
 		$errors['FIELD'] = 'FIELD is required.';
 		 if (empty($VALUE))
