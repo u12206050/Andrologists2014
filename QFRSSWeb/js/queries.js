@@ -619,13 +619,54 @@ $(document).ready(function()
 				$new += "	</ul>"+
 						"</div>";	
 				$('#userView').html($new).trigger('create');	
-				$("input[name=active]").on("checked", function()
+				$("input[name=active]").change(function()
 				{
-					
+					var $user = $(this).parent("div").get(0).id;
+					$(this).parent().get(0).text("Is active");
+					$.post('logic/php/connectDB.php', { action: "getCases", passKey: $.cookie("ssaP"), ruser $user, field: "active", val: this.checked }, function(data)
+					{
+						if (data && data.success === true)
+						{
+							$(this).parent().get(0).text("Is active - updated");
+						}	
+						else
+						{
+							error(JSON.stringify(data.errors));
+						}
+					}, 'json').fail(function(data)
+					{
+						if (data.errors)
+							error(JSON.stringify(data.errors));
+						else
+							error(JSON.stringify(data));
+						loader(0);
+					});
 				});	
 				$(".clearpass").click(function()
 				{
-					
+					var $but = $(this);
+					$but.html("Clear Password");
+					var $user = $(this).parent().get(0).id;
+					var $ida = Sha256.hash("idaqfrss"+$user);
+					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser $user, field: "password", val: $ida }, function(data)
+					{
+						if (data && data.success === true)
+						{
+							$but.html("Clear Password - <strong>Cleared</strong>");
+						}	
+						else
+						{
+							error(JSON.stringify(data.errors));
+						}	
+						loader(0);					
+					}, 'json').fail(function(data)
+					{
+						if (data.errors)
+							error(JSON.stringify(data.errors));
+						else
+							error(JSON.stringify(data));
+						loader(0);
+					});
 				});
 				$("#btnRegUser").click(function()
 				{

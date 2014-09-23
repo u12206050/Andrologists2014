@@ -88,11 +88,21 @@
 		} 
 		else
 		if ($_POST["action"] == "updateUser")
-		{
-			$newUser = $_POST["ruser"];
+		{			
 			$passKey = $_POST["passKey"];
 			if (isset($_SESSION['user']) && isset($_SESSION['admin']) && $_SESSION['user'] == $passKey && $_SESSION['admin'] == true)
-			{
+			{					
+				if (isset($_POST['ruser']) && isset($_POST['field']) && isset($_POST['val']))
+				{
+					$regUser = $_POST["ruser"];
+					$regField = $_POST["field"];
+					$regValue = $_POST["val"];
+				}
+				else
+				{
+					data["success"] = false;
+					$data["errors"] = "Incorrect arguments supplied, please login";
+				}
 				$data = register($newUser, '5656674d2a4c675f8bf727885ff75ea607256c398111a524980ea91ef864f8bd', true);
 			}
 			else
