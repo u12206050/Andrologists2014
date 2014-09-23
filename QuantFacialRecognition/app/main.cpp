@@ -4,11 +4,15 @@
 #include "PreProcessingFilter.h"
 #include "FaceDetectFilter.h"
 #include <fstream>
+#include <unistd.h>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
+    daemon(0, 0);
+    while (true)
+        cout << "Cmon" << endl;
     try
     {
         //cout << "started: " << argv[0] << endl;

@@ -1,4 +1,2 @@
-Started facerec process, caseId: 23
-busy facerec, caseId: 23
-end facerec, caseId: 23
-
+Started facerec process, caseId: 0
+busy facerec, caseId: 0
