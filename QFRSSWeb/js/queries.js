@@ -623,7 +623,7 @@ $(document).ready(function()
 				{
 					var $user = $(this).parent("div").get(0).id;
 					$(this).parent().get(0).text("Is active");
-					$.post('logic/php/connectDB.php', { action: "getCases", passKey: $.cookie("ssaP"), ruser $user, field: "active", val: this.checked }, function(data)
+					$.post('logic/php/connectDB.php', { action: "getCases", passKey: $.cookie("ssaP"), ruser: $user, field: "active", val: this.checked }, function(data)
 					{
 						if (data && data.success === true)
 						{
@@ -648,7 +648,7 @@ $(document).ready(function()
 					$but.html("Clear Password");
 					var $user = $(this).parent().get(0).id;
 					var $ida = Sha256.hash("idaqfrss"+$user);
-					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser $user, field: "password", val: $ida }, function(data)
+					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser: $user, field: "password", val: $ida }, function(data)
 					{
 						if (data && data.success === true)
 						{
