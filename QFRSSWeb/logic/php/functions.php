@@ -97,13 +97,13 @@
 					$regUser = $_POST["ruser"];
 					$regField = $_POST["field"];
 					$regValue = $_POST["val"];
+					$data = updateUser($regUser, $regField, $regValue);
 				}
 				else
 				{
-					data["success"] = false;
+					$data["success"] = false;
 					$data["errors"] = "Incorrect arguments supplied, please login";
-				}
-				$data = register($newUser, '5656674d2a4c675f8bf727885ff75ea607256c398111a524980ea91ef864f8bd', true);
+				}				
 			}
 			else
 			{
