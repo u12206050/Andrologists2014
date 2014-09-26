@@ -478,11 +478,11 @@ $(document).ready(function()
 						{
 							var $img = val.Image;
 							if ($img === null)
-								$img = jQuery.parseJSON( '{ "ID": "-1", "TimeStamp": "undefined", "Location": "none", "Filename": "none.png" }' );
+								$img = jQuery.parseJSON( '{ "ID": "-1", "TimeDate": "undefined", "Location": "none", "Filename": "none.png" }' );
 							$new += 	"<li>"+
 											"<a class='faceResult' id='"+val.ImageCode+"'>"+
 												"<img src='"+$server+"geti.cgi?image="+val.ImageCode+"&org=1'>"+
-												"<p>Date & Time: "+$img.TimeStamp+"</p>"+
+												"<p>Date & Time: "+$img.TimeDate+"</p>"+
 												"<p>Location: "+$img.LocationX+"</p>"+
 												"<p>Match: "+val.Match+"</p>"+
 											"</a>"+
@@ -495,7 +495,7 @@ $(document).ready(function()
 						$('#resultOverview').append($new).trigger('create');	
 						$(".faceResult").click(function()
 						{
-							popImage(this.id+"&original=1");
+							popImage(this.id+"&org=0",$("#"+this.id+" :nth-child(3)").text(),"",$("#"+this.id+" :nth-child(2)").text(),$("#"+this.id+" :nth-child(4)").text());
 						});						
 						loader(0);
 					}
@@ -545,7 +545,7 @@ $(document).ready(function()
 										"<ul data-role='listview' data-split-icon='eye' data-split-theme='b'>";
 			            }			
 						if (val.Image === null)
-							val.Image = jQuery.parseJSON( '{ "ID": "-1", "TimeStamp": "undefined", "Location": "none", "Filename": "none.png" }' );
+							val.Image = jQuery.parseJSON( '{ "ID": "-1", "TimeDate": "undefined", "Location": "none", "Filename": "none.png" }' );
 						var $img = val.Image;
 						$cases[val.ID] = val;
 						$new += 	"<li id='"+val.ID+"'>"+
@@ -563,7 +563,7 @@ $(document).ready(function()
 					$(".aPreview").click(function()
 					{
 						var $case = $cases[$(this).parent().get(0).id];
-						popImage("caseImages/"+$case.Image.Filename, "Gender: "+$case.sub_Gender,"Age: "+$case.sub_Age,"DateTime: "+$case.Image.TimeStamp,$case.Description,false);
+						popImage("caseImages/"+$case.Image.Filename, "Gender: "+$case.sub_Gender,"Age: "+$case.sub_Age,"DateTime: "+$case.Image.TimeDate,$case.Description);
 					});
 				}
 				else
@@ -596,9 +596,9 @@ $(document).ready(function()
 					$new += 	"<li>"+
 									"<div id='"+val.Username+"'>"+
 										"<h3>"+val.Username+"</h3>"+
-										"<label>Is active"+
+										"<label><span>Is active</span>"+
 											"<input type='checkbox' class='active' name='active'";
-													if (val.Active)
+													if (val.Active === 't')
 														$new += " checked";
 					$new += 				" />"+
 										" </label>"+
@@ -621,18 +621,21 @@ $(document).ready(function()
 				$('#userView').html($new).trigger('create');	
 				$("input[name=active]").change(function()
 				{
-					var $user = $(this).parent("div").get(0).id;
-					$(this).parent().get(0).text("Is active");
-					$.post('logic/php/connectDB.php', { action: "getCases", passKey: $.cookie("ssaP"), ruser: $user, field: "active", val: this.checked }, function(data)
+					loader(1,"updating");
+					var $user = $(this).parents("div").get(1).id;
+					var $box = $(this);
+					$box.siblings().text("Is active");
+					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser: $user, field: "active", val: this.checked }, function(data)
 					{
 						if (data && data.success === true)
 						{
-							$(this).parent().get(0).text("Is active - updated");
+							$box.siblings().text("Is active - updated");
 						}	
 						else
 						{
 							error(JSON.stringify(data.errors));
 						}
+						loader(0);
 					}, 'json').fail(function(data)
 					{
 						if (data.errors)
@@ -686,16 +689,13 @@ $(document).ready(function()
 		});
 	};
 
-	popImage = function(img, d1,d2,d3,d4,cgi)
+	popImage = function(img, d1,d2,d3,d4)
 	{
 		$("#d1").html(d1);
 		$("#d2").html(d2);
 		$("#d3").html(d3);
 		$("#d4").html(d4);
-		if (cgi === false)
-			$("#facepreview").attr('src',img);
-		else
-			$("#facepreview").attr('src',$server+"geti.cgi?image="+img+"&org=1");
+		$("#facepreview").attr('src',$server+"geti.cgi?image="+img);
 		$.mobile.navigate('#popup', {transition: 'pop', role: 'dialog'});
 	};
 

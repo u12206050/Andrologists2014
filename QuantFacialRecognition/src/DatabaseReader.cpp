@@ -61,7 +61,7 @@ QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
         {
             query.prepare("SELECT images.filename "
                           "FROM images, case_results, faces "
-                          "WHERE images.id=faces.image_id AND faces.id = case_results.faces_id AND case_results.random_identifier = :randomIdentifier");
+                          "WHERE images.id=faces.image_id AND faces.id = case_results.face_id AND case_results.random_identifier = :randomIdentifier");
         }
 
         query.bindValue(":randomIdentifier", randomIdentifier);
@@ -89,9 +89,6 @@ QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
         QString error("database closed.");
         throw ErrorException(error, 1);
     }
-
-	//Select ImageId FROM CaseResults WHERE randomIdentifier = randomIdentifier
-    //Something like this
 }
 
 QString DatabaseReader::getOriginalImageFilename(int caseId)

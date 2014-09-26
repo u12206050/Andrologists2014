@@ -104,16 +104,16 @@
 		if ($row != null)
 		{
 			$tmp->ID = $row['id'];		
-			$tmp->TimeDate = $row['timedate'];
+			$tmp->TimeDate = date("Y-m-d H:i:s",$row['timedate']);			
 			$tmp->LocationX = $row['location'];
 			$tmp->Filename = $row['filename'];
 		}
 		else
 		{
 			$tmp->ID = "0";
-			$tmp->TimeDate = "undefined";
-			$tmp->LocationX = "undefined";
-			$tmp->Filename = "undefined";
+			$tmp->TimeDate = "testTD";
+			$tmp->LocationX = "testLX";
+			$tmp->Filename = "notfound.jpg";
 		}
 		return $tmp;
 	}

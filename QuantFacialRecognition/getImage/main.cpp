@@ -74,7 +74,7 @@ int main()
 
     Cgicc cgi;
 
-    /*form_iterator idenIter = cgi.getElement("image");
+    form_iterator idenIter = cgi.getElement("image");
     if (idenIter != cgi.getElements().end())
     {
        randomIdentifier = QString((**idenIter).c_str());
@@ -89,10 +89,7 @@ int main()
     {
         dumpFile(randomIdentifier.toStdString().c_str());
         return 0;
-    }*/
-
-    randomIdentifier = QString("Koa71rXVfn12");
-    identifierType = 1;
+    }
 
     QString dbType("QPSQL");
     QString dbHost("localhost");
