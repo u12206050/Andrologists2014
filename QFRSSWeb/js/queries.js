@@ -707,13 +707,62 @@ $(document).ready(function()
 			{
 				var reader = new FileReader();
 				reader.onload = function (e)
-				{
+				{					
 					$('#capturefacepreview').attr('src', e.target.result);
+					$resize = resize_image(document.elementById('capturefacepreview'));
+					if ($resize != null)
+						$('#capturefacepreview').attr('src', $resize);
 				};
 				reader.readAsDataURL(input.files[0]);
 			} else return -1;
 		}
 	};
+	
+	function supports_canvas()
+	{
+		return !!document.createElement('canvas').getContext;
+	}
+
+	//The img element eg. document.elementById('pic');
+	function resize_image(img)
+	{
+		if (supports_canvas())
+		{
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0);
+
+			var MAX_WIDTH = 720;
+			var MAX_HEIGHT = 1280;
+			var width = img.width;
+			var height = img.height;
+			var flag = false;
+			if (width > height)
+			{
+				if (width > MAX_WIDTH)
+				{
+					flag = true;
+					height *= MAX_WIDTH / width;
+					width = MAX_WIDTH;
+				}
+			} 
+			else
+				if (height > MAX_HEIGHT)
+				{
+					flag = true;
+					width *= MAX_HEIGHT / height;
+					height = MAX_HEIGHT;
+				}
+			canvas.width = width;
+			canvas.height = height;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, width, height);
+
+			var dataurl = canvas.toDataURL("image/jpeg");
+			return dataurl;
+		}
+		else
+			return null;
+	}
 
 	/*if ($("#user").val() === "" || $("#pass").val() === "")
 	{
