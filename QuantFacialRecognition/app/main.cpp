@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
                              "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_eye_tree_eyeglasses.xml");
 
         Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
-        FacialFeatureRecognizer recognizer(model, 2300, conn, faceDetect, preProc);
+        FacialFeatureRecognizer recognizer(model, 1900, conn, faceDetect, preProc);
         QString trainingFile("/home/zane/Documents/COS301/training1.xml");
         recognizer.loadTrainingFromXML(trainingFile);
         file << "busy facerec, caseId: " << caseId << endl;

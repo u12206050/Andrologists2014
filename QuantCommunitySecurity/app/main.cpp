@@ -31,7 +31,7 @@ int main(/*int argc, char *argv[]*/)
             cout << filters[i] << endl;
         }
         pipeline->attachPersister(reader.createPersister());
-        pipeline->process(-1);
+        pipeline->process(500);
 	}
 	catch (ErrorException e)
 	{

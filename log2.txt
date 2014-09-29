@@ -1,3 +1,3 @@
-started processCase, Caseid: 28
-got orignal filename:/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/542277d3bf308.jpg, Caseid: 28
-Fininsed PreProc, Caseid: 28
+started processCase, Caseid: 22
+got orignal filename:/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/542717101b997.jpg, Caseid: 22
+Fininsed PreProc, Caseid: 22
