@@ -177,9 +177,12 @@ $(document).ready(function()
 		loader(1);
 		if (validate([["reg_user","Username",true]]))
 		{
-			var $ida = Sha256.hash("idaqfrss"+$("#reg_user").val());
-	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $("#reg_user").val(), pass: $ida}, function(data)
+			var $newUser = $("#reg_user").val();
+			var $password = Sha256.hash("idaqfrss"+Date.now()).substr(5, 6);
+			var $ida = Sha256.hash("ida"+$password+$newUser);
+	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $newUser, pass: $ida}, function(data)
 			{	
+				error($newUser+" password is: "+$password+"\nCan change once logged in.");
 				$.mobile.navigate("#account", { transition: "slide" });
 			}).fail(function(data)
 			{
@@ -650,12 +653,14 @@ $(document).ready(function()
 					var $but = $(this);
 					$but.html("Clear Password");
 					var $user = $(this).parent().get(0).id;
-					var $ida = Sha256.hash("idaqfrss"+$user);
+					var $password = Sha256.hash("idaqfrss"+Date.now()).substr(5, 6);
+					var $ida = Sha256.hash("ida"+$password+$user);
 					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser: $user, field: "password", val: $ida }, function(data)
 					{
 						if (data && data.success === true)
 						{
 							$but.html("Clear Password - <strong>Cleared</strong>");
+							error($user+" password is: "+$password+"\nCan change once logged in.");
 						}	
 						else
 						{
