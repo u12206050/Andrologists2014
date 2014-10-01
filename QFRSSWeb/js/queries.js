@@ -114,7 +114,7 @@ $(document).ready(function()
 		loader(1);
 		if (validate([["user","Username",true],["pass","Password",true]]))
 		{		
-			var $ida = Sha256.hash("ida"+$("#pass").val()+$("#user").val());
+			var $ida = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());
     		$.post('logic/php/connectDB.php', { action: "login", user: $("#user").val(), pass: $ida }, function(data)
 			{	
 				if (data && data.success === true)
@@ -178,8 +178,8 @@ $(document).ready(function()
 		if (validate([["reg_user","Username",true]]))
 		{
 			var $newUser = $("#reg_user").val();
-			var $password = Sha256.hash("idaqfrss"+Date.now()).substr(5, 6);
-			var $ida = Sha256.hash("ida"+$password+$newUser);
+			var $password = (CryptoJS.SHA256("idaqfrss"+Date.now())+"").substr(randomBetween(5,25), 6);
+			var $ida = CryptoJS.SHA256("ida"+$password+$newUser);
 	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $newUser, pass: $ida}, function(data)
 			{	
 				error($newUser+" password is: "+$password+"\nCan change once logged in.");
@@ -215,8 +215,8 @@ $(document).ready(function()
 				$pass2 = $("#u_repass").val();
 				if ($pass1 === $pass2)
 				{
-					var $ida1 = Sha256.hash("ida"+$("#pass").val()+$("#user").val());
-					var $ida2 = Sha256.hash("ida"+$pass1+$("#user").val());
+					var $ida1 = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());
+					var $ida2 = CryptoJS.SHA256("ida"+$pass1+$("#user").val());
 					$.post('logic/php/connectDB.php', { action: "updatePassword", passKey: $.cookie("ssaP"), newPass: $ida2, oldPass: $ida1 }, function(data)
 					{	
 						if (data && data.success === true)
@@ -338,7 +338,7 @@ $(document).ready(function()
 					{											
 						$CaseID = data.message;
 						$("#caseID").html($CaseID);
-						var $ida = Sha256.hash("ida"+$("#pass").val()+$("#user").val());	
+						var $ida = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());	
 						loader(1, "Starting facial recognition");
 						$.post($server+"starter.cgi", { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
 						{
@@ -653,8 +653,8 @@ $(document).ready(function()
 					var $but = $(this);
 					$but.html("Clear Password");
 					var $user = $(this).parent().get(0).id;
-					var $password = Sha256.hash("idaqfrss"+Date.now()).substr(5, 6);
-					var $ida = Sha256.hash("ida"+$password+$user);
+					var $password = (CryptoJS.SHA256("idaqfrss"+Date.now())+"").substr(5, 6);
+					var $ida = CryptoJS.SHA256("ida"+$password+$user);
 					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser: $user, field: "password", val: $ida }, function(data)
 					{
 						if (data && data.success === true)
