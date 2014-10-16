@@ -412,49 +412,18 @@
 		disconnect();
 		return $data; 
 	}
-	
-	function uploadImage()
-	{	
-		$allowedExts = array("gif", "jpeg", "jpg", "png");
-		$temp = explode(".", $_FILES["file"]["name"]);
-		$extension = end($temp);
-		if ((($_FILES["file"]["type"] == "image/gif")
-			|| ($_FILES["file"]["type"] == "image/jpeg")
-			|| ($_FILES["file"]["type"] == "image/jpg")
-			|| ($_FILES["file"]["type"] == "image/png"))
-			&& ($_FILES["file"]["size"] <= 5000000)
-			&& in_array($extension, $allowedExts))
-		{
-			if ($_FILES["file"]["error"] > 0)
-			{
-				if (DEV)
-					echo "Error Code: " . $_FILES["file"]["error"] ;
-			}
-			else
-			{
-				$timestamp = microtime(get_as_float);
-				$fileName = uniqid().".".$extension;
-				if (!(file_exists("/" . $fileName)))
-				{
-					move_uploaded_file($_FILES["file"]["tmp_name"], UPLOAD_DIR . $fileName);
-					return insertImage($fileName);				
-				}
-			}
-		}
-		return -1;
-	}
 
 	function saveImage($base64img)
 	{	    
 		$timestamp = microtime(get_as_float);
 		//echo date("D/M/Y H:i:s.u" , $date);
-	    $base64img = str_replace('data:image/jpeg;base64,', '', $base64img);
-	    $data = base64_decode($base64img);
-	    $filename = uniqid() . '.jpg';
-	    //echo "FILENAME: ".$filename;
-	    $file = UPLOAD_DIR . $filename;
-	    file_put_contents($file, $data);
-	    return insertImage($filename, $timestamp);
+		$base64img = str_replace('data:image/jpeg;base64,', '', $base64img);
+		$data = base64_decode($base64img);
+		$filename = uniqid() . '.jpg';
+		//echo "FILENAME: ".$filename;
+		$file = UPLOAD_DIR . $filename;
+		file_put_contents($file, $data);
+		return insertImage($filename, $timestamp);
 	}
 
 	function insertImage($filename, $timestamp)
