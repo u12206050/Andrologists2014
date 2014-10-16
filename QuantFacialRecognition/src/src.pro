@@ -18,7 +18,8 @@ SOURCES += \
     ImageData.cpp \
     PreProcessingFilter.cpp \
     DatabaseConnection.cpp \
-    CaseManager.cpp
+    CaseManager.cpp \
+    ConnectionFileReader.cpp
 
 HEADERS += \
     FacialFeatureRecognizer.h \
@@ -31,4 +32,5 @@ HEADERS += \
     PreProcessingFilter.h \
     GetFaceDetailsResponse.h \
     DatabaseConnection.h \
-    CaseManager.h
+    CaseManager.h \
+    ConnectionFileReader.h

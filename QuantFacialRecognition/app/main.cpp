@@ -5,6 +5,7 @@
 #include "FaceDetectFilter.h"
 #include <fstream>
 #include <unistd.h>
+#include "ConnectionFileReader.h"
 
 using namespace std;
 
@@ -23,14 +24,8 @@ int main(int argc, char* argv[])
 
         //cout << "caseId: " << caseId << endl;
 
-
-        QString dbType("QPSQL");
-        QString dbHost("127.0.0.1");
-        QString dbName("quant");
-        QString dbUser("postgres");
-        QString dbPassword("root");
-
-        DatabaseConnection* conn = new DatabaseConnection(dbType, dbHost, dbName, dbUser, dbPassword, 5432);
+        ConnectionFileReader reader(QString("../../Resources/connectio.txt"));
+        DatabaseConnection* conn = reader.getDatabaseConnection();
 
         string faceCascade = "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt2.xml";
         Filter* faceDetect = new FaceDetectFilter(faceCascade);

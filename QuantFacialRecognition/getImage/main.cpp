@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "DatabaseReader.h"
+#include "ConnectionFileReader.h"
 
 #include "cgicc/Cgicc.h"
 #include "cgicc/HTTPHTMLHeader.h"
@@ -91,13 +92,8 @@ int main()
         return 0;
     }
 
-    QString dbType("QPSQL");
-    QString dbHost("localhost");
-    QString dbName("quant");
-    QString dbUser("postgres");
-    QString dbPassword("root");
-
-    DatabaseConnection* conn = new DatabaseConnection(dbType, dbHost, dbName, dbUser, dbPassword, 5432);
+    ConnectionFileReader connectionReader(QString("../../Resources/connectio.txt"));
+    DatabaseConnection* conn = connectionReader.getDatabaseConnection();
 
     DatabaseReader reader(conn);
 

@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sstream>
 
+#include "ConnectionFileReader.h"
+
 #include "cgicc/Cgicc.h"
 #include "cgicc/HTTPHTMLHeader.h"
 #include "cgicc/HTMLClasses.h"
@@ -51,13 +53,9 @@ int main()
 
     cout << body() << html();*/
 
-    QString dbType("QPSQL");
-    QString dbHost("localhost");
-    QString dbName("quant");
-    QString dbUser("postgres");
-    QString dbPassword("root");
+    ConnectionFileReader connectionReader(QString("../../Resources/connectio.txt"));
+    DatabaseConnection* conn = connectionReader.getDatabaseConnection();
 
-    DatabaseConnection* conn = new DatabaseConnection(dbType, dbHost, dbName, dbUser, dbPassword, 5432);
 
     CaseManager manager(conn, caseId);
     if (!manager.authenticateCase(username, password))
