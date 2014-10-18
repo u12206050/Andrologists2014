@@ -8,7 +8,6 @@
 ./faces/s1/8.png;0
 ./faces/s1/9.png;0
 ./faces/s1/10.png;0
-./faces/s1/11.png;0
 ./faces/s2/1.png;1
 ./faces/s2/2.png;1
 ./faces/s2/3.png;1
@@ -19,9 +18,7 @@
 ./faces/s2/8.png;1
 ./faces/s2/9.png;1
 ./faces/s2/10.png;1
-./faces/s2/11.png;1
 ./faces/s3/1.png;2
-./faces/s3/2.png;2
 ./faces/s3/3.png;2
 ./faces/s3/4.png;2
 ./faces/s3/5.png;2
@@ -43,12 +40,10 @@
 ./faces/s4/10.png;3
 ./faces/s4/11.png;3
 ./faces/s5/1.png;4
-./faces/s5/2.png;4
 ./faces/s5/3.png;4
 ./faces/s5/4.png;4
 ./faces/s5/5.png;4
 ./faces/s5/6.png;4
-./faces/s5/7.png;4
 ./faces/s5/8.png;4
 ./faces/s5/9.png;4
 ./faces/s5/10.png;4
@@ -83,9 +78,7 @@
 ./faces/s8/6.png;7
 ./faces/s8/7.png;7
 ./faces/s8/8.png;7
-./faces/s8/9.png;7
 ./faces/s8/10.png;7
-./faces/s8/11.png;7
 ./faces/s9/1.png;8
 ./faces/s9/2.png;8
 ./faces/s9/3.png;8
@@ -94,7 +87,6 @@
 ./faces/s9/6.png;8
 ./faces/s9/7.png;8
 ./faces/s9/8.png;8
-./faces/s9/9.png;8
 ./faces/s9/10.png;8
 ./faces/s9/11.png;8
 ./faces/s10/1.png;9
@@ -116,9 +108,7 @@
 ./faces/s11/6.png;10
 ./faces/s11/7.png;10
 ./faces/s11/8.png;10
-./faces/s11/9.png;10
 ./faces/s11/10.png;10
-./faces/s11/11.png;10
 ./faces/s12/1.png;11
 ./faces/s12/2.png;11
 ./faces/s12/3.png;11
@@ -127,20 +117,13 @@
 ./faces/s12/6.png;11
 ./faces/s12/7.png;11
 ./faces/s12/8.png;11
-./faces/s12/9.png;11
 ./faces/s12/10.png;11
-./faces/s12/11.png;11
 ./faces/s13/1.png;12
-./faces/s13/2.png;12
-./faces/s13/3.png;12
 ./faces/s13/4.png;12
 ./faces/s13/5.png;12
 ./faces/s13/6.png;12
 ./faces/s13/7.png;12
-./faces/s13/8.png;12
-./faces/s13/9.png;12
 ./faces/s13/10.png;12
-./faces/s13/11.png;12
 ./faces/s14/1.png;13
 ./faces/s14/2.png;13
 ./faces/s14/3.png;13
@@ -149,7 +132,6 @@
 ./faces/s14/6.png;13
 ./faces/s14/7.png;13
 ./faces/s14/8.png;13
-./faces/s14/9.png;13
 ./faces/s14/10.png;13
 ./faces/s14/11.png;13
 ./faces/s15/1.png;14
@@ -158,8 +140,6 @@
 ./faces/s15/4.png;14
 ./faces/s15/5.png;14
 ./faces/s15/6.png;14
-./faces/s15/7.png;14
 ./faces/s15/8.png;14
 ./faces/s15/9.png;14
 ./faces/s15/10.png;14
-./faces/s15/11.png;14

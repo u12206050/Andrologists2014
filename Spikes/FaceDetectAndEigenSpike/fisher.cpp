@@ -63,13 +63,16 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
     secondOpinion.load("../../haarcascade_frontalface_alt_tree.xml");
     Filter* faceDetect = new FaceDetectFilter(faceCascade, secondOpinion);
     int cnt = 0;
+    int facedetected = 0;
     while (getline(file, line)) 
     {	
 		cnt++;
-		cout << cnt << endl;
+		cout << (cnt / 16380.0 * 100) << "%" << endl;
 		stringstream liness(line);
         getline(liness, path, separator);
         getline(liness, classlabel);
+        
+        cout << path << " || " << classlabel << endl;
 
 
         if(!path.empty() && !classlabel.empty()) 
@@ -89,9 +92,11 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
 				//waitKey(0);
 				images.push_back(result->faces[0]);
 				labels.push_back(atoi(classlabel.c_str()));
+				facedetected++;
             }
         }
     }
+    cout << "faces detected: " << facedetected << endl;
 }
 
 static bool isSameFace(Mat face1, Mat face2, Mat W, Mat mean)
@@ -190,7 +195,7 @@ int main(int argc, const char *argv[])
 
     Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
     model->train(images, labels);
-    model->save("training.xml");
+    model->save("/media/zane/0A06EE1A06EE0693/trainingfull.xml");
     
     //model->load("training.xml");
 
