@@ -16,20 +16,35 @@ void FacialFeatureRecognizer::loadTrainingFromXML(QString& filename)
 
 void FacialFeatureRecognizer::processCase(int caseId)
 {
+    fstream file2;
+    file2.open("/home/zane/Documents/COS301/MainProject/log2.txt", ios::out);
+    file2 << "started processCase, Caseid: " << caseId << endl;
     DatabaseReader dbReader(databaseConnection);
     CaseManager* caseManager = new CaseManager(databaseConnection, caseId);
-     cout << "hrer" << endl;
     QString filename = dbReader.getOriginalImageFilename(caseManager->getCaseId());
+    filename = "/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/" + filename;
+    file2 << "got orignal filename:" << filename.toStdString() <<", Caseid: " << caseId << endl;
     Mat imageTaken = imread(filename.toStdString(), CV_LOAD_IMAGE_UNCHANGED);
     ImageData* imageData = new ImageData();
     imageData->image = imageTaken;
     imageData = faceDetectFilter->filter(imageData);
+    file2 << "Fininsed PreProc, Caseid: " << caseId << endl;
     if (imageData->faces.size() == 0)
     {
-        QString cause("No face in image.");
-        throw ErrorException(cause, 0);
+        caseManager->setProgress(-1);
+        caseManager->setStatus("No faces in image");
+        return;
+    }
+    if (imageData->faces.size() > 1)
+    {
+        caseManager->setProgress(-1);
+        caseManager->setStatus("More than one face in image");
+        return;
     }
     imageData = preProcessingFilter->filter(imageData);
+
+    caseManager->setProgress(0);
+    caseManager->setStatus("busy");
 
     GetFaceDetailsResponse* response = dbReader.getAllFaceFilenamesAndIds();
     vector<QString> faceFilenames = response->faceFilnames;
@@ -37,15 +52,17 @@ void FacialFeatureRecognizer::processCase(int caseId)
 
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
-        caseManager->updateCaseStatus(faceIds[i], 10);
-        /*Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
+        Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
+        cout << "compared face: " << percentageMatch << endl;
         if (percentageMatch <= threshold)
         {
             caseManager->updateCaseStatus(faceIds[i], percentageMatch);
-        }*/
+        }
+        caseManager->setProgress(i/faceFilenames.size()*100.0);
     }
-
+    caseManager->setStatus("finished");
+    file2.close();
 }
 
 double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)

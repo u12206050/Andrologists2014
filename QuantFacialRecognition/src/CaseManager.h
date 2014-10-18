@@ -15,6 +15,8 @@ class CaseManager
         void updateCaseStatus(int faceId, double percentageMatch);
         bool authenticateCase(QString username, QString password);
         int getCaseId();
+        void setProgress(int progress);
+        void setStatus(string status);
 
     private:
         DatabaseConnection* databaseConnection;

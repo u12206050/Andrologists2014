@@ -6,6 +6,9 @@ SUBDIRS = \
             src \
             app \
             tests\
-            starter
+            starter\
+	    getImage
 app.depends = src
 tests.depends = src
+starter.depends = app
+getImage.depends = src

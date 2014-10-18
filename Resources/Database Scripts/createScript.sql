@@ -2,7 +2,8 @@
 (
 	id bigserial NOT NULL,
 	filename character varying(200) NOT NULL,
-	"timestamp" bigint NOT NULL,
+	timedate bigint NOT NULL,
+	location text DEFAULT 'QFRSS',
 	CONSTRAINT images_primary_key PRIMARY KEY (id)
 );
 
@@ -21,7 +22,7 @@ CREATE TABLE faces
 CREATE TABLE users
 (
 	username varchar(50) NOT NULL,
-	password varchar(30) NOT NULL,
+	password varchar(100) NOT NULL,
 	active boolean NOT NULL,
 	CONSTRAINT users_primary_key PRIMARY KEY (username)
 );
@@ -32,10 +33,10 @@ CREATE TABLE cases
 	description text,
 	sub_name text,
 	sub_surname text,
-	sub_isFemale boolean,
+	sub_gender char(1),
 	sub_age smallint,
 	image_id bigint NOT NULL,
-	status int,
+	status text,
 	progress smallint,
 	username varchar(50) NOT NULL,
 	num_results smallint,
@@ -63,3 +64,10 @@ CREATE TABLE case_results
 		REFERENCES faces (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+CREATE EXTENSION pgcrypto;
+
+INSERT INTO users(
+            username, password, active)
+    VALUES ('admin', crypt('5656674d2a4c675f8bf727885ff75ea607256c398111a524980ea91ef864f8bd', '2a068uKrXaZiFsbdet62kkZSSOida'), true);
+

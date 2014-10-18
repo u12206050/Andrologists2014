@@ -20,9 +20,10 @@ void DatabasePersister::persistImageFileData(DatabasePersistRequest* request)
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
-		query.prepare("INSERT INTO images (filename, timestamp) VALUES (:filename, :timestamp)");
+        query.prepare("INSERT INTO images (filename, timedate, location) VALUES (:filename, :timestamp, :location)");
 		query.bindValue(":filename", request->originalImageFilename);
 		query.bindValue(":timestamp", request->timeStamp);
+        query.bindValue(":location", QString("cam"));
         if(!query.exec())
         {
 			QString error("inserting image data.");

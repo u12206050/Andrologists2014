@@ -12,6 +12,7 @@
 #include "CaseManager.h"
 #include "DatabaseConnection.h"
 #include <QtSql>
+#include <fstream>
 
 using namespace cv;
 

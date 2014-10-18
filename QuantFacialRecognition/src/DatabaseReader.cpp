@@ -46,14 +46,25 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 	}
 }
 
-QString DatabaseReader::getImagePath(QString randomIdentifier)
+QString DatabaseReader::getImagePath(QString randomIdentifier, int type)
 {
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery query;
-        query.prepare("SELECT images.filename "
-                      "FROM images"
-                      "WHERE images.id=faces.image_id AND caseResults.randomIdentifier='randomIdentifier'");
+        if (type != 0)
+        {
+            query.prepare("SELECT faces.filename "
+                          "FROM faces, case_results "
+                          "WHERE faces.id = case_results.face_id AND case_results.random_identifier = :randomIdentifier");
+        }
+        else
+        {
+            query.prepare("SELECT images.filename "
+                          "FROM images, case_results, faces "
+                          "WHERE images.id=faces.image_id AND faces.id = case_results.face_id AND case_results.random_identifier = :randomIdentifier");
+        }
+
+        query.bindValue(":randomIdentifier", randomIdentifier);
 
         if(!query.exec())
         {
@@ -65,6 +76,10 @@ QString DatabaseReader::getImagePath(QString randomIdentifier)
         while (query.next())
         {
             filename = query.value(0).toString();
+            if (filename.toStdString()[0] != '/')
+            {
+                filename = "/home/zane/Documents/COS301/MainProject/QFRSSWeb/caseImages/" + filename;
+            }
         }
 
         return filename;
@@ -74,9 +89,6 @@ QString DatabaseReader::getImagePath(QString randomIdentifier)
         QString error("database closed.");
         throw ErrorException(error, 1);
     }
-
-	//Select ImageId FROM CaseResults WHERE randomIdentifier = randomIdentifier
-    //Something like this
 }
 
 QString DatabaseReader::getOriginalImageFilename(int caseId)

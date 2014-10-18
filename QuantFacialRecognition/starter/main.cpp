@@ -3,24 +3,53 @@
 #include <string>
 #include "CaseManager.h"
 #include <unistd.h>
+#include <sstream>
+
+#include "cgicc/Cgicc.h"
+#include "cgicc/HTTPHTMLHeader.h"
+#include "cgicc/HTMLClasses.h"
 
 using namespace std;
+using namespace cgicc;
 
-int main(int argc, char* argv[])
+int main()
 {
-    /*if (argc != 3)
+    Cgicc cgi;
+
+    int caseId;
+    QString username;
+    QString password;
+
+    form_iterator userIter = cgi.getElement("user");
+    if (userIter != cgi.getElements().end())
     {
-        cout << "2" << endl;
-        return 1;
+       username = QString((**userIter).c_str());
     }
 
-    int caseId = atoi(argv[0]);
-    QString username = argv[1];
-    QString password = argv[2];*/
+    form_iterator passIter = cgi.getElement("pass");
+    if (passIter != cgi.getElements().end())
+    {
+       password = QString((**passIter).c_str());
+    }
 
-    int caseId = 1;
-    QString username = "zane";
-    QString password = "zane";
+    form_iterator caseIter = cgi.getElement("caseID");
+    if (caseIter != cgi.getElements().end())
+    {
+       caseId = atoi((**caseIter).c_str());
+    }
+
+    // Send HTTP header
+    cout << HTTPHTMLHeader() << endl;
+    /*
+    // Set up the HTML document
+    cout << html() << head(title("cgicc example")) << endl;
+    cout << body() << endl;
+
+    cout << username.toStdString() << endl;
+    cout << password.toStdString() << endl;
+    cout << caseId << endl;
+
+    cout << body() << html();*/
 
     QString dbType("QPSQL");
     QString dbHost("localhost");
@@ -33,10 +62,9 @@ int main(int argc, char* argv[])
     CaseManager manager(conn, caseId);
     if (!manager.authenticateCase(username, password))
     {
-        cout << "1" << endl;\
+        cout << "Could not authenticate user" << endl;\
         return 1;
     }
-    cout << "0" << endl;
 
     /*if (WINDOWS)
     {
@@ -68,27 +96,24 @@ int main(int argc, char* argv[])
     char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_GCC_32bit-Debug/app/app";
 
     pid_t pid = fork(); /* Create a child process */
+    stringstream ss;
+    ss << caseId;
+    string strCaseId;
+    ss >> strCaseId;
 
-    switch (pid) {
-    case -1: /* Error */
-        std::cerr << "Uh-Oh! fork() failed.\n";
-        exit(1);
-    case 0: /* Child process */
-        execl(programPath, NULL); /* Execute the program */
-        std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
-        exit(1);
-    default: /* Parent process */
-        std::cout << "Process created with pid " << pid << "\n";
-        int status;
-
-        /*while (!WIFEXITED(status))
-        {
-            waitpid(pid, status, 0);
-        }
-
-        std::cout << "Process exited with " << WEXITSTATUS(status) << "\n";*/
+    switch (pid)
+    {
+        case -1:
+            cout << "Could not start new process" << "\n";
+            exit(1);
+        case 0:
+            execl(programPath, strCaseId.c_str(), NULL); /* Execute the program */
+            std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
+            cout << "Could not start new process" << "\n";
+            exit(1);
+        default: /* Parent process */
+            std::cout << "1" << "\n";
 
         return 0;
     }
-    //}
 }
