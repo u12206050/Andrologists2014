@@ -67,7 +67,7 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
     while (getline(file, line)) 
     {	
 		cnt++;
-		cout << (cnt / 16380.0 * 100) << "%" << endl;
+		cout << (cnt / 1638.0 * 100) << "%" << endl;
 		stringstream liness(line);
         getline(liness, path, separator);
         getline(liness, classlabel);
