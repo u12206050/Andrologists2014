@@ -16,10 +16,10 @@ ImageData* NSamplingFilter::filter(ImageData* image)
     counter++;
     if(counter % n == 0)
     {
-	return image;		
+        return image;
     }
     else
     {
-	return NULL;
+        return NULL;
     }
 }

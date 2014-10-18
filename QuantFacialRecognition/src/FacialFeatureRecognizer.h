@@ -31,6 +31,8 @@ class FacialFeatureRecognizer
         Filter* faceDetectFilter;
         Filter* preProcessingFilter;
 
+        float scaleToPercentage(double unscaledValue);
+
 
 };
 

@@ -118,6 +118,27 @@
 		return $img;		
 	}
 	
+	function getFaceImage($faceID)
+	{
+		$conn = connect(); if ($conn == null) return null;
+		$faceID = trim(pg_escape_string($faceID));
+		$img = Image(null);
+		if (empty($faceID))
+			return $img;
+		$sql = pg_query($conn, "SELECT id, timedate, location FROM images WHERE id = (SELECT image_id FROM faces WHERE id={$faceID})");
+		
+		if ($sql)
+		{
+			if ($results = pg_fetch_array($sql))
+			{				
+				$img = Image($results); 						
+			}
+		}
+		
+		disconnect();
+		return $img;		
+	}
+	
 	function getCase($caseID, $progress)
 	{
 		$conn = connect(); if ($conn == null) return null;
@@ -140,9 +161,12 @@
 			else
 				$sql = pg_query($conn, "SELECT * FROM cases WHERE id='{$caseID}';");
 			
-			if ($results = pg_fetch_array($sql)==1)
+			if ($results = pg_fetch_array($sql))
 			{				
-				$case = Cases($results);	
+				$case = null;				
+				$case['StatusInfo'] = $results['status'];	
+				$case['StatusCode'] = $results['progress'];	
+				$case['NumberOfResults'] = $results['num_results'];	
 				$data['success'] = true;
 				$data['message'] = $case; 
 			}
@@ -219,7 +243,7 @@
 		$data['success'] = false;
 		if (empty($errors))
 		{
-			$sql = pg_query($conn, "SELECT * FROM case_results WHERE case_id='{$caseID}' AND id >= '{$fromIndex}' LIMIT 10;");
+			$sql = pg_query($conn, "SELECT * FROM case_results WHERE case_id='{$caseID}' AND id > '{$fromIndex}' LIMIT 10;");
 			if ($sql)
 			{	
 				if (pg_num_rows($sql) > 0)

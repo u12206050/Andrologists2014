@@ -5,6 +5,7 @@
 #include <string>
 #include "ErrorException.h"
 #include "DatabaseConnection.h"
+#include <sstream>
 
 using namespace std;
 

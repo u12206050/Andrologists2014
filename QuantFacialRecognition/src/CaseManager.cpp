@@ -1,10 +1,5 @@
 #include "CaseManager.h"
 
-#include <iostream>
-#include <sstream>
-
-using namespace std;
-
 CaseManager::CaseManager(DatabaseConnection* databaseConnection, int caseId)
 {
     this->databaseConnection = databaseConnection;
@@ -16,7 +11,7 @@ void CaseManager::updateCaseStatus(int faceId, double percentageMatch)
 {
     string randomIdentifier = "";
 
-    srand (time(NULL));
+    srand (time(NULL) + faceId);
     for (int i = 0; i < 10; i++)
     {
         char c;
@@ -93,7 +88,6 @@ bool CaseManager::authenticateCase(QString username, QString password)
 
         if(!query.exec())
         {
-            cout << query.lastError().text().toStdString() << endl;
             QString error("Authenticating user");
             throw ErrorException(error, 0);
         }
@@ -122,6 +116,10 @@ int CaseManager::getCaseId()
 
 void CaseManager::setProgress(int progress)
 {
+    if (progess == 99)
+    {
+        progress = 100;
+    }
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery updateQuery;
