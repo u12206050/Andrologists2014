@@ -114,7 +114,7 @@ $(document).ready(function()
 		loader(1);
 		if (validate([["user","Username",true],["pass","Password",true]]))
 		{		
-			var $ida = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());
+			var $ida = (CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val())).toString();
     		$.post('logic/php/connectDB.php', { action: "login", user: $("#user").val(), pass: $ida }, function(data)
 			{	
 				if (data && data.success === true)
@@ -179,11 +179,11 @@ $(document).ready(function()
 		{
 			var $newUser = $("#reg_user").val();
 			var $password = (CryptoJS.SHA256("idaqfrss"+Date.now())+"").substr(randomBetween(5,25), 6);
-			var $ida = CryptoJS.SHA256("ida"+$password+$newUser);
+			var $ida = (CryptoJS.SHA256("ida"+$password+$newUser)).toString();
 	    	$.post('logic/php/connectDB.php', {action: "registerUser", passKey: $.cookie("ssaP"), ruser: $newUser, pass: $ida}, function(data)
-			{	
-				error($newUser+" password is: "+$password+"\nCan change once logged in.");
+			{					
 				$.mobile.navigate("#account", { transition: "slide" });
+				error($newUser+" password is: "+$password+"\nCan change once logged in.");
 			}).fail(function(data)
 			{
 				// place error code here
@@ -215,8 +215,8 @@ $(document).ready(function()
 				$pass2 = $("#u_repass").val();
 				if ($pass1 === $pass2)
 				{
-					var $ida1 = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());
-					var $ida2 = CryptoJS.SHA256("ida"+$pass1+$("#user").val());
+					var $ida1 = (CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val())).toString();
+					var $ida2 = (CryptoJS.SHA256("ida"+$pass1+$("#user").val())).toString();
 					$.post('logic/php/connectDB.php', { action: "updatePassword", passKey: $.cookie("ssaP"), newPass: $ida2, oldPass: $ida1 }, function(data)
 					{	
 						if (data && data.success === true)
@@ -318,7 +318,13 @@ $(document).ready(function()
 				return name+" invalid file. Image jpg/jpeg only";
 		}
 		return 1;
-	};
+	};	
+	
+	var $refreshing = null;
+	var $Results = "";
+	var $LastIndex = 0;
+	var $CaseID = -1;
+	var $numberOfResults = 0;
 
 	CreateCase = function()
 	{
@@ -338,18 +344,16 @@ $(document).ready(function()
 					{											
 						$CaseID = data.message;
 						$("#caseID").html($CaseID);
-						var $ida = CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val());	
+						var $ida = (CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val())).toString();	
 						loader(1, "Starting facial recognition");
 						$.post($server+"starter.cgi", { user: $("#user").val(), pass: $ida, caseID: $CaseID }, function(data)
 						{
 							if (data === "1")
 							{
 								loader(1, "Started...");
-								$refreshing = setInterval(function(){refreshResultStatus();}, 2500);
-								$("#statusCode").html("1");
-								$("#statusInfo").html("Started");
-								$("#noOfResults").html("0");							
-								$.mobile.navigate("#results");
+								$("#capturefacepreview").attr('src','');
+								$refreshing = setInterval(function(){refreshResultStatus($CaseID);}, 2500);
+								OpenCase($CaseID);
 							}
 							else
 							{
@@ -407,7 +411,7 @@ $(document).ready(function()
 			$("#statusCode").html($case.StatusCode);
 			$("#statusInfo").html($case.StatusInfo);
 			$("#noOfResults").html($case.NumberOfResults);
-      $('#resultOverview').html("").trigger('create');
+			$('#resultOverview').html("").trigger('create');
 			updateResults();
 			$.mobile.navigate("#results");
 		}
@@ -426,18 +430,18 @@ $(document).ready(function()
 		}
 	};
 	
-	refreshResultStatus = function()
+	refreshResultStatus = function($CaseID)
 	{
 		if ($CaseID > 0)
 		{
 			$.post('logic/php/connectDB.php', { action: "refresh", passKey: $.cookie("ssaP"), caseID: $CaseID }, function(data)
 			{	
-				if (data.success === true)
+				if (data && data.success === true)
 				{
 					var $result = data.message;	
 					updateResults(data.message);
 					$("#statusCode").html($result.StatusCode);
-					if ($result.StatusCode === 3)
+					if ($result.StatusInfo === "finished")
 						stopRefreshing();
 					$("#statusInfo").html($result.StatusInfo);
 					$("#noOfResults").html($result.NumberOfResults);
@@ -454,17 +458,11 @@ $(document).ready(function()
 		}
 		else
 			stopRefreshing();
-	};
-	
-	var $refreshing = null;
-	var $Results = "";
-	var $LastIndex = 0;
-	var $CaseID = -1;
-	var $numberOfResults = 0;
+	};	
   
 	updateResults = function()
 	{
-		loader(1, "Updateing");
+		loader(1, "Updating");
 		if ($CaseID > -1)
 		{
 			if (validate([["user","Username",true],["pass","Password",true]]))
@@ -477,13 +475,14 @@ $(document).ready(function()
 						var $new = "<div data-role='collapsible'>"+
 									"<h2>Results from no."+$numberOfResults+"</h2>"+
 									"<ul data-role='listview'>";
+						$indexID = $LastIndex;
 						$.each( data.message, function( key, val )
 						{
 							var $img = val.Image;
 							if ($img === null)
 								$img = jQuery.parseJSON( '{ "ID": "-1", "TimeDate": "undefined", "Location": "none", "Filename": "none.png" }' );
 							$new += 	"<li>"+
-											"<a class='faceResult' id='"+val.ImageCode+"'>"+
+											"<a class='faceResult"+$indexID+"' id='"+val.ImageCode+"'>"+
 												"<img src='"+$server+"geti.cgi?image="+val.ImageCode+"&org=1'>"+
 												"<p>Date & Time: "+$img.TimeDate+"</p>"+
 												"<p>Location: "+$img.LocationX+"</p>"+
@@ -496,15 +495,11 @@ $(document).ready(function()
 						$new += "	</ul>"+
 								"</div>";
 						$('#resultOverview').append($new).trigger('create');	
-						$(".faceResult").click(function()
+						$(".faceResult"+$indexID).click(function()
 						{
-							popImage(this.id+"&org=0",$("#"+this.id+" :nth-child(3)").text(),"",$("#"+this.id+" :nth-child(2)").text(),$("#"+this.id+" :nth-child(4)").text());
+							popImage(this.id+"&org=0",$("#"+this.id+" :nth-child(3)").text(),$("#"+this.id+" :nth-child(4)").text(),$("#"+this.id+" :nth-child(2)").text(),"");
 						});						
 						loader(0);
-					}
-					else
-					{
-						error(data.errors);
 					}
 					loader(0);
 				}, 'json').fail(function(data)
@@ -571,11 +566,8 @@ $(document).ready(function()
 				}
 				else
 					$('#casesOverview').html("<h4>No cases created yet</h4>");
-			}
-			else
-			{
-				$('#casesOverview').html("<h3 class='error'>Failed to load cases</h3><h4 class='error'>Errors: "+JSON.stringify(data)+"</h4>");
-			}
+			}else
+					$('#casesOverview').html("<h4>No cases created yet</h4>");
 			loader(0);
 		}, 'json').fail(function(data)
 		{
@@ -654,7 +646,7 @@ $(document).ready(function()
 					$but.html("Clear Password");
 					var $user = $(this).parent().get(0).id;
 					var $password = (CryptoJS.SHA256("idaqfrss"+Date.now())+"").substr(5, 6);
-					var $ida = CryptoJS.SHA256("ida"+$password+$user);
+					var $ida = (CryptoJS.SHA256("ida"+$password+$user)).toString();
 					$.post('logic/php/connectDB.php', { action: "updateUser", passKey: $.cookie("ssaP"), ruser: $user, field: "password", val: $ida }, function(data)
 					{
 						if (data && data.success === true)
@@ -713,9 +705,10 @@ $(document).ready(function()
 				var reader = new FileReader();
 				reader.onload = function (e)
 				{					
+					$tmpimg = document.createElement('img');
 					$img = document.getElementById('capturefacepreview');
-					$img.src = e.target.result;
-					$img.src = resize_image($img);
+					$tmpimg.src = e.target.result;
+					$img.src = resize_image($tmpimg);
 				};
 				reader.readAsDataURL(input.files[0]);
 			} else return -1;

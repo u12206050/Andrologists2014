@@ -84,15 +84,15 @@
 		else
 		{
 			$tmp->ID = "0";
-			$tmp->Username = "testuser";
+			$tmp->Username = "unknown";
 			$tmp->Image = Image(null);
-			$tmp->sub_Name = "Preview_John";
-			$tmp->sub_Surname = "Preview_Smith";
+			$tmp->sub_Name = "unknown";
+			$tmp->sub_Surname = "unknown";
 			$tmp->sub_Gender = "M";
 			$tmp->sub_Age = "1";
-			$tmp->Description = "Preview_Found in area 51";
+			$tmp->Description = "unknown";
 			$tmp->StatusCode = "3";
-			$tmp->StatusInfo = "Preview";
+			$tmp->StatusInfo = "unknown";
 			$tmp->NumberOfResults = "1";
 		}
 		return $tmp;
@@ -103,16 +103,16 @@
 		$tmp = new Image();
 		if ($row != null)
 		{
-			$tmp->ID = $row['id'];		
-			$tmp->TimeDate = date("Y-m-d H:i:s",$row['timedate']);			
+			$tmp->ID = $row['id'];	
+			$tmp->TimeDate = date("Y-m-d H:i:s",substr($row['timedate'],0,10));			
 			$tmp->LocationX = $row['location'];
 			$tmp->Filename = $row['filename'];
 		}
 		else
 		{
 			$tmp->ID = "0";
-			$tmp->TimeDate = "testTD";
-			$tmp->LocationX = "testLX";
+			$tmp->TimeDate = "unknown";
+			$tmp->LocationX = "unknown";
 			$tmp->Filename = "notfound.jpg";
 		}
 		return $tmp;
@@ -130,7 +130,7 @@
 		else
 		{
 			//s$tmp->ID = "0";
-			$tmp->Username = "testuser";
+			$tmp->Username = "unknown";
 			$tmp->Active = "true";
 		}
 		return $tmp;
@@ -143,7 +143,7 @@
 		{
 			$tmp->ID = $row['id'];
 			$tmp->ImageCode = $row['random_identifier'];
-			$tmp->Image = getImage($row['face_id'],0);
+			$tmp->Image = getFaceImage($row['face_id'],0);
 			$tmp->Match = $row['percentage_match'];
 		}
 		else
@@ -151,7 +151,7 @@
 			$tmp->ID = "0";
 			$tmp->ImageCode = "0";
 			$tmp->Image = Image(null);
-			$tmp->Match = "101%";
+			$tmp->Match = "unknown";
 		}
 		return $tmp;
 	}

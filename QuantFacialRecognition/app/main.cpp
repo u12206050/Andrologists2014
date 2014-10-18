@@ -23,8 +23,9 @@ int main(int argc, char* argv[])
         file << "Started facerec process, caseId: " << caseId << endl;
 
         //cout << "caseId: " << caseId << endl;
-
-        ConnectionFileReader reader(QString("../../Resources/connectio.txt"));
+        file << "Getting connection settings "<< endl;
+        ConnectionFileReader reader(QString("/home/zane/Documents/COS301/MainProject/Resources/connection.txt"));
+        file << "Got connection settings "<< endl;
         DatabaseConnection* conn = reader.getDatabaseConnection();
 
         string faceCascade = "/home/zane/Documents/COS301/MainProject/testFiles/haarcascade_frontalface_alt2.xml";

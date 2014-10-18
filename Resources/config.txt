@@ -1,7 +1,8 @@
 [SequentialPipeline]
 iterations=50;
 [StreamCapturer]
-location=0;
+location="http://192.168.0.8:8081/video";
+
 [FaceDetectFilter]
 	haarCascade1 = "../../testFiles/haarcascade_frontalface_alt2.xml";
 [PreProcessingFilter]

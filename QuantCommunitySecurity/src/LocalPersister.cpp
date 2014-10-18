@@ -4,11 +4,7 @@ LocalPersister::LocalPersister(QString &directoryPath, int id)
 {
     this->directoryPath = directoryPath;
     this->id = id;
-    #if defined(_WIN32)
-       // _mkdir(directoryPath.toStdString()); for windows
-    #else
-        mkdir(directoryPath.toStdString().c_str(), 0777);
-    #endif
+    mkdir(directoryPath.toStdString().c_str(), 0777);
 }
 
 LocalPersister::LocalPersister(QString& directoryPath, int id, DatabasePersister* databasePresister)
@@ -16,11 +12,7 @@ LocalPersister::LocalPersister(QString& directoryPath, int id, DatabasePersister
     this->directoryPath = directoryPath;
     this->id = id;
     setDatabasePersister(databasePresister);
-    #if defined(_WIN32)
-       // _mkdir(directoryPath.toStdString()); for windows
-    #else
-        mkdir(directoryPath.toStdString().c_str(), 0777);
-    #endif
+    mkdir(directoryPath.toStdString().c_str(), 0777);
 }
 
 LocalPersister::~LocalPersister()

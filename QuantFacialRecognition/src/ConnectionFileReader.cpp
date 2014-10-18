@@ -1,5 +1,8 @@
 #include "ConnectionFileReader.h"
 
+#include <iostream>
+using namespace std;
+
 ConnectionFileReader::ConnectionFileReader(QString filename)
 {
     ifstream inputFile(filename.toStdString().c_str());
@@ -78,6 +81,7 @@ void ConnectionFileReader::parse()
     consumeToken(";");
 
     connection = new DatabaseConnection(type, host, name, username, password, port);
+
 }
 
 void ConnectionFileReader::consumeToken(string expected)

@@ -40,60 +40,22 @@ int main()
        caseId = atoi((**caseIter).c_str());
     }
 
-    // Send HTTP header
-    cout << HTTPHTMLHeader() << endl;
-    /*
-    // Set up the HTML document
-    cout << html() << head(title("cgicc example")) << endl;
-    cout << body() << endl;
+    cout << HTTPHTMLHeader();
 
-    cout << username.toStdString() << endl;
-    cout << password.toStdString() << endl;
-    cout << caseId << endl;
-
-    cout << body() << html();*/
-
-    ConnectionFileReader connectionReader(QString("../../Resources/connectio.txt"));
+    ConnectionFileReader connectionReader(QString("../Resources/connection.txt"));
     DatabaseConnection* conn = connectionReader.getDatabaseConnection();
 
 
     CaseManager manager(conn, caseId);
     if (!manager.authenticateCase(username, password))
     {
-        cout << "Could not authenticate user" << endl;\
+        cout << "Could not authenticate user" << endl;
         return 1;
     }
 
-    /*if (WINDOWS)
-    {
-        LPCTSTR lpApplicationName = "C:/Windows/System32/cmd.exe"; // The program to be executed
-
-        LPSTARTUPINFO lpStartupInfo;
-        LPPROCESS_INFORMATION lpProcessInfo;
-
-        memset(&lpStartupInfo, 0, sizeof(lpStartupInfo));
-        memset(&lpProcessInfo, 0, sizeof(lpProcessInfo));
-
-        // Create the process
-        if (!CreateProcess(lpApplicationName,
-                           NULL, NULL, NULL,
-                           NULL, NULL, NULL, NULL,
-                           lpStartupInfo,
-                           lpProcessInformation
-                          )
-           ) {
-            std::cerr << "Uh-Oh! CreateProcess() failed to start program \"" << lpApplicationName << "\"\n";
-            exit(1);
-        }
-
-        std::cout << "Started program \"" << lpApplicationName << "\" successfully\n";
-
-    }
-    if (LINUX)
-    {*/
     char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_GCC_32bit-Debug/app/app";
 
-    pid_t pid = fork(); /* Create a child process */
+    pid_t pid = fork();
     stringstream ss;
     ss << caseId;
     string strCaseId;
@@ -105,12 +67,12 @@ int main()
             cout << "Could not start new process" << "\n";
             exit(1);
         case 0:
-            execl(programPath, strCaseId.c_str(), NULL); /* Execute the program */
-            std::cerr << "Uh-Oh! execl() failed!"; /* execl doesn't return unless there's an error */
+            execl(programPath, strCaseId.c_str(), NULL);
+            std::cerr << "Uh-Oh! execl() failed!";
             cout << "Could not start new process" << "\n";
             exit(1);
-        default: /* Parent process */
-            std::cout << "1" << "\n";
+        default:
+            std::cout << "1";
 
         return 0;
     }

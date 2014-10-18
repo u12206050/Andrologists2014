@@ -1,15 +1,17 @@
 <?php
+	
 	if (isset($_REQUEST["action"]))
-	{
+	{		
 		session_start();
-
+		
 		if ($_REQUEST["action"] == "logout")
 		{
 			session_destroy();
 			echo "Logged out";
 		}
-		require("classes.php");
+		require_once("classes.php");
 		require("dataIO.php");
+		
 		if ($_REQUEST["action"] == "test")
 		{
 			$conn = connect();
@@ -122,8 +124,7 @@
 			if($_SESSION['user']->Username == $username)
 			{
 				$progress = 1;
-				$data = getCase($caseID, $progress);
-				echo json_encode($data);
+				$data = getCase($caseId, $progress);
 			}
 			else 
 			{
@@ -174,13 +175,13 @@
 				$fromIndex = $_POST["LastIndex"];
 				$caseID = $_POST["caseID"];			
 				$data = getResults($caseID, $fromIndex);
-				if ($data['success'] == false)
-				{
-					$data["success"] = true;
-					$tmp = array(); 
-					$tmp[] = Result(null);
-					$data["message"] = $tmp;			
-				}				
+				//if ($data['success'] == false)
+				//{
+					//$data["success"] = true;
+					//$tmp = array(); 
+					//$tmp[] = Result(null);
+					//$data["message"] = $tmp;			
+				//}				
 			}
 			else
 			{
@@ -196,13 +197,13 @@
 			if (isset($_SESSION['user']) && $_SESSION['user'] == $passKey)
 			{
 				$data = getAllCases($_SESSION['username']);
-				if ($data['success'] == false)
-				{
-					$data['success'] = true;
-					$tmp = array(); 
-					$tmp[] = Cases(null);
-					$data['message'] = $tmp; 			
-				}				
+				//if ($data['success'] == false)
+				//{
+					//$data['success'] = true;
+					//$tmp = array(); 
+					//$tmp[] = Cases(null);
+					//$data['message'] = $tmp; 			
+				//}				
 			}
 			else
 			{
@@ -218,13 +219,13 @@
 			if (isset($_SESSION['user']) && isset($_SESSION['admin']) && $_SESSION['user'] == $passKey && $_SESSION['admin'] == true)
 			{
 				$data = getUsers();
-				if ($data['success'] == false)
-				{
-					$data['success'] = true;
-					$tmp = array(); 
-					$tmp[] = User(null);
-					$data['message'] = $tmp; 			
-				}				
+				//if ($data['success'] == false)
+				//{
+					//$data['success'] = true;
+					//$tmp = array(); 
+					//$tmp[] = User(null);
+					//$data['message'] = $tmp; 			
+				//}				
 			}
 			else
 			{
@@ -233,8 +234,8 @@
 			}
 			echo json_encode($data);
 		}
-		
-		//uploadImage & updateUser
+		else
+			echo "No action specified.";
 		
 	} else
 		echo "No action specified.";

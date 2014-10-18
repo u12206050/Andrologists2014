@@ -13,13 +13,6 @@
 using namespace std;
 using namespace cgicc;
 
-#if _WIN32
-#include <fcntl.h>
-#include <io.h>
-
-#define strcasecmp stricmp
-#endif
-
 void cgiError()
 {
     // Most simple error handling
@@ -30,8 +23,6 @@ void cgiError()
 
 void dumpFile(const char* filename)
 {
-    // Get the image type and send the headers
-
     cout << "Content-Type: " << "image/jpg" << endl;
     cout << endl;
 
@@ -41,16 +32,18 @@ void dumpFile(const char* filename)
     {
         while (!file.eof())
         {
-        char buf[1024];
+            char buf[1024];
 
-        file.read(buf, sizeof(buf));
-        int count = file.gcount();
-        if (count)
-        {
-            cout.write(buf, count);
-        } else {
-            break;
-        }
+            file.read(buf, sizeof(buf));
+            int count = file.gcount();
+            if (count)
+            {
+                cout.write(buf, count);
+            }
+            else
+            {
+                break;
+            }
         }
 
         cout.flush();
@@ -60,16 +53,6 @@ void dumpFile(const char* filename)
 
 int main()
 {
-    /*#if _WIN32
-    // Standard I/O is in text mode by default; since we intend
-    // to send binary image data to standard output, we have to
-    // set it to binary mode.
-    // Error handling is tricky to say the least, so we have none.
-    _fmode = _O_BINARY;
-    if (_setmode(_fileno(stdin), _fmode) == -1) {}
-    if (_setmode(_fileno(stdout), _fmode) == -1) {}
-    #endif*/
-
     QString randomIdentifier;
     int identifierType;
 
@@ -78,13 +61,13 @@ int main()
     form_iterator idenIter = cgi.getElement("image");
     if (idenIter != cgi.getElements().end())
     {
-       randomIdentifier = QString((**idenIter).c_str());
+        randomIdentifier = QString((**idenIter).c_str());
     }
 
     form_iterator type = cgi.getElement("org");
     if (type != cgi.getElements().end())
     {
-       identifierType = atoi((**type).c_str());
+        identifierType = atoi((**type).c_str());
     }
     else
     {
@@ -92,7 +75,7 @@ int main()
         return 0;
     }
 
-    ConnectionFileReader connectionReader(QString("../../Resources/connectio.txt"));
+    ConnectionFileReader connectionReader(QString("../Resources/connection.txt"));
     DatabaseConnection* conn = connectionReader.getDatabaseConnection();
 
     DatabaseReader reader(conn);

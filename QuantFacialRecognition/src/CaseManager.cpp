@@ -116,6 +116,10 @@ int CaseManager::getCaseId()
 
 void CaseManager::setProgress(int progress)
 {
+    if (progess == 99)
+    {
+        progress = 100;
+    }
     if (databaseConnection->getDatabase().open())
     {
         QSqlQuery updateQuery;

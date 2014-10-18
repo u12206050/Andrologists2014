@@ -1,5 +1,5 @@
 <?php
-
+	
 	if (isset($_REQUEST["action"]))
 	{
 		//Variables
@@ -9,7 +9,7 @@
 		define("DBUSERNAME","postgres");
 		define("DBPASSWORD","root");
 		define("DEV","false");
-		define("CGIPATH","http://localhost/cgi-bin/");
+		define("CGIPATH","http://localhost/");
 		define("UPLOAD_DIR", "../../caseImages/");
 		$pgconn = null;	
 		if (connect() != null)
@@ -26,10 +26,10 @@
 		try
 		{
 			$pgconn = null;
-			//echo "start\n";
+			//echo "connecting...\n";
 			$conn_string = "host=".DBHOST." port=".DBPORT." dbname=".DBNAME." user=".DBUSERNAME." password=".DBPASSWORD." connect_timeout=5";
 			$pgconn = pg_connect($conn_string);
-			//echo pg_options(pg_host($pgconn));				
+			//echo "connected\n";				
 		} 
 		catch (Exception $e)
 		{

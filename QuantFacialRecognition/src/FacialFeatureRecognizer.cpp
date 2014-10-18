@@ -49,31 +49,43 @@ void FacialFeatureRecognizer::processCase(int caseId)
     GetFaceDetailsResponse* response = dbReader.getAllFaceFilenamesAndIds();
     vector<QString> faceFilenames = response->faceFilnames;
     vector<int> faceIds = response->ids;
+    float size = faceFilenames.size();
 
     for (unsigned int i = 0; i < faceFilenames.size(); i++)
     {
         Mat temp = imread(faceFilenames[i].toStdString(), CV_LOAD_IMAGE_UNCHANGED);
         double percentageMatch = compareFaces(imageData->faces[0], temp);
-        cout << "compared face: " << percentageMatch << endl;
         if (percentageMatch <= threshold)
         {
+            percentageMatch = scaleToPercentage(compareFaces(imageData->faces[0], temp));
             caseManager->updateCaseStatus(faceIds[i], percentageMatch);
         }
-        caseManager->setProgress(i/faceFilenames.size()*100.0);
+        float progress = i / size * 100.0;
+        caseManager->setProgress(progress);
     }
     caseManager->setStatus("finished");
     file2.close();
 }
 
-double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)
-{
+    double FacialFeatureRecognizer::compareFaces(Mat& face1, Mat& face2)
+    {
 
-	Mat eigenVectors = recognizer->getMat("eigenvectors");
-	Mat mean = recognizer->getMat("mean");
+        Mat eigenVectors = recognizer->getMat("eigenvectors");
+        Mat mean = recognizer->getMat("mean");
 
-	Mat proj = subspaceProject(eigenVectors, mean, face1.reshape(1,1));
-	Mat proj2 = subspaceProject(eigenVectors, mean, face2.reshape(1,1));
+        Mat proj = subspaceProject(eigenVectors, mean, face1.reshape(1,1));
+        Mat proj2 = subspaceProject(eigenVectors, mean, face2.reshape(1,1));
 
-	return norm(proj, proj2, NORM_L2);
-}
+        return norm(proj, proj2, NORM_L2);
+    }
+
+    float FacialFeatureRecognizer::scaleToPercentage(double unscaledValue)
+    {
+        float percentage = 150 - (unscaledValue - (threshold*0.2)) / (threshold - (threshold*0.2)) * (100);
+        if (percentage > 100)
+        {
+            percentage = 100;
+        }
+        return percentage;
+    }
 

@@ -19,13 +19,13 @@ $(document).ready(function()
 	/*--- CGI ---*/
 
 	$("#output").append("<hr><h2>Testing CGI connection</h2><hr>");
-	$("#output").append($("<div></div>").load("test.cgi"));
+	$("#output").append($("<div>Shold show: <pre>Could not authenticate user</pre></div>"));
+	$("#output").append($("<div></div>").load("../starter.cgi"));
 
 	/*--- IMAGE SECURITY ---*/
 	$("#output").append("<hr><h2>Testing Image Security</h2><hr>");
 	$("#output").append("<h3>Normal image from server: <img src='../images/digital.jpg'></img></h3>");
 	$("#output").append("<h3>Secure image from server: <img src='../geti.cgi?image=images/digital.jpg'></img></h3>");
-	$("#output").append("<h3>Even more secure image from server: <img src='../geti.cgi?image=1263631&org=1'></img></h3>");
 	
 	/*--- END ---*/
 	$("#output").append("<h1>Finished.</h1><hr>");
