@@ -15,9 +15,9 @@ GetAllFacesInRangeResponse* DatabaseReader::getAllFacesInRange(QDateTime begin, 
 		qint64 endTime = end.toMSecsSinceEpoch();
 
 		QSqlQuery query;
-		query.prepare("SELECT images.timestamp, faces.filename "
+		query.prepare("SELECT images.timedate, faces.filename "
 					  "FROM images, faces "
-					  "WHERE images.id=faces.image_id AND images.timestamp BETWEEN :begin AND :end");
+					  "WHERE images.id=faces.image_id AND images.timedate BETWEEN :begin AND :end");
 		query.bindValue(":begin", beginTime);
 		query.bindValue(":end", endTime);
 

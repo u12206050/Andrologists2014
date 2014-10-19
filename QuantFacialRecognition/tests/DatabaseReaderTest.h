@@ -9,6 +9,9 @@ class DatabaseReaderTest : public QObject
 	Q_OBJECT
 	private slots:
 		void getAllFacesInRangeTest();
+		void getImagePath();
+		void getOriginalImageFilename();
+		void getAllFaceFilenamesAndIds();
 };
 
 #endif // DATABASEREADERTEST_H

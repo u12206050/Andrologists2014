@@ -17,7 +17,7 @@ directory="/home/zane/imagesTest/";
 [DatabasePersister]
 type="QPSQL";
 host="localhost";
-name="quant";
+name="quantTest2";
 username="postgre";
 password="root";
 port=5432;
