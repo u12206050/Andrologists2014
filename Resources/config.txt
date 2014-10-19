@@ -1,7 +1,7 @@
 [SequentialPipeline]
 iterations=50;
 [StreamCapturer]
-location="http://192.168.0.8:8081/video";
+location=0;
 
 [FaceDetectFilter]
 	haarCascade1 = "../../testFiles/haarcascade_frontalface_alt2.xml";
@@ -15,7 +15,7 @@ id=5;
 directory="/home/zane/images/";
 [DatabasePersister]
 type="QPSQL";
-host="127.0.0.1";
+host="192.168.0.6";
 name="quant";
 username="postgres";
 password="root";
