@@ -25,25 +25,44 @@ ConfigReader::ConfigReader(String filename)
 void ConfigReader::tokenise(string input)
 {
 	string token = "";
+	bool openString = false;
 
 	for (unsigned int i = 0; i < input.length(); i++)
 	{
 		char c = input[i];
+		if (c == '\"')
+		{
+			if (openString == false)
+			{
+				openString = true;
+			}
+			else
+			{
+				openString = false;
+			}
+		}
         if (c == '[' || c == ']' || c == ';' || c == '=' || c == '\"')
 		{
             stringstream ss;
             ss << c;
             string charConvert;
             ss >> charConvert;
-			if (token != "")
+			if (c == '=' && openString)
 			{
-				tokens.push(token);
-				tokens.push(charConvert);
-				token = "";
+				token += c;
 			}
 			else
 			{
-                tokens.push(charConvert);
+				if (token != "")
+				{
+					tokens.push(token);
+					tokens.push(charConvert);
+					token = "";
+				}
+				else
+				{
+					tokens.push(charConvert);
+				}
 			}
 		}
 		else

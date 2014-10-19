@@ -22,9 +22,9 @@ ImageData* FaceDetectFilter::filter(ImageData* image)
 
     vector<Rect> faces;
     Mat grayImage;
-    cvtColor(frame, grayImage, CV_BGR2GRAY);
-    equalizeHist(grayImage, grayImage);
-    faceCascade.detectMultiScale(frame, faces, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0));
+	cvtColor(frame, grayImage, CV_BGR2GRAY);
+	equalizeHist(grayImage, grayImage);
+	faceCascade.detectMultiScale(frame, faces, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(0, 0));
 
     for(unsigned int i = 0; i < faces.size(); i++)
     {

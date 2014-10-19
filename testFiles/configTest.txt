@@ -1,7 +1,7 @@
 [SequentialPipeline]
 iterations=5;
 [StreamCapturer]
-location=0;
+location="/home/zane/video.mjpg";
 [NSamplingFilter]
 n=5;
 [FaceDetectFilter]
@@ -15,11 +15,11 @@ targetHeight=100;
 
 [LocalPersister]
 id=5;
-directory="/home/zane/images";
+directory="/home/zane/imagesTest/";
 [DatabasePersister]
 type="QPSQL";
 host="localhost";
 name="quant";
 username="postgre";
 password="root";
-port=5345;
+port=5432;

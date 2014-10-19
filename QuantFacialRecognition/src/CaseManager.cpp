@@ -116,7 +116,7 @@ int CaseManager::getCaseId()
 
 void CaseManager::setProgress(int progress)
 {
-    if (progess == 99)
+	if (progress == 99)
     {
         progress = 100;
     }

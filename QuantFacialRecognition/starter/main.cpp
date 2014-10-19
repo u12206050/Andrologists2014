@@ -53,7 +53,7 @@ int main()
         return 1;
     }
 
-    char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_GCC_32bit-Debug/app/app";
+	char* programPath = "/home/zane/Documents/COS301/MainProject/build-QuantFacialRecognition-Desktop_Qt_5_3_0_GCC_64bit-Debug/app/app";
 
     pid_t pid = fork();
     stringstream ss;

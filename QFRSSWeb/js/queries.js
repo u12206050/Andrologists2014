@@ -116,7 +116,7 @@ $(document).ready(function()
 		{		
 			var $ida = (CryptoJS.SHA256("ida"+$("#pass").val()+$("#user").val())).toString();
     		$.post('logic/php/connectDB.php', { action: "login", user: $("#user").val(), pass: $ida }, function(data)
-			{	
+			{		
 				if (data && data.success === true)
 				{
 					$.cookie("ssaP", data.passkey);
@@ -131,7 +131,7 @@ $(document).ready(function()
 						$("#adminLink").fadeIn();					
 				}	
 				else
-				{					
+				{				
 					var $out = "";	
 					if (data.errors)
 					{					
@@ -150,7 +150,9 @@ $(document).ready(function()
 				loader(0);
 			});			
 		} else
+		{
 			loader(0);
+		}
 	};
 
 	logout = function()
