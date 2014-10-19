@@ -1,4 +1,3 @@
-/*#include <QCoreApplication>*/
 #include <iostream>
 
 #include "StreamCapturer.h"
@@ -31,11 +30,6 @@ int main(int argc, char* argv[])
         pipeline->attachFilter(imageShower);
         pipeline->attachCapturer(reader.createCapturer());
         pipeline->attachFilters(reader.createFilters());
-        vector<Filter*> filters = reader.createFilters();
-        for (unsigned int i = 0;i < filters.size(); i++)
-        {
-            cout << filters[i] << endl;
-        }
         pipeline->attachPersister(reader.createPersister());
         pipeline->process(-1);
 	}

@@ -15,7 +15,6 @@ StreamCapturer::StreamCapturer(QString& videoLocation)
 
 StreamCapturer::StreamCapturer(int deviceId)
 {
-    //error here V4L/V4L2
     if(!capturer.open(deviceId))
     {
 		QString cause("cannot open device.");

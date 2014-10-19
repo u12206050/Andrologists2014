@@ -43,9 +43,8 @@
 					$_SESSION['admin'] = true;
 				}
 			}
-			echo $data[0];
+			
 			echo json_encode($data);
-			echo "here";
 		} 
 		else
 		if ($_POST["action"] == "registerUser")

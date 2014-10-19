@@ -6,8 +6,6 @@ location="http://192.168.0.8:8081/video?dummy=param.mjpg";
 [FaceDetectFilter]
 	haarCascade1 = "../../testFiles/haarcascade_frontalface_alt2.xml";
 [PreProcessingFilter]
-	eyeCascade1="../../testFiles/haarcascade_eye.xml";
-	eyeCascade2="../../testFiles/haarcascade_eye_tree_eyeglasses.xml";
 	targetWidth=140;
 	targetHeight=150;
 [LocalPersister]

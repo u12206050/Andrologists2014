@@ -1,6 +1,6 @@
-Started facerec process, caseId: 61
+Started facerec process, caseId: 1
 Getting connection settings 
 Got connection settings 
-busy facerec, caseId: 61
-end facerec, caseId: 61
+busy facerec, caseId: 1
+end facerec, caseId: 1
 
