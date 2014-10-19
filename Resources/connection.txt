@@ -1,5 +1,5 @@
 type = "QPSQL";
-host = "localhost";
+host = "192.168.0.6";
 name = "quant";
 username = "postgres";
 password = "root";

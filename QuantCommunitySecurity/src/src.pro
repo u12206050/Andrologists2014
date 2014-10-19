@@ -15,7 +15,6 @@ SOURCES += \
     Pipeline.cpp \
     Persister.cpp \
     ParallelPipeline.cpp \
-    NetworkPersister.cpp \
     LocalPersister.cpp \
     Filter.cpp \
     FaceDetectFilter.cpp \
@@ -36,7 +35,6 @@ HEADERS += \
     Pipeline.h \
     Persister.h \
     ParallelPipeline.h \
-    NetworkPersister.h \
     LocalPersister.h \
     ImageData.h \
     Filter.h \

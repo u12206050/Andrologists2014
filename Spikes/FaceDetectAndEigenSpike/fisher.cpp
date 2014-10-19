@@ -67,7 +67,7 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
     while (getline(file, line)) 
     {	
 		cnt++;
-		cout << (cnt / 1638.0 * 100) << "%" << endl;
+		cout << (cnt / 2800.0 * 100) << "%" << endl;
 		stringstream liness(line);
         getline(liness, path, separator);
         getline(liness, classlabel);
@@ -195,7 +195,7 @@ int main(int argc, const char *argv[])
 
     Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
     model->train(images, labels);
-    model->save("/media/zane/0A06EE1A06EE0693/trainingfull.xml");
+    model->save("/media/zane/0A06EE1A06EE0693/trainingfull5.xml");
     
     //model->load("training.xml");
 

@@ -8,8 +8,6 @@ n=5;
 	haarCascade1 = "place.xml";
 	haarCascade2 = "place2.xml";
 [PreProcessingFilter]
-eyeCascade1="place.xml";
-eyeCascade2="place.xml";
 targetWidth=100;
 targetHeight=100;
 
@@ -19,7 +17,7 @@ directory="/home/zane/imagesTest/";
 [DatabasePersister]
 type="QPSQL";
 host="localhost";
-name="quant";
+name="quantTest2";
 username="postgre";
 password="root";
 port=5432;

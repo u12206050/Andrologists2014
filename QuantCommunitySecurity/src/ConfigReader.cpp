@@ -245,20 +245,6 @@ void ConfigReader::preProcessingFilter()
 {
 	consumeToken("PreProcessingFilter");
 	consumeToken("]");
-    consumeToken("eyeCascade1");
-	consumeToken("=");
-    consumeToken("\"");
-	string eyeCascade1 = tokens.front();
-	tokens.pop();
-    consumeToken("\"");
-	consumeToken(";");
-    consumeToken("eyeCascade2");
-	consumeToken("=");
-    consumeToken("\"");
-	string eyeCascade2 = tokens.front();
-	tokens.pop();
-    consumeToken("\"");
-	consumeToken(";");
     consumeToken("targetWidth");
 	consumeToken("=");
 	string token = tokens.front();
@@ -273,7 +259,7 @@ void ConfigReader::preProcessingFilter()
     int targetHeight;
     stringstream(token) >> targetHeight;
     consumeToken(";");
-    filters.push_back(new PreProcessingFilter(targetWidth, targetHeight, eyeCascade1, eyeCascade2));
+	filters.push_back(new PreProcessingFilter(targetWidth, targetHeight));
 }
 
 void ConfigReader::persister()
