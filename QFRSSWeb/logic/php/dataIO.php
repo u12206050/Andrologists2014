@@ -27,7 +27,7 @@
 				$sql = pg_query($conn, $query);
 				//echo $query;	
 				if (pg_num_rows($sql) == 1)
-				{			
+				{		
 					$row = pg_fetch_array($sql);	
 					$user = User($row);	
 					$data['success'] = true;

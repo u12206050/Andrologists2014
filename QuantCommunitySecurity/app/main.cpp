@@ -14,11 +14,17 @@
 using namespace std;
 using namespace cv;
 
-int main()
+int main(int argc, char* argv[])
 {
+	if (argc != 2)
+	{
+		cout << "The application must be started with one command line argument, the path to the config file." << endl;
+		return 1;
+	}
 	try
 	{
-        ConfigReader reader("../../Resources/config.txt");
+		string configFile = argv[1];
+		ConfigReader reader(configFile);
         Pipeline* pipeline = reader.createPipeline();
         QString windowName("Video Stream");
         Filter* imageShower = new ShowImageFilter(windowName);

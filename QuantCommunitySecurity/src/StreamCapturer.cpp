@@ -6,7 +6,7 @@ using namespace std;
 
 StreamCapturer::StreamCapturer(QString& videoLocation)
 {
-    if(!capturer.open(videoLocation.toStdString()))
+	if(!capturer.open(videoLocation.toStdString()))
     {
 		QString cause("cannot open stream.");
 		throw ErrorException(cause, 0);

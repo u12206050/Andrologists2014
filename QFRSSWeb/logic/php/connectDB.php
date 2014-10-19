@@ -4,7 +4,7 @@
 	{
 		//Variables
 		define("DBNAME","quant");
-		define("DBHOST","localhost");
+		define("DBHOST","192.168.0.6");
 		define("DBPORT","5432");
 		define("DBUSERNAME","postgres");
 		define("DBPASSWORD","root");
